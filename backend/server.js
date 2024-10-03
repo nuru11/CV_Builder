@@ -106,9 +106,9 @@ app.delete("/cv-builder-1", async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-});
+}); 
 
-app.get("/api/keys/google", (req, res) => {
+app.get("/api/keys/google", (req, res) => { 
   res.send({ key: process.env.GOOGLE_API_KEY || "" });
 });
 
@@ -146,12 +146,12 @@ const uploadd = multer({ storage: storagee });
 
 app.post("/upload-image", uploadd.single("image"), async (req, res) => {
   console.log(req.body);  
-  const imageName = req.file.filename;
+  const imageName = req.file.filename; 
 
-  try {
+  try { 
     await Images.create({ image: imageName });
-    res.json({ status: "ok" });
-  } catch (error) {
+    res.json({ status: "ok" }); 
+  } catch (error) { 
     res.json({ status: error });
   }
 });
@@ -166,7 +166,7 @@ app.get("/get-image", async (req, res) => {
   }
 });
 
-///////////////////////////////////
+///////////////////////////////////  
 
 const fs = require('fs');
 // const path = require('path');
@@ -252,7 +252,7 @@ app.delete("/passdelete-images", async (req, res) => {
         }  
       });
     });
-
+  
     // Delete all images from the database
     await PassImages.deleteMany({});
     

@@ -386,6 +386,7 @@ import axios from "axios";
 import goldagent from "./images/goldagent.png"
 import myImage from './images/two.png'; 
 import bodyimg from "./images/images.jpeg"
+import imagePlaceholder from "./image_placeholder/download.png"
 
 
 
@@ -401,10 +402,13 @@ const App = () => {
     const [allImage, setAllImage] = useState(null);
     const [passportimage, setPassportimage] = useState(null)
     const [passportallimage, setPassportallimage] = useState(null)
-    const [fileName, setFileName] = useState("No file chosen yet");
+    const [fileName, setFileName] = useState("No file chosen fyet");
+    const [pfileName, setPFileName] = useState("No file chosen fyet");
     const fileInputRef = useRef(null);
+    const pfileInputRef = useRef(null);
 
     useEffect(() => {
+        passgetImage();
         getImage();
         fetchData();
       }, []);
@@ -427,6 +431,7 @@ const App = () => {
           }
         );
         // Reset file name after submission
+        // await getImage();
         setFileName("No file chosen yetzzzzzzzzz");
         setImage(null);
       };
@@ -451,28 +456,59 @@ const App = () => {
       /*     passport image      */
       
 
-     const passsubmitImage = async (e) => {
+    //  const passsubmitImage = async (e) => {
+    //     e.preventDefault();
+    
+    //     const formData = new FormData();
+    //     formData.append("pimage", passportimage);
+    
+    //     await axios.post("http://localhost:4000/passupload-image", formData, {
+    //       headers: { "Content-Type": "multipart/form-data" },
+    //     });
+    //     passgetImage(); // Refresh the images after upload
+    //   };
+
+
+    //  const passonInputChange = (e) => {
+    //     console.log(e.target.files[0]);
+    //     setPassportimage(e.target.files[0]);
+    //   };
+
+    // const  passgetImage = async (e) => {
+    //     const result = await axios.get("http://localhost:4000/passget-image");
+    //     console.log(result);
+    //     setPassportallimage(result.data.data);
+    //   };
+
+    const passsubmitImage = async (e) => {
         e.preventDefault();
     
         const formData = new FormData();
         formData.append("pimage", passportimage);
     
-        await axios.post("http://localhost:4000/passupload-image", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        passgetImage(); // Refresh the images after upload
+        const result = await axios.post(
+          "http://localhost:4000/passupload-image",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+        // Reset file name after submission
+        setPFileName("No file chosen after");
+        setPassportimage(null);
       };
-
-
-     const passonInputChange = (e) => {
-        console.log(e.target.files[0]);
-        setPassportimage(e.target.files[0]);
+    
+      const passonInputChange = (e) => {
+        const selectedFile = e.target.files[0];
+        console.log(selectedFile);
+        setPassportimage(selectedFile);
+        setPFileName(selectedFile ? selectedFile.name : "No file chosen yettt"); // Update filename
       };
-
-    const  passgetImage = async (e) => {
+    
+      const passgetImage = async () => {
         const result = await axios.get("http://localhost:4000/passget-image");
         console.log(result);
-       await setPassportallimage(e.target.files[0]);
+        setPassportallimage(result.data.data);
       };
 
       // delete passport image 
@@ -582,7 +618,7 @@ const App = () => {
 
    const downloadMultipleCVs = async () => {
         const pdfElements = [
-            { elementId: 'cvContent1', filename: 'CV_Style1.pdf' },
+            { elementId: 'cvContent1', filename: `${`${personalInfo.name} ${personalInfo.email}` || 'Default_Name'}_CV_Style1.pdf` },
             { elementId: 'cvContent2', filename: 'CV_Style2.pdf' },
             // Add more elements as needed
         ];
@@ -701,25 +737,33 @@ const App = () => {
     const title = "Check out my CV!";
 
     return (
-        <div className="grid-2-col grid-gap-0 grid-sm">
-        <div className="border print-hide d-grid border-bottom-0">
+        // <div className="grid-2-col grid-gap-0 grid-sm">
+        // <div className="border print-hide d-grid border-bottom-0">
+
+        <div className="">
+        <div className="">
             <h2 className="text-center mt-2 text-underline title">CV-Builder</h2>
             <div>
 
-{ allImage && allImage.length > 0 ? (
-<div>
-<img
-className="personal-image"
-alt=""
-src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last image
-
-/>
-{/* Optionally display the ID or other details of the last image */}
-{/* <div>{this.state.allImage[this.state.allImage.length - 1]._id}</div> */}
-</div>
-) : (
-<div>No images uploaded yet.</div> // Message if no images are uploaded
-)}
+            {allImage && allImage.length > 0 ? (
+                <div>
+                    <img
+                        className="personal-image"
+                        alt=""
+                        src={
+                            fileName !== "No file chosen yetzzzzzzzzz" 
+                            ? imagePlaceholder 
+                            : require(`./images/${allImage[allImage.length - 1].image}`)
+                        }
+                        onClick={() => fileInputRef.current.click()} // Open file picker on image click
+                        style={{ cursor: 'pointer' }} // Change cursor to pointer to indicate it's clickable
+                    />
+                    {/* Optionally display the ID or other details of the last image */}
+                    {/* <div>{allImage[allImage.length - 1]._id}</div> */}
+                </div>
+            ) : (
+                <div>No images uploaded yet.</div> // Message if no images are uploaded
+            )}
 
 <form onSubmit={submitImage}>
             <input
@@ -730,7 +774,7 @@ src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last
                 ref={fileInputRef} // Use the ref created with useRef
             />
             <label>
-                <span>{fileName}</span> {/* Display file name here */}
+                <span>{fileName} nn</span> {/* Display file name here */}
                 <button
                     type="button"
                     onClick={() => fileInputRef.current.click()} // Open file picker
@@ -747,31 +791,61 @@ src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last
 
 {/*             passport image uploader            */}
 
-{passportallimage && passportallimage.length > 0 ? (
+{/* {passportallimage && passportallimage.length > 0 ? (
 <div>
 <img
 className="personal-image"
 alt=""
-src={require(`./passport_image/${passportallimage[passportallimage.length - 1].image}`)} // Get the last image
+src={pfileName !== "No file chosen after" ? imagePlaceholder : require(`./passport_image/${passportallimage[passportallimage.length - 1].image}`)} // Get the last image
 
 />
-{/* Optionally display the ID or other details of the last image */}
-{/* <div>{this.state.allImage[this.state.allImage.length - 1]._id}</div> */}
+
 </div>
 ) : (
 <div>No images uploaded yet.</div> // Message if no images are uploaded
-)}
+)} */}
+
+{passportallimage && passportallimage.length > 0 ? (
+                <div>
+                    <img
+                        className="personal-image"
+                        alt=""
+                        src={pfileName !== "No file chosen after" ? imagePlaceholder : require(`./passport_image/${passportallimage[passportallimage.length - 1].image}`)}
+                        
+                        onClick={() => pfileInputRef.current.click()} // Open file picker on image click
+                        style={{ cursor: 'pointer' }} // Change cursor to pointer to indicate it's clickable
+                    />
+                    {/* Optionally display the ID or other details of the last image */}
+                    {/* <div>{allImage[allImage.length - 1]._id}</div> */}
+                </div>
+            ) : (
+                <div>No images uploaded yet.</div> // Message if no images are uploaded
+            )}
+
 
 <form onSubmit={passsubmitImage}>
- <input
-   type="file"
-   accept="image/*"
-   onChange={passonInputChange}
- />
- <button type="submit">Submit</button>
-</form>
+            <input
+                type="file"
+                accept="image/*"
+                onChange={passonInputChange}
+                style={{ display: "none" }} // Hide the default file input
+                ref={pfileInputRef} // Use the ref created with useRef
+            />
+            <label>
+                <span>{pfileName}</span> {/* Display file name here */}
+                <button
+                    type="button"
+                    onClick={() => pfileInputRef.current.click()} // Open file picker
+                >
+                    Choose File
+                </button>
+            </label>
+            <button type="submit">Submit</button>
+        </form>
 
 </div>
+
+
             <NameArea callback={updateText} info={personalInfo} newField={addRecord}/>  
 <EducationInputs callback={updateText} info={educationInfo} newField={addRecord}/>  
 <CareerInputs callback={updateText} info={careerInfo} newField={addRecord}/>
@@ -779,6 +853,8 @@ src={require(`./passport_image/${passportallimage[passportallimage.length - 1].i
 <SkillsInput callback={updateText} info={skillInfo} newField={addRecord}/>
 <ReferenceInput callback={updateText} info={referenceInfo} newField={addRecord}/>
 <DocumentStyle />
+{/* <div>kkkk ${personalInfo.name}</div>
+<div>kddddddddddddddddddddddd</div> */}
             {/* <button type="button" id="downloadBtn" onClick={this.downloadCV}>Download CV</button> */}
             <button type="button" id="postBtn" onClick={postDummyData.bind(this)}>saveeee</button>
             <button type="button" id="deleteBtn" onClick={deleteItemsByName.bind(this)}>Delete Items by Name</button>
@@ -795,15 +871,17 @@ src={require(`./passport_image/${passportallimage[passportallimage.length - 1].i
                     <LinkedinIcon size={32} round={true} />
                 </LinkedinShareButton>
             </div>
+
+            
         </div>
-        <div className="cv print-page">
+        {/* <div className="cv print-page">
             <PersonalInfo data={personalInfo} />
             <EducationInfo data={educationInfo} />
             <CareerInfo data={careerInfo} />
             <ProjectInfo data={projectInfo} />
             <SkillInfo data={skillInfo} />
             <ReferenceInfo data={referenceInfo} />
-        </div>
+        </div> */}
 
 
         <div style={{ position: 'relative', padding: '20px' }}>
@@ -892,13 +970,13 @@ src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last
                     <div className="table-main-parent">
                     <div class="table-parent">
 <div>NAME</div>
-<div></div>
+<div>{personalInfo.name}</div>
 <div>الاسم</div>
 <div>SURNAME</div>
-<div></div>
+<div>{personalInfo.email}</div>
 <div>اسم العائلة</div>
 <div>PLACE</div>
-<div></div>
+<div>{personalInfo.name}</div>
 <div>مكان الولادة</div>
 <div>AGE</div>
 <div></div>

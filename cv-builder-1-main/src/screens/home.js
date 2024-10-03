@@ -88,7 +88,7 @@ class Home extends Component {
       getImage = async () => {
         const result = await axios.get("http://localhost:4000/get-image");
         console.log(result);
-       await this.setState({ allImage: result.data.data });
+        this.setState({ allImage: result.data.data });
       };
 
       //// delete image 
