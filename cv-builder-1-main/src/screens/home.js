@@ -30,7 +30,7 @@ import DocumentStyle from "../Components/DocumentStyle";
 // import html2pdf from "html2pdf.js";
 import myImage from '../images/two.png'; 
 import bodyimg from "../images/images.jpeg"
-import goldagent from "../images/goldagent.png"
+import goldagent from "../images/goldagent.jpeg"
 import personalsmallimg from "../images/personalsmallimg.png"
 import './homestyle.css'; 
 

@@ -10,6 +10,7 @@ import Footer from "./Components/Footer";
 import Home from "./screens/home";
 import UploadPdf from "./screens/uploadpdf"
 import ImageUploader from './screens/imageUploader';
+import TestpdfGen from "./screens/testpdfGen"
 import { createBrowserRouter, RouterProvider} from "react-router-dom"
 
 
@@ -42,6 +43,11 @@ const router = createBrowserRouter([
     path: "/imageuploader",
     element: <ImageUploader />
     
+  },
+  {
+    path: '/testpdfgen',
+    element: <TestpdfGen />,
+    errorElement: <div>404 Not Found</div>
   },
 ])
 const root = ReactDOM.createRoot(document.getElementById('root'));

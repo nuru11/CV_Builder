@@ -383,11 +383,11 @@ import ReferenceInput from "./Components/Inputs/ReferenceInput";
 import ReferenceInfo from "./Components/Outputs/ReferenceInfo";
 import DocumentStyle from "./Components/DocumentStyle";
 import axios from "axios";
-import goldagent from "./images/goldagent.png"
+import goldagent from "./images/goldagent.jpeg"
 import myImage from './images/two.png'; 
 import bodyimg from "./images/images.jpeg"
 import imagePlaceholder from "./image_placeholder/download.png"
-
+import ouragentlogo from "./images/ouragentlogo.jpeg"
 
 
 const App = () => {
@@ -626,11 +626,12 @@ const App = () => {
         const downloadPromises = pdfElements.map(({ elementId, filename }) => {
             const element = document.getElementById(elementId);
             const options = {
-                margin: 1,
+                margin: 0.5,
                 filename: filename,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: [8.5, 14],  /*format: 'letter',*/ orientation: 'portrait' }
+                // jsPDF: { unit: 'in', format: [8.5, 10.99],  /*format: 'letter',*/ orientation: 'portrait' }
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
     
             return html2pdf().from(element).set(options).save();
@@ -837,7 +838,7 @@ src={pfileName !== "No file chosen after" ? imagePlaceholder : require(`./passpo
                     type="button"
                     onClick={() => pfileInputRef.current.click()} // Open file picker
                 >
-                    Choose File
+                    Choose passport image
                 </button>
             </label>
             <button type="submit">Submit</button>
@@ -870,6 +871,7 @@ src={pfileName !== "No file chosen after" ? imagePlaceholder : require(`./passpo
                 <LinkedinShareButton url={shareUrl} title={title}>
                     <LinkedinIcon size={32} round={true} />
                 </LinkedinShareButton>
+                <input class="dxeEditArea_Moderno dxeEditAreaSys" onfocus="ASPx.EGotFocus('VisaNo')" data-val-length="The field Visa Number must be a string with a maximum length of 20." id="VisaNo_I" onchange="ASPx.EValueChanged('VisaNo')" onblur="ASPx.ELostFocus('VisaNo')" name="VisaNo" data-val-length-max="20" type="text" data-val="true" autocomplete="off"></input>
             </div>
 
             
@@ -920,7 +922,7 @@ src={pfileName !== "No file chosen after" ? imagePlaceholder : require(`./passpo
         </div>
 
         
-        <div id="cvContent2" style={{ display: 'block' }}> {/* Change display to block */}
+        <div id="cvContent2" style={{ display: 'block',  maxHeight: 1200 }}> {/* Change display to block */}
             <div className="container">
                 {/* Page 1 */}
                 {/* <div>
@@ -947,7 +949,7 @@ src={pfileName !== "No file chosen after" ? imagePlaceholder : require(`./passpo
                 <div style={{ pageBreakAfter: 'always' }}> 
                     <div className="header">
                     {allImage && allImage.length > 0 ? (
-<div>
+<div className="personal-image-parent">
 <img
 className="personal-image"
 alt=""
@@ -997,12 +999,12 @@ src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last
 <div>NATIONALITY</div>
 <div>ETHIOPIAN</div>
 <div>الجنسية</div>
-<div>MARITAL STATUS</div>
-<div></div>
-<div>الحالة الاجتماعية</div>
-<div>NUMBER OF CHILDREN</div>
-<div></div>
-<div>عدد الاطفال</div>
+<div style={{height: 35}}>MARITAL STATUS</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>الحالة الاجتماعية</div>
+<div style={{height: 35}} >NUMBER OF CHILDREN</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>عدد الاطفال</div>
 <div>RELIGION</div>
 <div></div>
 <div>الديانة</div>
@@ -1013,43 +1015,45 @@ src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last
 
 <div></div>
 <div>الطول</div>
-<div>EDUCATIONAL ATTAINMENT</div>
-<div>PRIMARY SCHOOL</div>
-<div>المستوى الدراسي</div>
-<div>POST APPLIED FOR</div>
-<div>HOUSEMAID</div>
-<div>الوظيفة المتقدمة اليها</div>
-<div>MONTHLY SALARY</div>
-<div></div>
-<div>الراتب الشهري</div>
-<div>CONTRACT PERIOD</div>
-<div>2 YEARS</div>
-<div>مدة التعاقد</div>
-<div>ARABIC DEGREE</div>
-<div></div>
-<div>مستوى اللغة العربية</div>
-<div>ENGLISH DEGREE</div>
-<div></div>
-<div>مستوى اللغة الانجليزية</div>
+<div style={{height: 35}}>EDUCATIONAL ATTAINMENT</div>
+<div style={{height: 35}}>PRIMARY SCHOOL</div>
+<div style={{height: 35}}>المستوى الدراسي</div>
+<div style={{height: 35}}>POST APPLIED FOR</div>
+<div style={{height: 35}}>HOUSEMAID</div>
+<div style={{height: 35}}>الوظيفة المتقدمة اليها</div>
+<div style={{height: 35}}>MONTHLY SALARY</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>الراتب الشهري</div>
+<div style={{height: 35}}>CONTRACT PERIOD</div>
+<div style={{height: 35}}>2 YEARS</div>
+<div style={{height: 35}}>مدة التعاقد</div>
+<div style={{height: 35}}>ARABIC DEGREE</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>مستوى اللغة العربية</div>
+<div style={{height: 39}}>ENGLISH DEGREE</div>
+<div style={{height: 39}}></div>
+<div style={{height: 39}}>مستوى اللغة الانجليزية</div>
 </div>
                         <div className="second-side">
                             <div>
                                 <img src={bodyimg} alt="Full Body" className="full-body-image" />
                             </div>
                             <div>
-                                <img src={myImage} alt="Agent Logo" className="agent-logo" />
+                                <img src={ouragentlogo} alt="Agent Logo" className="agent-logo" />
                             </div>
                         </div>
                     </div>
 
+                    <div className="second-section-parent">
+
                     <div className="phone-number-sec">
                         <div>OWN PHONE NUMBER</div>
-                        <div>(25190) 33-9999</div>
+                        <div style={{background: "white"}}>(25190) 33-9999</div>
                         <div>رقم الهاتف الشخصي</div>
                     </div>
                     <div className="cphone-number-sec">
                         <div>CONTACT PHONE NUMBER</div>
-                        <div></div>
+                        <div style={{background: "white"}}></div>
                         <div>رقم الهاتف الاقارب</div>
                     </div>
                     <div className="experience-country-sec">
@@ -1057,6 +1061,8 @@ src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last
                         <div>-</div>
                         <div>خبرة البلد</div>
                     </div>
+
+                    
 
                     <div className="experience-country-sec">
                         <div>WORKING YEARS</div>
@@ -1085,15 +1091,21 @@ src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last
                         <div>YES</div>
                     </div>
 
+                    </div>
+
+                    
+
                 </div>
 
                 
                 {/* Page 2 */}
-                <div style={{ pageBreakAfter: 'always' }}>
+                <div style={{display: "flex", justifyContent: "center", fontSize: 20, marginBottom: 30}}>Passport</div>
+
+                <div className="passport-image-parent">
                 {passportallimage && passportallimage.length > 0 ? (
 <div>
 <img
-className="personal-image"
+className="passport-image"
 alt=""
 src={require(`./passport_image/${passportallimage[passportallimage.length - 1].image}`)} // Get the last image
 
@@ -1104,7 +1116,7 @@ src={require(`./passport_image/${passportallimage[passportallimage.length - 1].i
 ) : (
 <div>No images uploaded yet.</div> // Message if no images are uploaded
 )}
-                </div>
+</div>
             </div>
         </div>
             {/* Include other sections as needed */}
