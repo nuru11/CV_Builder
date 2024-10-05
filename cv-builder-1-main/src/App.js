@@ -368,6 +368,8 @@ import {
 } from 'react-share';
 import html2pdf from 'html2pdf.js';
 import jsPDF from 'jspdf';
+import {Container, TextField, Typography, Box, Grid, Checkbox, FormControlLabel } from '@mui/material';
+
 
 import NameArea from "./Components/Inputs/NameAreaInputs";
 import PersonalInfo from "./Components/Outputs/PersonalInfo";
@@ -388,6 +390,10 @@ import myImage from './images/two.png';
 import bodyimg from "./images/images.jpeg"
 import imagePlaceholder from "./image_placeholder/download.png"
 import ouragentlogo from "./images/ouragentlogo.jpeg"
+// import { FormControl, useFormControlContext } from '@mui/base/FormControl';
+// import { Input, inputClasses } from '@mui/base/Input';
+// import { styled } from '@mui/system';
+// import clsx from 'clsx';
 
 
 const App = () => {
@@ -402,17 +408,75 @@ const App = () => {
     const [allImage, setAllImage] = useState(null);
     const [passportimage, setPassportimage] = useState(null)
     const [passportallimage, setPassportallimage] = useState(null)
+    const [applicantpassportimage, setApplicantPassportimage] = useState(null)
+    const [applicantpassportallimage, setApplicantPassportallimage] = useState(null)
     const [fileName, setFileName] = useState("No file chosen fyet");
     const [pfileName, setPFileName] = useState("No file chosen fyet");
+    const [applicantPassportfileName, setApplicantPassportFileName] = useState("No file chosen fyet");
     const fileInputRef = useRef(null);
     const pfileInputRef = useRef(null);
+    const applicantFileInputRef = useRef(null)
+
+    const [dob, setDob] = useState('');
+  const [age, setAge] = useState('');
+
+  const [styles, setStyles] = useState({
+    styleOne: false,
+    styleTwo: false,
+    styleThree: false,
+    all: false,
+  });
+
+  const calculateAge = (dob) => {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age -= 1;
+    }
+    return age;
+  };
+
+  useEffect(() => {
+    if (dob) {
+      const calculatedAge = calculateAge(dob);
+      setAge(calculatedAge);
+    } else {
+      setAge('');
+    }
+  }, [dob]);
 
     useEffect(() => {
         passgetImage();
         getImage();
         fetchData();
+        applicantgetImage();
       }, []);
 
+
+
+      const handleStyleChange = (event) => {
+        const { name, checked } = event.target;
+    
+        // If "All" checkbox is checked, set all styles to true
+        if (name === 'all') {
+          setStyles({
+            styleOne: checked,
+            styleTwo: checked,
+            styleThree: checked,
+            all: checked,
+          });
+        } else {
+          // If any style is unchecked, uncheck "All"
+          if (checked) {
+            setStyles((prev) => ({ ...prev, [name]: checked }));
+          } else {
+            setStyles((prev) => ({ ...prev, [name]: checked, all: false }));
+          }
+        }
+      };
 
       /*   small image uploder   */
        
@@ -449,36 +513,7 @@ const App = () => {
         setAllImage(result.data.data);
       };
 
-      /*  small image uploader */
-
-      ///////////////////////////////////
-
-      /*     passport image      */
-      
-
-    //  const passsubmitImage = async (e) => {
-    //     e.preventDefault();
     
-    //     const formData = new FormData();
-    //     formData.append("pimage", passportimage);
-    
-    //     await axios.post("http://localhost:4000/passupload-image", formData, {
-    //       headers: { "Content-Type": "multipart/form-data" },
-    //     });
-    //     passgetImage(); // Refresh the images after upload
-    //   };
-
-
-    //  const passonInputChange = (e) => {
-    //     console.log(e.target.files[0]);
-    //     setPassportimage(e.target.files[0]);
-    //   };
-
-    // const  passgetImage = async (e) => {
-    //     const result = await axios.get("http://localhost:4000/passget-image");
-    //     console.log(result);
-    //     setPassportallimage(result.data.data);
-    //   };
 
     const passsubmitImage = async (e) => {
         e.preventDefault();
@@ -517,7 +552,7 @@ const App = () => {
         try {
           const response = await axios.delete("http://localhost:4000/passdelete-images");
           if (response.data.status === "ok") {
-            // this.setState({ passportallimage: null }); // Clear the images from state
+          
             setPassportallimage(null);
             alert(response.data.message); // Show success message
           }
@@ -528,19 +563,52 @@ const App = () => {
       };
 
 
-      /*     passport image       */
+     
+      /////////////////////////////  applicant data
+     
+
+      const applicantssubmitImage = async (e) => {
+        e.preventDefault();
+    
+        const formData = new FormData();
+        formData.append("applicantimage", applicantpassportimage);
+        
+        // Assuming you have a state variable for the name input
+        // const name = document.getElementById("nameInput").value; // or use a state variable if applicable
+        formData.append("name", personalInfo.name + "kkkkk"); // Append the name to the form data
+    
+        const result = await axios.post(
+            "http://localhost:4000/applicantupload-image",
+            formData,
+            {
+                headers: { "Content-Type": "multipart/form-data" },
+            }
+        );
+        
+        // Reset file name and name input after submission
+        // setPFileName("No file chosen after");
+        setApplicantPassportimage(null);
+        document.getElementById("nameInput").value = ""; // Reset the name input field
+    };
+
+    const applicantonInputChange = (e) => {
+        const selectedFile = e.target.files[0];
+        console.log(selectedFile);
+        setApplicantPassportimage(selectedFile);
+        setApplicantPassportFileName(selectedFile ? selectedFile.name : "No file chosen yettt"); // Update filename
+      };
+    
+      const applicantgetImage = async () => {
+        const result = await axios.get("http://localhost:4000/applicantget-image");
+        console.log(result);
+        setApplicantPassportallimage(result.data.data);
+      };
 
 
-    /*
-     image: null,
-            allImage: null,
-            passportimage: null,
-            passportallimage: null,
-            */
-    // useEffect(() => {
-    //     fetchData();
-    // }, []);
+    //////////////////////////////// applicant data ll
 
+
+  
     const fetchData = async () => {
         try {
             const response = await fetch('http://localhost:4000/cv-builder-1'); // Your API endpoint
@@ -556,7 +624,7 @@ const App = () => {
         const dummyData = {
             name: "John Doeee",
             des: personalInfo.name ?? "nooooooooooooooo",
-            // Add more fields as required by your schema
+         
         };
 
         try {
@@ -600,21 +668,7 @@ const App = () => {
         }
     };
 
-    // const downloadCV = () => {
-    //     const element = document.getElementById("cvContent");
-    //     const options = {
-    //         margin: 1,
-    //         filename: 'CV.pdf',
-    //         image: { type: 'jpeg', quality: 0.98 },
-    //         html2canvas: { scale: 2 },
-    //         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    //     };
-
-    //     html2pdf()
-    //         .from(element)
-    //         .set(options)
-    //         .save();
-    // };
+    
 
    const downloadMultipleCVs = async () => {
         const pdfElements = [
@@ -714,6 +768,9 @@ const App = () => {
         currState[targetStateField] = count;
 
         switch (targetStateArea) {
+            case 'personalInfo': 
+                setPersonalInfo(currState);
+                break;
             case 'educationInfo':
                 setEducationInfo(currState);
                 break;
@@ -738,171 +795,222 @@ const App = () => {
     const title = "Check out my CV!";
 
     return (
-        // <div className="grid-2-col grid-gap-0 grid-sm">
-        // <div className="border print-hide d-grid border-bottom-0">
-
+     
         <div className="">
-        <div className="">
-            <h2 className="text-center mt-2 text-underline title">CV-Builder</h2>
-            <div>
+       <div className="cv-builder-container">
+    <h2 className="text-center mt-2 title">CV Builder</h2>
 
+    <div className="image-upload-section">
+        {/* Personal Image Upload */}
+        <div className="image-upload">
             {allImage && allImage.length > 0 ? (
-                <div>
+                <div className="image-preview">
                     <img
-                        className="personal-image"
-                        alt=""
+                        className="input-personal-image"
+                        alt="Personal"
                         src={
-                            fileName !== "No file chosen yetzzzzzzzzz" 
-                            ? imagePlaceholder 
-                            : require(`./images/${allImage[allImage.length - 1].image}`)
+                            fileName !== "No file chosen yet"
+                                ? imagePlaceholder
+                                : require(`./images/${allImage[allImage.length - 1].image}`)
                         }
-                        onClick={() => fileInputRef.current.click()} // Open file picker on image click
-                        style={{ cursor: 'pointer' }} // Change cursor to pointer to indicate it's clickable
+                        onClick={() => fileInputRef.current.click()}
                     />
-                    {/* Optionally display the ID or other details of the last image */}
-                    {/* <div>{allImage[allImage.length - 1]._id}</div> */}
                 </div>
             ) : (
-                <div>No images uploaded yet.</div> // Message if no images are uploaded
+                <div className="no-image">No images uploaded yet.</div>
             )}
 
-<form onSubmit={submitImage}>
-            <input
-                type="file"
-                accept="image/*"
-                onChange={onInputChange}
-                style={{ display: "none" }} // Hide the default file input
-                ref={fileInputRef} // Use the ref created with useRef
-            />
-            <label>
-                <span>{fileName} nn</span> {/* Display file name here */}
-                <button
-                    type="button"
-                    onClick={() => fileInputRef.current.click()} // Open file picker
-                >
-                    Choose File
-                </button>
-            </label>
-            <button type="submit">Submit</button>
-        </form>
-
-</div>
-
-<div>
-
-{/*             passport image uploader            */}
-
-{/* {passportallimage && passportallimage.length > 0 ? (
-<div>
-<img
-className="personal-image"
-alt=""
-src={pfileName !== "No file chosen after" ? imagePlaceholder : require(`./passport_image/${passportallimage[passportallimage.length - 1].image}`)} // Get the last image
-
-/>
-
-</div>
-) : (
-<div>No images uploaded yet.</div> // Message if no images are uploaded
-)} */}
-
-{passportallimage && passportallimage.length > 0 ? (
-                <div>
-                    <img
-                        className="personal-image"
-                        alt=""
-                        src={pfileName !== "No file chosen after" ? imagePlaceholder : require(`./passport_image/${passportallimage[passportallimage.length - 1].image}`)}
-                        
-                        onClick={() => pfileInputRef.current.click()} // Open file picker on image click
-                        style={{ cursor: 'pointer' }} // Change cursor to pointer to indicate it's clickable
-                    />
-                    {/* Optionally display the ID or other details of the last image */}
-                    {/* <div>{allImage[allImage.length - 1]._id}</div> */}
-                </div>
-            ) : (
-                <div>No images uploaded yet.</div> // Message if no images are uploaded
-            )}
-
-
-<form onSubmit={passsubmitImage}>
-            <input
-                type="file"
-                accept="image/*"
-                onChange={passonInputChange}
-                style={{ display: "none" }} // Hide the default file input
-                ref={pfileInputRef} // Use the ref created with useRef
-            />
-            <label>
-                <span>{pfileName}</span> {/* Display file name here */}
-                <button
-                    type="button"
-                    onClick={() => pfileInputRef.current.click()} // Open file picker
-                >
-                    Choose passport image
-                </button>
-            </label>
-            <button type="submit">Submit</button>
-        </form>
-
-</div>
-
-
-            <NameArea callback={updateText} info={personalInfo} newField={addRecord}/>  
-<EducationInputs callback={updateText} info={educationInfo} newField={addRecord}/>  
-<CareerInputs callback={updateText} info={careerInfo} newField={addRecord}/>
-<ProjectInputs callback={updateText} info={projectInfo} newField={addRecord}/>
-<SkillsInput callback={updateText} info={skillInfo} newField={addRecord}/>
-<ReferenceInput callback={updateText} info={referenceInfo} newField={addRecord}/>
-<DocumentStyle />
-{/* <div>kkkk ${personalInfo.name}</div>
-<div>kddddddddddddddddddddddd</div> */}
-            {/* <button type="button" id="downloadBtn" onClick={this.downloadCV}>Download CV</button> */}
-            <button type="button" id="postBtn" onClick={postDummyData.bind(this)}>saveeee</button>
-            <button type="button" id="deleteBtn" onClick={deleteItemsByName.bind(this)}>Delete Items by Name</button>
-            <button type="button" id="shareBtn" onClick={shareCV}>Share CV on WhatsApp</button>
-            <div className="social-share">
-                <h3>Share on Social Media:</h3>
-                <FacebookShareButton url={shareUrl} quote={title}>
-                    <FacebookIcon size={32} round={true} />
-                </FacebookShareButton>
-                <TwitterShareButton url={shareUrl} title={title}>
-                    <TwitterIcon size={32} round={true} />
-                </TwitterShareButton>
-                <LinkedinShareButton url={shareUrl} title={title}>
-                    <LinkedinIcon size={32} round={true} />
-                </LinkedinShareButton>
-                <input class="dxeEditArea_Moderno dxeEditAreaSys" onfocus="ASPx.EGotFocus('VisaNo')" data-val-length="The field Visa Number must be a string with a maximum length of 20." id="VisaNo_I" onchange="ASPx.EValueChanged('VisaNo')" onblur="ASPx.ELostFocus('VisaNo')" name="VisaNo" data-val-length-max="20" type="text" data-val="true" autocomplete="off"></input>
-            </div>
-
-            
+            <form onSubmit={submitImage} className="file-upload-form">
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={onInputChange}
+                    style={{ display: "none" }}
+                    ref={fileInputRef}
+                />
+                <label>
+                    <span>Personal Image <span style={{ color: 'red' }}>*</span></span>
+                    <button type="button" onClick={() => fileInputRef.current.click()}>Choose File</button>
+                </label>
+                <button type="submit">Submit</button>
+            </form>
         </div>
-        {/* <div className="cv print-page">
-            <PersonalInfo data={personalInfo} />
-            <EducationInfo data={educationInfo} />
-            <CareerInfo data={careerInfo} />
-            <ProjectInfo data={projectInfo} />
-            <SkillInfo data={skillInfo} />
-            <ReferenceInfo data={referenceInfo} />
-        </div> */}
 
+        <div className="image-upload">
+          
 
-        <div style={{ position: 'relative', padding: '20px' }}>
-        <button type="button" onClick={downloadMultipleCVs}>
-            Download Multiple CVs
-        </button>
-        {/* Other buttons */}
+{applicantpassportallimage && applicantpassportallimage.length > 0 ? (
+                <div className="image-preview">
+                    <img
+                        className="input-personal-image"
+                        alt="Personal"
+                        src={
+                            applicantPassportfileName !== "No file chosen yet"
+                                ? imagePlaceholder
+                                : require(`./applicantimage/${applicantpassportallimage[applicantpassportallimage.length - 1].image}`)
+                        }
+                        onClick={() => applicantFileInputRef.current.click()}
+                    />
+                </div>
+            ) : (
+                <div className="no-image">No images uploaded yet.</div>
+            )}
+
+            <form onSubmit={applicantssubmitImage} className="file-upload-form">
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={applicantonInputChange}
+                    style={{ display: "none" }}
+                    ref={applicantFileInputRef}
+                />
+                <label>
+                    <span>applicant Personal Image <span style={{ color: 'red' }}>*</span></span>
+                <button type="button" onClick={() => applicantFileInputRef.current.click()}>Choose File</button>
+                </label>
+                <button type="submit">Submitkkjjjjj ${personalInfo.email}</button>
+            </form>
+        </div>
+
+        {/* Passport Image Upload */}
+        <div className="image-upload">
+            {passportallimage && passportallimage.length > 0 ? (
+                <div className="image-preview">
+                    <img
+                        className="input-personal-image"
+                        alt="Passport"
+                        src={
+                             require(`./passport_image/${passportallimage[passportallimage.length - 1].image}`)
+                        }
+                        onClick={() => pfileInputRef.current.click()}
+                    />
+                </div>
+            ) : (
+                <div className="no-image">No images uploaded yet.</div>
+            )}
+
+            <form onSubmit={passsubmitImage} className="file-upload-form">
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={passonInputChange}
+                    style={{ display: "none" }}
+                    ref={pfileInputRef}
+                />
+                <label>
+                    <span>Passport Image <span style={{ color: 'red' }}>*</span></span>
+                    <button type="button" onClick={() => pfileInputRef.current.click()}>Choose Passport Image</button>
+                </label>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
     </div>
-    {/* <div className="cv print-page">
-        <PersonalInfo data={this.state.personalInfo} />
-        <EducationInfo data={this.state.educationInfo} />
-        <CareerInfo data={this.state.careerInfo} />
-        <ProjectInfo data={this.state.projectInfo} />
-        <SkillInfo data={this.state.skillInfo} />
-        <ReferenceInfo data={this.state.referenceInfo} />
-    </div> */}
 
-      
+    {/* Input Sections */}
+    <NameArea callback={updateText} info={personalInfo} newField={addRecord} />
+    <Container maxWidth="xs">
+      <Box sx={{ mt: 4 }}>
+        <Typography variant="h5" component="h2" align="center" gutterBottom>
+          
+        </Typography>
+        <TextField
+          label="Date of Birth"
+          type="date"
+          fullWidth
+          value={dob}
+          onChange={(e) => setDob(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          sx={{ mb: 2 }}
+          required
+        />
+        <TextField
+          label="Age"
+          type="number"
+          fullWidth
+          value={age}
+        //   InputProps={{
+        //     readOnly: true,
+        //   }}
+        />
+      </Box>
+    </Container>
+    <EducationInputs callback={updateText} info={educationInfo} newField={addRecord} />
+    <CareerInputs callback={updateText} info={careerInfo} newField={addRecord} />
+    <ProjectInputs callback={updateText} info={projectInfo} newField={addRecord} />
+    <SkillsInput callback={updateText} info={skillInfo} newField={addRecord} />
+    <ReferenceInput callback={updateText} info={referenceInfo} newField={addRecord} />
+    {/* <DocumentStyle /> */}
+    <Box sx={{ boxShadow: 3, borderRadius: 2, mt: 4, p: 3}}>
+          <Typography variant="h6" gutterBottom>
+            Select Styles
+          </Typography>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={styles.all}
+                onChange={handleStyleChange}
+                name="all"
+              />
+            }
+            label="All"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={styles.styleOne}
+                onChange={handleStyleChange}
+                name="styleOne"
+              />
+            }
+            label="Style One"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={styles.styleTwo}
+                onChange={handleStyleChange}
+                name="styleTwo"
+              />
+            }
+            label="Style Two"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={styles.styleThree}
+                onChange={handleStyleChange}
+                name="styleThree"
+              />
+            }
+            label="Style Three"
+          />
+        </Box>
 
+    <div className="action-buttons">
+    
+        <button type="button" id="postBtn" onClick={postDummyData.bind(this)}>Save</button>
+        {/* <button type="button" id="postBtn" onClick={applicantssubmitImage}>applicantssubmitImage</button> */}
+        <button type="button" id="shareBtn" onClick={shareCV}>Share CV on WhatsApp</button>
+        <button type="button" onClick={downloadMultipleCVs}>Download Multiple CVs</button>
+    </div>
+
+    <div className="social-share">
+        <h3>Share on Social Media:</h3>
+        <FacebookShareButton url={shareUrl} quote={title}>
+            <FacebookIcon size={32} round={true} />
+        </FacebookShareButton>
+        <TwitterShareButton url={shareUrl} title={title}>
+            <TwitterIcon size={32} round={true} />
+        </TwitterShareButton>
+        <LinkedinShareButton url={shareUrl} title={title}>
+            <LinkedinIcon size={32} round={true} />
+        </LinkedinShareButton>
+    </div>
+</div>
+       
+    
     {/* Hidden content for PDF generation */}
     <div style={{ display: 'none' }}>
         <div id="cvContent1">
@@ -956,8 +1064,7 @@ alt=""
 src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last image
 
 />
-{/* Optionally display the ID or other details of the last image */}
-{/* <div>{this.state.allImage[this.state.allImage.length - 1]._id}</div> */}
+
 </div>
 ) : (
 <div>No images uploaded yet.</div> // Message if no images are uploaded
@@ -1107,31 +1214,24 @@ src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last
 <img
 className="passport-image"
 alt=""
-src={require(`./passport_image/${passportallimage[passportallimage.length - 1].image}`)} // Get the last image
+src={require(`./passport_image/${passportallimage[passportallimage.length - 1].image}`)} 
 
 />
-{/* Optionally display the ID or other details of the last image */}
-{/* <div>{this.state.allImage[this.state.allImage.length - 1]._id}</div> */}
+
 </div>
 ) : (
-<div>No images uploaded yet.</div> // Message if no images are uploaded
+<div>No images uploaded yet.</div> 
 )}
 </div>
             </div>
         </div>
-            {/* Include other sections as needed */}
+          
         
 </div>
 
-        <div>llllllll {cvitem.length}</div>
+       
         
-        {cvitem.map((item) => ( 
-<p> {item.name} : {item.des}</p>
-))}
-
-<div>lllllllllllllllllllllllllllllllllllllllllkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk</div>
-{/* <button onClick={deleteImages}>Delete All Images</button> */}
-<button onClick={passdeleteImages}>Delete All passport Images</button>
+       
     </div>
     );
 };

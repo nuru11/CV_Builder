@@ -16,6 +16,9 @@ const Images = mongoose.model("ImageDetails");
 require("./models/passportimageuploader.js");
 const PassImages = mongoose.model("PassportImage");
 
+require("./models/applicant.js");
+const ApplicantImages = mongoose.model("Applicant");
+
 dotenv.config();
 
 mongoose 
@@ -260,5 +263,46 @@ app.delete("/passdelete-images", async (req, res) => {
   } catch (error) {
     console.error("Error deleting images:", error);
     res.status(500).json({ status: "error", message: "Failed to delete images." });
+  }
+});
+
+
+
+
+////////////////////////  Applicants data
+
+
+const Applicantstorage = multer.diskStorage({
+  destination: function (req, file, cb) { 
+    cb(null, "../cv-builder-1-main/src/applicantimage/");
+  },
+  filename: function (req, file, cb) {  
+    const uniqueSuffix = Date.now();     
+    cb(null, uniqueSuffix + file.originalname);   
+  },
+});  
+
+const applicantupload = multer({ storage: Applicantstorage });
+
+app.post("/applicantupload-image", applicantupload.single("applicantimage"), async (req, res) => {
+  console.log(req.body);  
+  const imageName = req.file.filename;
+  const { name } = req.body; // Extract name from the request body
+
+  try {
+    await ApplicantImages.create({ image: imageName, name: name }); // Save both image and name
+    res.json({ status: "ok" });      
+  } catch (error) {
+    res.json({ status: error });      
+  }
+});
+
+app.get("/applicantget-image", async (req, res) => {
+  try {
+    ApplicantImages.find({}).then((data) => { 
+      res.send({ status: "ok", data: data });  
+    });
+  } catch (error) { 
+    res.json({ status: error }); 
   }
 });

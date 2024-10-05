@@ -14,7 +14,7 @@ body {
 .header {
  /* border: black 1px solid;  */
     width: 730px;
-    height: 150px;
+    height: 1.53in;
     background-color: white;
     display: grid;
     grid-template-columns: 18% 82%;
@@ -219,4 +219,83 @@ body {
   
     overflow: auto;
     /* background-color: blue; */
+}
+
+
+/*   Inputs Design   */
+
+.cv-builder-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.title {
+    text-decoration: underline;
+}
+
+.image-upload-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.image-upload {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+}
+
+.image-preview {
+    cursor: pointer;
+}
+
+.input-personal-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.no-image {
+    font-style: italic;
+    color: gray;
+}
+
+.file-upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.file-upload-form label {
+    display: flex;
+    justify-content: space-between;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.social-share {
+    margin-top: 20px;
+    text-align: center;
 }

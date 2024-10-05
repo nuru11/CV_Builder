@@ -1,0 +1,8 @@
+.headerp {
+    background-color: #156cc4; /* Light background color */
+    padding: 10px; /* Padding around the text */
+    text-align: center; /* Center the text */
+    width: 100%; /* Ensure it takes the full width */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    position: relative; /* Ensure it is positioned normally in the flow */
+}

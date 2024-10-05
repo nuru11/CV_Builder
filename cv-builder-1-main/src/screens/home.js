@@ -455,6 +455,7 @@ class Home extends Component {
        </form>
 
      </div>
+     ${this.state.personalInfo.name} aaaaa
                     <NameArea callback={this.updateText} info={this.state.personalInfo} newField={this.addRecord}/>  
         <EducationInputs callback={this.updateText} info={this.state.educationInfo} newField={this.addRecord}/>  
         <CareerInputs callback={this.updateText} info={this.state.careerInfo} newField={this.addRecord}/>
