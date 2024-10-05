@@ -385,7 +385,11 @@ import ReferenceInput from "./Components/Inputs/ReferenceInput";
 import ReferenceInfo from "./Components/Outputs/ReferenceInfo";
 import DocumentStyle from "./Components/DocumentStyle";
 import axios from "axios";
-import goldagent from "./images/goldagent.jpeg"
+import goldagent from "./images/goldagent.jpeg" 
+import hudud from "./image_placeholder/hudud.jpeg"
+import skywayimg from "./image_placeholder/skywayimg.jpeg"
+import barakaimg from "./image_placeholder/barakaimg.jpeg"
+import wasitimg from "./image_placeholder/wasitimg.jpeg"
 import myImage from './images/two.png'; 
 import bodyimg from "./images/images.jpeg"
 import imagePlaceholder from "./image_placeholder/download.png"
@@ -424,6 +428,8 @@ const App = () => {
     styleOne: false,
     styleTwo: false,
     styleThree: false,
+    styleFour: false,
+    styleFive: false,
     all: false,
   });
 
@@ -466,6 +472,8 @@ const App = () => {
             styleOne: checked,
             styleTwo: checked,
             styleThree: checked,
+            styleFour: checked,
+            styleFive: checked,
             all: checked,
           });
         } else {
@@ -672,8 +680,11 @@ const App = () => {
 
    const downloadMultipleCVs = async () => {
         const pdfElements = [
-            { elementId: 'cvContent1', filename: `${`${personalInfo.name} ${personalInfo.email}` || 'Default_Name'}_CV_Style1.pdf` },
-            { elementId: 'cvContent2', filename: 'CV_Style2.pdf' },
+            { elementId: styles.styleOne ? 'cvContent1' : "", filename: `${`${personalInfo.name} ${personalInfo.email} Bela Hodod` || 'Default_Name'}_CV_Style1.pdf` },
+             {  elementId: styles.styleTwo ? 'cvContent2' : "", filename: 'Golden agen.pdf' },
+            { elementId: styles.styleThree ? 'cvContent3' : "", filename: 'Skyway.pdf' },
+            { elementId: styles.styleFour ? 'cvContent4' : "", filename: 'Baraka.pdf' },
+            { elementId: styles.styleFive ? 'cvContent5' : "", filename: 'Al Wasit.pdf' },
             // Add more elements as needed
         ];
     
@@ -940,7 +951,7 @@ const App = () => {
     <CareerInputs callback={updateText} info={careerInfo} newField={addRecord} />
     <ProjectInputs callback={updateText} info={projectInfo} newField={addRecord} />
     <SkillsInput callback={updateText} info={skillInfo} newField={addRecord} />
-    <ReferenceInput callback={updateText} info={referenceInfo} newField={addRecord} />
+    {/* <ReferenceInput callback={updateText} info={referenceInfo} newField={addRecord} /> */}
     {/* <DocumentStyle /> */}
     <Box sx={{ boxShadow: 3, borderRadius: 2, mt: 4, p: 3}}>
           <Typography variant="h6" gutterBottom>
@@ -964,7 +975,7 @@ const App = () => {
                 name="styleOne"
               />
             }
-            label="Style One"
+            label="Golden agent"
           />
           <FormControlLabel
             control={
@@ -974,7 +985,7 @@ const App = () => {
                 name="styleTwo"
               />
             }
-            label="Style Two"
+            label="Bela Hodod"
           />
           <FormControlLabel
             control={
@@ -984,7 +995,29 @@ const App = () => {
                 name="styleThree"
               />
             }
-            label="Style Three"
+            label="Skyway"
+          />
+
+<FormControlLabel
+            control={
+              <Checkbox
+                checked={styles.styleFour}
+                onChange={handleStyleChange}
+                name="styleFour"
+              />
+            }
+            label="Baraka"
+          />
+
+<FormControlLabel
+            control={
+              <Checkbox
+                checked={styles.styleFive}
+                onChange={handleStyleChange}
+                name="styleFive"
+              />
+            }
+            label="Al wasit"
           />
         </Box>
 
@@ -999,7 +1032,7 @@ const App = () => {
     <div className="social-share">
         <h3>Share on Social Media:</h3>
         <FacebookShareButton url={shareUrl} quote={title}>
-            <FacebookIcon size={32} round={true} />
+            <FacebookIcon margin={50} size={32} round={true} />
         </FacebookShareButton>
         <TwitterShareButton url={shareUrl} title={title}>
             <TwitterIcon size={32} round={true} />
@@ -1014,19 +1047,199 @@ const App = () => {
     {/* Hidden content for PDF generation */}
     <div style={{ display: 'none' }}>
         <div id="cvContent1">
-            <h1>Curriculum Vitae - Style 1</h1>
-            <h2>Personal Info</h2>
-            <p>Name: {personalInfo.name}</p>
-            <h2>Education Info</h2>
-            {educationInfo.institute.map((edu, index) => (
-                <div key={index}>
-                    <h3>{edu.school}</h3>
-                    <p>From: {edu.from} To: {edu.to}</p>
-                    <p>Grade: {edu.grade}</p>
-                    <p>Overview: {edu.overview}</p>
+        <div className="container">
+                {/* Page 1 */}
+                {/* <div>
+<form onSubmit={this.submitImage}>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={this.onInputChange}
+  />
+  <button type="submit">Submit</button>
+</form>
+{this.state.allImage == null
+  ? ""
+  : this.state.allImage.map((data, index) => (
+      <img
+        key={index}
+        alt=""
+        src={require(`../images/${data.image}`)}
+        height={100}
+        width={100}
+      />
+    ))}
+</div> */}
+                <div style={{ pageBreakAfter: 'always' }}> 
+                    <div className="header">
+                    {allImage && allImage.length > 0 ? (
+<div className="personal-image-parent">
+<img
+className="personal-image"
+alt=""
+src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last image
+
+/>
+
+</div>
+) : (
+<div>No images uploaded yet.</div> // Message if no images are uploaded
+)}
+                        <img src={hudud} alt="Wider" className="wider-image" />
+                    </div>
+                    <div className="title-parent">
+                        <div style={{display: "flex", justifyContent: "space-around", border: "none"}}><div style={{ border: "none"}}>Personal Information</div>  <div style={{ border: "none"}}> ممعلومات شخصية </div></div>
+                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>CODE NO</div>
+                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>J100</div>
+                    </div>
+                    <div className="table-main-parent">
+                    <div class="table-parent">
+<div>NAME</div>
+<div>{personalInfo.name}</div>
+<div>الاسم</div>
+<div>SURNAME</div>
+<div>{personalInfo.email}</div>
+<div>اسم العائلة</div>
+<div>PLACE</div>
+<div>{personalInfo.name}</div>
+<div>مكان الولادة</div>
+<div>AGE</div>
+<div></div>
+<div>العمر</div>
+<div>PASSPORT NO</div>
+<div></div>
+<div>رقم جواز السفر</div>
+<div>DATE OF BIRTH</div>
+<div></div>
+<div>تاريخ الميلاد</div>
+<div>DATE OF ISSUE</div>
+<div></div>
+
+<div>تاريخ الاصدار</div>
+<div>DATE OF EXPIRY</div>
+<div></div>
+<div>تاريخ الانتهاء</div>
+<div>NATIONALITY</div>
+<div>ETHIOPIAN</div>
+<div>الجنسية</div>
+<div style={{height: 35}}>MARITAL STATUS</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>الحالة الاجتماعية</div>
+<div style={{height: 35}} >NUMBER OF CHILDREN</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>عدد الاطفال</div>
+<div>RELIGION</div>
+<div></div>
+<div>الديانة</div>
+<div>WEIGHT</div>
+<div></div>
+<div>الوزن</div>
+<div>HEIGHT</div>
+
+<div></div>
+<div>الطول</div>
+<div style={{height: 35}}>EDUCATIONAL ATTAINMENT</div>
+<div style={{height: 35}}>PRIMARY SCHOOL</div>
+<div style={{height: 35}}>المستوى الدراسي</div>
+<div style={{height: 35}}>POST APPLIED FOR</div>
+<div style={{height: 35}}>HOUSEMAID</div>
+<div style={{height: 35}}>الوظيفة المتقدمة اليها</div>
+<div style={{height: 35}}>MONTHLY SALARY</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>الراتب الشهري</div>
+<div style={{height: 35}}>CONTRACT PERIOD</div>
+<div style={{height: 35}}>2 YEARS</div>
+<div style={{height: 35}}>مدة التعاقد</div>
+<div style={{height: 35}}>ARABIC DEGREE</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>مستوى اللغة العربية</div>
+<div style={{height: 39}}>ENGLISH DEGREE</div>
+<div style={{height: 39}}></div>
+<div style={{height: 39}}>مستوى اللغة الانجليزية</div>
+</div>
+                        <div className="second-side">
+                            <div>
+                                <img src={bodyimg} alt="Full Body" className="full-body-image" />
+                            </div>
+                            <div>
+                                <img src={ouragentlogo} alt="Agent Logo" className="agent-logo" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="second-section-parent">
+
+                    <div className="phone-number-sec">
+                        <div>OWN PHONE NUMBER</div>
+                        <div style={{background: "white"}}>(25190) 33-9999</div>
+                        <div>رقم الهاتف الشخصي</div>
+                    </div>
+                    <div className="cphone-number-sec">
+                        <div>CONTACT PHONE NUMBER</div>
+                        <div style={{background: "white"}}></div>
+                        <div>رقم الهاتف الاقارب</div>
+                    </div>
+                    <div className="experience-country-sec">
+                        <div>EXPERIANCE COUNTRY</div>
+                        <div>-</div>
+                        <div>خبرة البلد</div>
+                    </div>
+
+                    
+
+                    <div className="experience-country-sec">
+                        <div>WORKING YEARS</div>
+                        <div>-</div>
+                        <div>وعدد سنوات الخبرة</div>
+                    </div>
+                    <div className="specific-exp-atitle-sec">
+                        <div>تربية الاطفال</div>
+                        <div>النظافة</div>
+                        <div>الغسيل</div>
+                        <div>الطبخ</div>
+                        <div>العناية بالمسنين</div>
+                    </div>
+                    <div className="specific-exp-etitle-sec">
+                        <div>BABY SITTING</div>
+                        <div>CLEANING</div>
+                        <div>WASHING</div>
+                        <div>COOKING</div>
+                        <div>ELDER CARE</div>
+                    </div>
+                    <div className="exp-trueorfalse-sec">
+                        <div>YES</div>
+                        <div>YES</div>
+                        <div>NO</div>
+                        <div></div>
+                        <div>YES</div>
+                    </div>
+
+                    </div>
+
+                    
+
                 </div>
-            ))}
-            {/* Include other sections as needed */}
+
+                
+                {/* Page 2 */}
+                <div style={{display: "flex", justifyContent: "center", fontSize: 20, marginBottom: 30}}>Passport</div>
+
+                <div className="passport-image-parent">
+                {passportallimage && passportallimage.length > 0 ? (
+<div>
+<img
+className="passport-image"
+alt=""
+src={require(`./passport_image/${passportallimage[passportallimage.length - 1].image}`)} 
+
+/>
+
+</div>
+) : (
+<div>No images uploaded yet.</div> 
+)}
+</div>
+            </div>
         </div>
 
         
@@ -1070,6 +1283,598 @@ src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last
 <div>No images uploaded yet.</div> // Message if no images are uploaded
 )}
                         <img src={goldagent} alt="Wider" className="wider-image" />
+                    </div>
+                    <div className="title-parent">
+                        <div style={{display: "flex", justifyContent: "space-around", border: "none"}}><div style={{ border: "none"}}>Personal Information</div>  <div style={{ border: "none"}}> ممعلومات شخصية </div></div>
+                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>CODE NO</div>
+                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>J100</div>
+                    </div>
+                    <div className="table-main-parent">
+                    <div class="table-parent">
+<div>NAME</div>
+<div>{personalInfo.name}</div>
+<div>الاسم</div>
+<div>SURNAME</div>
+<div>{personalInfo.email}</div>
+<div>اسم العائلة</div>
+<div>PLACE</div>
+<div>{personalInfo.name}</div>
+<div>مكان الولادة</div>
+<div>AGE</div>
+<div></div>
+<div>العمر</div>
+<div>PASSPORT NO</div>
+<div></div>
+<div>رقم جواز السفر</div>
+<div>DATE OF BIRTH</div>
+<div></div>
+<div>تاريخ الميلاد</div>
+<div>DATE OF ISSUE</div>
+<div></div>
+
+<div>تاريخ الاصدار</div>
+<div>DATE OF EXPIRY</div>
+<div></div>
+<div>تاريخ الانتهاء</div>
+<div>NATIONALITY</div>
+<div>ETHIOPIAN</div>
+<div>الجنسية</div>
+<div style={{height: 35}}>MARITAL STATUS</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>الحالة الاجتماعية</div>
+<div style={{height: 35}} >NUMBER OF CHILDREN</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>عدد الاطفال</div>
+<div>RELIGION</div>
+<div></div>
+<div>الديانة</div>
+<div>WEIGHT</div>
+<div></div>
+<div>الوزن</div>
+<div>HEIGHT</div>
+
+<div></div>
+<div>الطول</div>
+<div style={{height: 35}}>EDUCATIONAL ATTAINMENT</div>
+<div style={{height: 35}}>PRIMARY SCHOOL</div>
+<div style={{height: 35}}>المستوى الدراسي</div>
+<div style={{height: 35}}>POST APPLIED FOR</div>
+<div style={{height: 35}}>HOUSEMAID</div>
+<div style={{height: 35}}>الوظيفة المتقدمة اليها</div>
+<div style={{height: 35}}>MONTHLY SALARY</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>الراتب الشهري</div>
+<div style={{height: 35}}>CONTRACT PERIOD</div>
+<div style={{height: 35}}>2 YEARS</div>
+<div style={{height: 35}}>مدة التعاقد</div>
+<div style={{height: 35}}>ARABIC DEGREE</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>مستوى اللغة العربية</div>
+<div style={{height: 39}}>ENGLISH DEGREE</div>
+<div style={{height: 39}}></div>
+<div style={{height: 39}}>مستوى اللغة الانجليزية</div>
+</div>
+                        <div className="second-side">
+                            <div>
+                                <img src={bodyimg} alt="Full Body" className="full-body-image" />
+                            </div>
+                            <div>
+                                <img src={ouragentlogo} alt="Agent Logo" className="agent-logo" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="second-section-parent">
+
+                    <div className="phone-number-sec">
+                        <div>OWN PHONE NUMBER</div>
+                        <div style={{background: "white"}}>(25190) 33-9999</div>
+                        <div>رقم الهاتف الشخصي</div>
+                    </div>
+                    <div className="cphone-number-sec">
+                        <div>CONTACT PHONE NUMBER</div>
+                        <div style={{background: "white"}}></div>
+                        <div>رقم الهاتف الاقارب</div>
+                    </div>
+                    <div className="experience-country-sec">
+                        <div>EXPERIANCE COUNTRY</div>
+                        <div>-</div>
+                        <div>خبرة البلد</div>
+                    </div>
+
+                    
+
+                    <div className="experience-country-sec">
+                        <div>WORKING YEARS</div>
+                        <div>-</div>
+                        <div>وعدد سنوات الخبرة</div>
+                    </div>
+                    <div className="specific-exp-atitle-sec">
+                        <div>تربية الاطفال</div>
+                        <div>النظافة</div>
+                        <div>الغسيل</div>
+                        <div>الطبخ</div>
+                        <div>العناية بالمسنين</div>
+                    </div>
+                    <div className="specific-exp-etitle-sec">
+                        <div>BABY SITTING</div>
+                        <div>CLEANING</div>
+                        <div>WASHING</div>
+                        <div>COOKING</div>
+                        <div>ELDER CARE</div>
+                    </div>
+                    <div className="exp-trueorfalse-sec">
+                        <div>YES</div>
+                        <div>YES</div>
+                        <div>NO</div>
+                        <div></div>
+                        <div>YES</div>
+                    </div>
+
+                    </div>
+
+                    
+
+                </div>
+
+                
+                {/* Page 2 */}
+                <div style={{display: "flex", justifyContent: "center", fontSize: 20, marginBottom: 30}}>Passport</div>
+
+                <div className="passport-image-parent">
+                {passportallimage && passportallimage.length > 0 ? (
+<div>
+<img
+className="passport-image"
+alt=""
+src={require(`./passport_image/${passportallimage[passportallimage.length - 1].image}`)} 
+
+/>
+
+</div>
+) : (
+<div>No images uploaded yet.</div> 
+)}
+</div>
+            </div>
+        </div>
+
+
+        <div id="cvContent3" style={{ display: 'block',  maxHeight: 1200 }}> {/* Change display to block */}
+            <div className="container">
+                {/* Page 1 */}
+                {/* <div>
+<form onSubmit={this.submitImage}>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={this.onInputChange}
+  />
+  <button type="submit">Submit</button>
+</form>
+{this.state.allImage == null
+  ? ""
+  : this.state.allImage.map((data, index) => (
+      <img
+        key={index}
+        alt=""
+        src={require(`../images/${data.image}`)}
+        height={100}
+        width={100}
+      />
+    ))}
+</div> */}
+                <div style={{ pageBreakAfter: 'always' }}> 
+                    <div className="header">
+                    {allImage && allImage.length > 0 ? (
+<div className="personal-image-parent">
+<img
+className="personal-image"
+alt=""
+src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last image
+
+/>
+
+</div>
+) : (
+<div>No images uploaded yet.</div> // Message if no images are uploaded
+)}
+                        <img src={skywayimg} alt="Wider" className="wider-image" />
+                    </div>
+                    <div className="title-parent">
+                        <div style={{display: "flex", justifyContent: "space-around", border: "none"}}><div style={{ border: "none"}}>Personal Information</div>  <div style={{ border: "none"}}> ممعلومات شخصية </div></div>
+                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>CODE NO</div>
+                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>J100</div>
+                    </div>
+                    <div className="table-main-parent">
+                    <div class="table-parent">
+<div>NAME</div>
+<div>{personalInfo.name}</div>
+<div>الاسم</div>
+<div>SURNAME</div>
+<div>{personalInfo.email}</div>
+<div>اسم العائلة</div>
+<div>PLACE</div>
+<div>{personalInfo.name}</div>
+<div>مكان الولادة</div>
+<div>AGE</div>
+<div></div>
+<div>العمر</div>
+<div>PASSPORT NO</div>
+<div></div>
+<div>رقم جواز السفر</div>
+<div>DATE OF BIRTH</div>
+<div></div>
+<div>تاريخ الميلاد</div>
+<div>DATE OF ISSUE</div>
+<div></div>
+
+<div>تاريخ الاصدار</div>
+<div>DATE OF EXPIRY</div>
+<div></div>
+<div>تاريخ الانتهاء</div>
+<div>NATIONALITY</div>
+<div>ETHIOPIAN</div>
+<div>الجنسية</div>
+<div style={{height: 35}}>MARITAL STATUS</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>الحالة الاجتماعية</div>
+<div style={{height: 35}} >NUMBER OF CHILDREN</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>عدد الاطفال</div>
+<div>RELIGION</div>
+<div></div>
+<div>الديانة</div>
+<div>WEIGHT</div>
+<div></div>
+<div>الوزن</div>
+<div>HEIGHT</div>
+
+<div></div>
+<div>الطول</div>
+<div style={{height: 35}}>EDUCATIONAL ATTAINMENT</div>
+<div style={{height: 35}}>PRIMARY SCHOOL</div>
+<div style={{height: 35}}>المستوى الدراسي</div>
+<div style={{height: 35}}>POST APPLIED FOR</div>
+<div style={{height: 35}}>HOUSEMAID</div>
+<div style={{height: 35}}>الوظيفة المتقدمة اليها</div>
+<div style={{height: 35}}>MONTHLY SALARY</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>الراتب الشهري</div>
+<div style={{height: 35}}>CONTRACT PERIOD</div>
+<div style={{height: 35}}>2 YEARS</div>
+<div style={{height: 35}}>مدة التعاقد</div>
+<div style={{height: 35}}>ARABIC DEGREE</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>مستوى اللغة العربية</div>
+<div style={{height: 39}}>ENGLISH DEGREE</div>
+<div style={{height: 39}}></div>
+<div style={{height: 39}}>مستوى اللغة الانجليزية</div>
+</div>
+                        <div className="second-side">
+                            <div>
+                                <img src={bodyimg} alt="Full Body" className="full-body-image" />
+                            </div>
+                            <div>
+                                <img src={ouragentlogo} alt="Agent Logo" className="agent-logo" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="second-section-parent">
+
+                    <div className="phone-number-sec">
+                        <div>OWN PHONE NUMBER</div>
+                        <div style={{background: "white"}}>(25190) 33-9999</div>
+                        <div>رقم الهاتف الشخصي</div>
+                    </div>
+                    <div className="cphone-number-sec">
+                        <div>CONTACT PHONE NUMBER</div>
+                        <div style={{background: "white"}}></div>
+                        <div>رقم الهاتف الاقارب</div>
+                    </div>
+                    <div className="experience-country-sec">
+                        <div>EXPERIANCE COUNTRY</div>
+                        <div>-</div>
+                        <div>خبرة البلد</div>
+                    </div>
+
+                    
+
+                    <div className="experience-country-sec">
+                        <div>WORKING YEARS</div>
+                        <div>-</div>
+                        <div>وعدد سنوات الخبرة</div>
+                    </div>
+                    <div className="specific-exp-atitle-sec">
+                        <div>تربية الاطفال</div>
+                        <div>النظافة</div>
+                        <div>الغسيل</div>
+                        <div>الطبخ</div>
+                        <div>العناية بالمسنين</div>
+                    </div>
+                    <div className="specific-exp-etitle-sec">
+                        <div>BABY SITTING</div>
+                        <div>CLEANING</div>
+                        <div>WASHING</div>
+                        <div>COOKING</div>
+                        <div>ELDER CARE</div>
+                    </div>
+                    <div className="exp-trueorfalse-sec">
+                        <div>YES</div>
+                        <div>YES</div>
+                        <div>NO</div>
+                        <div></div>
+                        <div>YES</div>
+                    </div>
+
+                    </div>
+
+                    
+
+                </div>
+
+                
+                {/* Page 2 */}
+                <div style={{display: "flex", justifyContent: "center", fontSize: 20, marginBottom: 30}}>Passport</div>
+
+                <div className="passport-image-parent">
+                {passportallimage && passportallimage.length > 0 ? (
+<div>
+<img
+className="passport-image"
+alt=""
+src={require(`./passport_image/${passportallimage[passportallimage.length - 1].image}`)} 
+
+/>
+
+</div>
+) : (
+<div>No images uploaded yet.</div> 
+)}
+</div>
+            </div>
+        </div>
+
+
+
+        <div id="cvContent4" style={{ display: 'block',  maxHeight: 1200 }}> {/* Change display to block */}
+            <div className="container">
+                {/* Page 1 */}
+                {/* <div>
+<form onSubmit={this.submitImage}>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={this.onInputChange}
+  />
+  <button type="submit">Submit</button>
+</form>
+{this.state.allImage == null
+  ? ""
+  : this.state.allImage.map((data, index) => (
+      <img
+        key={index}
+        alt=""
+        src={require(`../images/${data.image}`)}
+        height={100}
+        width={100}
+      />
+    ))}
+</div> */}
+                <div style={{ pageBreakAfter: 'always' }}> 
+                    <div className="header">
+                    {allImage && allImage.length > 0 ? (
+<div className="personal-image-parent">
+<img
+className="personal-image"
+alt=""
+src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last image
+
+/>
+
+</div>
+) : (
+<div>No images uploaded yet.</div> // Message if no images are uploaded
+)}
+                        <img src={barakaimg} alt="Wider" className="wider-image" />
+                    </div>
+                    <div className="title-parent">
+                        <div style={{display: "flex", justifyContent: "space-around", border: "none"}}><div style={{ border: "none"}}>Personal Information</div>  <div style={{ border: "none"}}> ممعلومات شخصية </div></div>
+                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>CODE NO</div>
+                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>J100</div>
+                    </div>
+                    <div className="table-main-parent">
+                    <div class="table-parent">
+<div>NAME</div>
+<div>{personalInfo.name}</div>
+<div>الاسم</div>
+<div>SURNAME</div>
+<div>{personalInfo.email}</div>
+<div>اسم العائلة</div>
+<div>PLACE</div>
+<div>{personalInfo.name}</div>
+<div>مكان الولادة</div>
+<div>AGE</div>
+<div></div>
+<div>العمر</div>
+<div>PASSPORT NO</div>
+<div></div>
+<div>رقم جواز السفر</div>
+<div>DATE OF BIRTH</div>
+<div></div>
+<div>تاريخ الميلاد</div>
+<div>DATE OF ISSUE</div>
+<div></div>
+
+<div>تاريخ الاصدار</div>
+<div>DATE OF EXPIRY</div>
+<div></div>
+<div>تاريخ الانتهاء</div>
+<div>NATIONALITY</div>
+<div>ETHIOPIAN</div>
+<div>الجنسية</div>
+<div style={{height: 35}}>MARITAL STATUS</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>الحالة الاجتماعية</div>
+<div style={{height: 35}} >NUMBER OF CHILDREN</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>عدد الاطفال</div>
+<div>RELIGION</div>
+<div></div>
+<div>الديانة</div>
+<div>WEIGHT</div>
+<div></div>
+<div>الوزن</div>
+<div>HEIGHT</div>
+
+<div></div>
+<div>الطول</div>
+<div style={{height: 35}}>EDUCATIONAL ATTAINMENT</div>
+<div style={{height: 35}}>PRIMARY SCHOOL</div>
+<div style={{height: 35}}>المستوى الدراسي</div>
+<div style={{height: 35}}>POST APPLIED FOR</div>
+<div style={{height: 35}}>HOUSEMAID</div>
+<div style={{height: 35}}>الوظيفة المتقدمة اليها</div>
+<div style={{height: 35}}>MONTHLY SALARY</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>الراتب الشهري</div>
+<div style={{height: 35}}>CONTRACT PERIOD</div>
+<div style={{height: 35}}>2 YEARS</div>
+<div style={{height: 35}}>مدة التعاقد</div>
+<div style={{height: 35}}>ARABIC DEGREE</div>
+<div style={{height: 35}}></div>
+<div style={{height: 35}}>مستوى اللغة العربية</div>
+<div style={{height: 39}}>ENGLISH DEGREE</div>
+<div style={{height: 39}}></div>
+<div style={{height: 39}}>مستوى اللغة الانجليزية</div>
+</div>
+                        <div className="second-side">
+                            <div>
+                                <img src={bodyimg} alt="Full Body" className="full-body-image" />
+                            </div>
+                            <div>
+                                <img src={ouragentlogo} alt="Agent Logo" className="agent-logo" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="second-section-parent">
+
+                    <div className="phone-number-sec">
+                        <div>OWN PHONE NUMBER</div>
+                        <div style={{background: "white"}}>(25190) 33-9999</div>
+                        <div>رقم الهاتف الشخصي</div>
+                    </div>
+                    <div className="cphone-number-sec">
+                        <div>CONTACT PHONE NUMBER</div>
+                        <div style={{background: "white"}}></div>
+                        <div>رقم الهاتف الاقارب</div>
+                    </div>
+                    <div className="experience-country-sec">
+                        <div>EXPERIANCE COUNTRY</div>
+                        <div>-</div>
+                        <div>خبرة البلد</div>
+                    </div>
+
+                    
+
+                    <div className="experience-country-sec">
+                        <div>WORKING YEARS</div>
+                        <div>-</div>
+                        <div>وعدد سنوات الخبرة</div>
+                    </div>
+                    <div className="specific-exp-atitle-sec">
+                        <div>تربية الاطفال</div>
+                        <div>النظافة</div>
+                        <div>الغسيل</div>
+                        <div>الطبخ</div>
+                        <div>العناية بالمسنين</div>
+                    </div>
+                    <div className="specific-exp-etitle-sec">
+                        <div>BABY SITTING</div>
+                        <div>CLEANING</div>
+                        <div>WASHING</div>
+                        <div>COOKING</div>
+                        <div>ELDER CARE</div>
+                    </div>
+                    <div className="exp-trueorfalse-sec">
+                        <div>YES</div>
+                        <div>YES</div>
+                        <div>NO</div>
+                        <div></div>
+                        <div>YES</div>
+                    </div>
+
+                    </div>
+
+                    
+
+                </div>
+
+                
+                {/* Page 2 */}
+                <div style={{display: "flex", justifyContent: "center", fontSize: 20, marginBottom: 30}}>Passport</div>
+
+                <div className="passport-image-parent">
+                {passportallimage && passportallimage.length > 0 ? (
+<div>
+<img
+className="passport-image"
+alt=""
+src={require(`./passport_image/${passportallimage[passportallimage.length - 1].image}`)} 
+
+/>
+
+</div>
+) : (
+<div>No images uploaded yet.</div> 
+)}
+</div>
+            </div>
+        </div>
+
+
+        <div id="cvContent5" style={{ display: 'block',  maxHeight: 1200 }}> {/* Change display to block */}
+            <div className="container">
+                {/* Page 1 */}
+                {/* <div>
+<form onSubmit={this.submitImage}>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={this.onInputChange}
+  />
+  <button type="submit">Submit</button>
+</form>
+{this.state.allImage == null
+  ? ""
+  : this.state.allImage.map((data, index) => (
+      <img
+        key={index}
+        alt=""
+        src={require(`../images/${data.image}`)}
+        height={100}
+        width={100}
+      />
+    ))}
+</div> */}
+                <div style={{ pageBreakAfter: 'always' }}> 
+                    <div className="header">
+                    {allImage && allImage.length > 0 ? (
+<div className="personal-image-parent">
+<img
+className="personal-image"
+alt=""
+src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last image
+
+/>
+
+</div>
+) : (
+<div>No images uploaded yet.</div> // Message if no images are uploaded
+)}
+                        <img src={wasitimg} alt="Wider" className="wider-image" />
                     </div>
                     <div className="title-parent">
                         <div style={{display: "flex", justifyContent: "space-around", border: "none"}}><div style={{ border: "none"}}>Personal Information</div>  <div style={{ border: "none"}}> ممعلومات شخصية </div></div>

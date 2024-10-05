@@ -510,18 +510,7 @@ class Home extends Component {
             {/* Hidden content for PDF generation */}
             <div style={{ display: 'none' }}>
                 <div id="cvContent1">
-                    <h1>Curriculum Vitae - Style 1</h1>
-                    <h2>Personal Info</h2>
-                    <p>Name: {this.state.personalInfo.name}</p>
-                    <h2>Education Info</h2>
-                    {this.state.educationInfo.institute.map((edu, index) => (
-                        <div key={index}>
-                            <h3>{edu.school}</h3>
-                            <p>From: {edu.from} To: {edu.to}</p>
-                            <p>Grade: {edu.grade}</p>
-                            <p>Overview: {edu.overview}</p>
-                        </div>
-                    ))}
+                   
                     {/* Include other sections as needed */}
                 </div>
 
