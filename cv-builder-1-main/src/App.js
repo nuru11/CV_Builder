@@ -420,6 +420,7 @@ const App = () => {
     const fileInputRef = useRef(null);
     const pfileInputRef = useRef(null);
     const applicantFileInputRef = useRef(null)
+    const [errorMessage, setErrorMessage] = useState('');
 
     const [dob, setDob] = useState('');
   const [age, setAge] = useState('');
@@ -429,11 +430,23 @@ const App = () => {
     styleTwo: false,
     styleThree: false,
     styleFour: false,
-    styleFive: false,
+    // styleFive: false,
     all: false,
   });
 
-  const calculateAge = (dob) => {
+//   const calculateAge = (dob) => {
+//     const birthDate = new Date(dob);
+//     const today = new Date();
+//     let age = today.getFullYear() - birthDate.getFullYear();
+//     const monthDiff = today.getMonth() - birthDate.getMonth();
+
+//     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+//       age -= 1;
+//     }
+//     return age;
+//   };
+
+const calculateAge = (dob) => {
     const birthDate = new Date(dob);
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
@@ -445,12 +458,30 @@ const App = () => {
     return age;
   };
 
-  useEffect(() => {
+//   useEffect(() => {
+//     if (dob) {
+//       const calculatedAge = calculateAge(dob);
+//       setAge(calculatedAge);
+//     } else {
+//       setAge('');
+//     }
+//   }, [dob]);
+
+
+useEffect(() => {
     if (dob) {
       const calculatedAge = calculateAge(dob);
       setAge(calculatedAge);
+
+      // Set error message if age is less than 19
+      if (calculatedAge < 19) {
+        setErrorMessage('Applicant age should be more than 19');
+      } else {
+        setErrorMessage(''); // Clear error message if age is valid
+      }
     } else {
       setAge('');
+      setErrorMessage(''); // Clear error message if no DOB is entered
     }
   }, [dob]);
 
@@ -473,7 +504,7 @@ const App = () => {
             styleTwo: checked,
             styleThree: checked,
             styleFour: checked,
-            styleFive: checked,
+            // styleFive: checked,
             all: checked,
           });
         } else {
@@ -680,11 +711,12 @@ const App = () => {
 
    const downloadMultipleCVs = async () => {
         const pdfElements = [
-            { elementId: styles.styleOne ? 'cvContent1' : "", filename: `${`${personalInfo.name} ${personalInfo.email} Bela Hodod` || 'Default_Name'}_CV_Style1.pdf` },
-             {  elementId: styles.styleTwo ? 'cvContent2' : "", filename: 'Golden agen.pdf' },
+            
+             {  elementId: styles.styleOne ? 'cvContent1' : "", filename: 'Golden agen.pdf' },
+             { elementId: styles.styleTwo ? 'cvContent2' : "", filename: `${`${personalInfo.name} ${personalInfo.email} Bela Hodod` || 'Default_Name'}_CV_Style1.pdf` },
             { elementId: styles.styleThree ? 'cvContent3' : "", filename: 'Skyway.pdf' },
             { elementId: styles.styleFour ? 'cvContent4' : "", filename: 'Baraka.pdf' },
-            { elementId: styles.styleFive ? 'cvContent5' : "", filename: 'Al Wasit.pdf' },
+            // { elementId: styles.styleFive ? 'cvContent5' : "", filename: 'Al Wasit.pdf' },
             // Add more elements as needed
         ];
     
@@ -920,35 +952,45 @@ const App = () => {
     {/* Input Sections */}
     <NameArea callback={updateText} info={personalInfo} newField={addRecord} />
     <Container maxWidth="xs">
-      <Box sx={{ mt: 4 }}>
-        <Typography variant="h5" component="h2" align="center" gutterBottom>
-          
-        </Typography>
-        <TextField
-          label="Date of Birth"
-          type="date"
-          fullWidth
-          value={dob}
-          onChange={(e) => setDob(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          sx={{ mb: 2 }}
-          required
-        />
-        <TextField
-          label="Age"
-          type="number"
-          fullWidth
-          value={age}
-        //   InputProps={{
-        //     readOnly: true,
-        //   }}
-        />
-      </Box>
+    <Grid container spacing={2} alignItems="center">
+          <Grid item xs={6}>
+            <TextField
+              label="Date of Birth"
+              type="date"
+              fullWidth
+              value={dob}
+              onChange={(e) => setDob(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              required
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Age"
+              type="number"
+              fullWidth
+              value={age}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+          </Grid>
+        </Grid>
+        
+        {/* Error Message */}
+        {errorMessage && (
+          <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+            {errorMessage}
+          </Typography>
+        )}
+        
     </Container>
     <EducationInputs callback={updateText} info={educationInfo} newField={addRecord} />
     <CareerInputs callback={updateText} info={careerInfo} newField={addRecord} />
+    {projectInfo.project[0]?.name && <div>ssss</div>}
+{projectInfo.project.map(i => <div>{i.name}</div>)}
     <ProjectInputs callback={updateText} info={projectInfo} newField={addRecord} />
     <SkillsInput callback={updateText} info={skillInfo} newField={addRecord} />
     {/* <ReferenceInput callback={updateText} info={referenceInfo} newField={addRecord} /> */}
@@ -1009,7 +1051,7 @@ const App = () => {
             label="Baraka"
           />
 
-<FormControlLabel
+{/* <FormControlLabel
             control={
               <Checkbox
                 checked={styles.styleFive}
@@ -1018,7 +1060,7 @@ const App = () => {
               />
             }
             label="Al wasit"
-          />
+          /> */}
         </Box>
 
     <div className="action-buttons">
@@ -1243,7 +1285,7 @@ src={require(`./passport_image/${passportallimage[passportallimage.length - 1].i
         </div>
 
         
-        <div id="cvContent2" style={{ display: 'block',  maxHeight: 1200 }}> {/* Change display to block */}
+        <div id="cvContent2" style={{ display: 'block',  }}> {/* Change display to block */}
             <div className="container">
                 {/* Page 1 */}
                 {/* <div>
@@ -1440,7 +1482,7 @@ src={require(`./passport_image/${passportallimage[passportallimage.length - 1].i
         </div>
 
 
-        <div id="cvContent3" style={{ display: 'block',  maxHeight: 1200 }}> {/* Change display to block */}
+        <div id="cvContent3" style={{ display: 'block' }}> {/* Change display to block */}
             <div className="container">
                 {/* Page 1 */}
                 {/* <div>
@@ -1638,7 +1680,7 @@ src={require(`./passport_image/${passportallimage[passportallimage.length - 1].i
 
 
 
-        <div id="cvContent4" style={{ display: 'block',  maxHeight: 1200 }}> {/* Change display to block */}
+        <div id="cvContent4" style={{ display: 'block' }}> {/* Change display to block */}
             <div className="container">
                 {/* Page 1 */}
                 {/* <div>
@@ -1835,202 +1877,7 @@ src={require(`./passport_image/${passportallimage[passportallimage.length - 1].i
         </div>
 
 
-        <div id="cvContent5" style={{ display: 'block',  maxHeight: 1200 }}> {/* Change display to block */}
-            <div className="container">
-                {/* Page 1 */}
-                {/* <div>
-<form onSubmit={this.submitImage}>
-  <input
-    type="file"
-    accept="image/*"
-    onChange={this.onInputChange}
-  />
-  <button type="submit">Submit</button>
-</form>
-{this.state.allImage == null
-  ? ""
-  : this.state.allImage.map((data, index) => (
-      <img
-        key={index}
-        alt=""
-        src={require(`../images/${data.image}`)}
-        height={100}
-        width={100}
-      />
-    ))}
-</div> */}
-                <div style={{ pageBreakAfter: 'always' }}> 
-                    <div className="header">
-                    {allImage && allImage.length > 0 ? (
-<div className="personal-image-parent">
-<img
-className="personal-image"
-alt=""
-src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last image
-
-/>
-
-</div>
-) : (
-<div>No images uploaded yet.</div> // Message if no images are uploaded
-)}
-                        <img src={wasitimg} alt="Wider" className="wider-image" />
-                    </div>
-                    <div className="title-parent">
-                        <div style={{display: "flex", justifyContent: "space-around", border: "none"}}><div style={{ border: "none"}}>Personal Information</div>  <div style={{ border: "none"}}> ممعلومات شخصية </div></div>
-                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>CODE NO</div>
-                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>J100</div>
-                    </div>
-                    <div className="table-main-parent">
-                    <div class="table-parent">
-<div>NAME</div>
-<div>{personalInfo.name}</div>
-<div>الاسم</div>
-<div>SURNAME</div>
-<div>{personalInfo.email}</div>
-<div>اسم العائلة</div>
-<div>PLACE</div>
-<div>{personalInfo.name}</div>
-<div>مكان الولادة</div>
-<div>AGE</div>
-<div></div>
-<div>العمر</div>
-<div>PASSPORT NO</div>
-<div></div>
-<div>رقم جواز السفر</div>
-<div>DATE OF BIRTH</div>
-<div></div>
-<div>تاريخ الميلاد</div>
-<div>DATE OF ISSUE</div>
-<div></div>
-
-<div>تاريخ الاصدار</div>
-<div>DATE OF EXPIRY</div>
-<div></div>
-<div>تاريخ الانتهاء</div>
-<div>NATIONALITY</div>
-<div>ETHIOPIAN</div>
-<div>الجنسية</div>
-<div style={{height: 35}}>MARITAL STATUS</div>
-<div style={{height: 35}}></div>
-<div style={{height: 35}}>الحالة الاجتماعية</div>
-<div style={{height: 35}} >NUMBER OF CHILDREN</div>
-<div style={{height: 35}}></div>
-<div style={{height: 35}}>عدد الاطفال</div>
-<div>RELIGION</div>
-<div></div>
-<div>الديانة</div>
-<div>WEIGHT</div>
-<div></div>
-<div>الوزن</div>
-<div>HEIGHT</div>
-
-<div></div>
-<div>الطول</div>
-<div style={{height: 35}}>EDUCATIONAL ATTAINMENT</div>
-<div style={{height: 35}}>PRIMARY SCHOOL</div>
-<div style={{height: 35}}>المستوى الدراسي</div>
-<div style={{height: 35}}>POST APPLIED FOR</div>
-<div style={{height: 35}}>HOUSEMAID</div>
-<div style={{height: 35}}>الوظيفة المتقدمة اليها</div>
-<div style={{height: 35}}>MONTHLY SALARY</div>
-<div style={{height: 35}}></div>
-<div style={{height: 35}}>الراتب الشهري</div>
-<div style={{height: 35}}>CONTRACT PERIOD</div>
-<div style={{height: 35}}>2 YEARS</div>
-<div style={{height: 35}}>مدة التعاقد</div>
-<div style={{height: 35}}>ARABIC DEGREE</div>
-<div style={{height: 35}}></div>
-<div style={{height: 35}}>مستوى اللغة العربية</div>
-<div style={{height: 39}}>ENGLISH DEGREE</div>
-<div style={{height: 39}}></div>
-<div style={{height: 39}}>مستوى اللغة الانجليزية</div>
-</div>
-                        <div className="second-side">
-                            <div>
-                                <img src={bodyimg} alt="Full Body" className="full-body-image" />
-                            </div>
-                            <div>
-                                <img src={ouragentlogo} alt="Agent Logo" className="agent-logo" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="second-section-parent">
-
-                    <div className="phone-number-sec">
-                        <div>OWN PHONE NUMBER</div>
-                        <div style={{background: "white"}}>(25190) 33-9999</div>
-                        <div>رقم الهاتف الشخصي</div>
-                    </div>
-                    <div className="cphone-number-sec">
-                        <div>CONTACT PHONE NUMBER</div>
-                        <div style={{background: "white"}}></div>
-                        <div>رقم الهاتف الاقارب</div>
-                    </div>
-                    <div className="experience-country-sec">
-                        <div>EXPERIANCE COUNTRY</div>
-                        <div>-</div>
-                        <div>خبرة البلد</div>
-                    </div>
-
-                    
-
-                    <div className="experience-country-sec">
-                        <div>WORKING YEARS</div>
-                        <div>-</div>
-                        <div>وعدد سنوات الخبرة</div>
-                    </div>
-                    <div className="specific-exp-atitle-sec">
-                        <div>تربية الاطفال</div>
-                        <div>النظافة</div>
-                        <div>الغسيل</div>
-                        <div>الطبخ</div>
-                        <div>العناية بالمسنين</div>
-                    </div>
-                    <div className="specific-exp-etitle-sec">
-                        <div>BABY SITTING</div>
-                        <div>CLEANING</div>
-                        <div>WASHING</div>
-                        <div>COOKING</div>
-                        <div>ELDER CARE</div>
-                    </div>
-                    <div className="exp-trueorfalse-sec">
-                        <div>YES</div>
-                        <div>YES</div>
-                        <div>NO</div>
-                        <div></div>
-                        <div>YES</div>
-                    </div>
-
-                    </div>
-
-                    
-
-                </div>
-
-                
-                {/* Page 2 */}
-                <div style={{display: "flex", justifyContent: "center", fontSize: 20, marginBottom: 30}}>Passport</div>
-
-                <div className="passport-image-parent">
-                {passportallimage && passportallimage.length > 0 ? (
-<div>
-<img
-className="passport-image"
-alt=""
-src={require(`./passport_image/${passportallimage[passportallimage.length - 1].image}`)} 
-
-/>
-
-</div>
-) : (
-<div>No images uploaded yet.</div> 
-)}
-</div>
-            </div>
-        </div>
-          
+      
         
 </div>
 

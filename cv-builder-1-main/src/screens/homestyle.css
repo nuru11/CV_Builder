@@ -8,7 +8,7 @@ body {
     /* display: grid;
     flex-direction: column; */
     /* background-color: rgb(0, 255, 21); */
-    max-height: 1200px;
+    /* max-height: 1200px; */
 }
 
 .header {
@@ -23,16 +23,17 @@ body {
 }
 
 .personal-image-parent {
-    min-width: 5.44in; /* Responsive */
-    max-width: 5.44in;
+    min-width: 5.95in; /* Responsive */
+    max-width: 5.95in;
     min-height: 1.59in; /* Maintain aspect ratio */
     max-height: 1.59in; /* Limit height to fit header */
+    
 }
 
 .personal-image {
     border: black 1px solid;
-    min-width: 1.15in; /* Responsive */
-    max-width: 1.15in;
+    min-width: 1.50in; /* Responsive */
+    max-width: 1.50in;
     min-height: 1.53in; /* Maintain aspect ratio */
     max-height: 1.53in; /* Limit height to fit header */
     /* background-color: blue; */
@@ -209,6 +210,9 @@ body {
     display: flex;
     justify-content: center;
     overflow: auto;
+    height: 900px;
+    background-color: red;
+    
 }
 
 .passport-image {

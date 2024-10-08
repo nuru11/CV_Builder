@@ -9,14 +9,14 @@ const pdfModel = require("./models/pdf.js");
 const multer = require("multer");
 const Grid = require("gridfs-stream");
 
-//importing schema
-require("./models/imageuploader.js");
+//importing schema    
+require("./models/imageuploader.js"); 
 const Images = mongoose.model("ImageDetails");
 
 require("./models/passportimageuploader.js");
 const PassImages = mongoose.model("PassportImage");
 
-require("./models/applicant.js");
+require("./models/applicant.js"); 
 const ApplicantImages = mongoose.model("Applicant");
 
 dotenv.config();
@@ -293,7 +293,7 @@ app.post("/applicantupload-image", applicantupload.single("applicantimage"), asy
     await ApplicantImages.create({ image: imageName, name: name }); // Save both image and name
     res.json({ status: "ok" });      
   } catch (error) {
-    res.json({ status: error });      
+    res.json({ status: error });          
   }
 });
 

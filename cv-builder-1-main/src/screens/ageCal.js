@@ -60,13 +60,13 @@
 
 ///////////////////////////////
 
-
 import React, { useState, useEffect } from 'react';
 import { Container, TextField, Typography, Box, Grid, Checkbox, FormControlLabel } from '@mui/material';
 
 const AgeCalculator = () => {
   const [dob, setDob] = useState('');
   const [age, setAge] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [styles, setStyles] = useState({
     styleOne: false,
     styleTwo: false,
@@ -90,8 +90,16 @@ const AgeCalculator = () => {
     if (dob) {
       const calculatedAge = calculateAge(dob);
       setAge(calculatedAge);
+
+      // Set error message if age is less than 19
+      if (calculatedAge < 19) {
+        setErrorMessage('Applicant age should be more than 19');
+      } else {
+        setErrorMessage(''); // Clear error message if age is valid
+      }
     } else {
       setAge('');
+      setErrorMessage(''); // Clear error message if no DOB is entered
     }
   }, [dob]);
 
@@ -149,6 +157,13 @@ const AgeCalculator = () => {
           </Grid>
         </Grid>
         
+        {/* Error Message */}
+        {errorMessage && (
+          <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+            {errorMessage}
+          </Typography>
+        )}
+
         {/* Checkboxes Section */}
         <Box sx={{ mt: 4 }}>
           <Typography variant="h6" gutterBottom>
