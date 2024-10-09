@@ -766,88 +766,169 @@
 
 ////////////////////////////////////////////////////
 
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
+
+// function App() {
+//   const [images, setImages] = useState([]);
+//   const [image1, setImage1] = useState(null);
+//   const [image2, setImage2] = useState(null);
+//   const [imagePreview1, setImagePreview1] = useState(null);
+//   const [imagePreview2, setImagePreview2] = useState(null);
+
+//   const getImages = async () => {
+//     try {
+//       const result = await axios.get("http://localhost:4000/get-images");
+//       setImages(result.data.data);
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     getImages();
+//   }, []);
+
+//   const onInputChange = (e) => {
+//     const file = e.target.files[0];
+//     setImage1(file);
+//     if (file) {
+//       setImagePreview1(URL.createObjectURL(file));
+//     }
+//   };
+
+//   const onInputChange2 = (e) => {
+//     const file = e.target.files[0];
+//     setImage2(file);
+//     if (file) {
+//       setImagePreview2(URL.createObjectURL(file));
+//     }
+//   };
+
+//   const submitImages = async (e) => {
+//     e.preventDefault();
+//     const formData = new FormData();
+//     if (image1) formData.append("image", image1);
+//     if (image2) formData.append("imaget", image2);
+
+//     try {
+//       const result = await axios.post("http://localhost:4000/tupload-image", formData, {
+//         headers: { "Content-Type": "multipart/form-data" },
+//       });
+//       console.log(result.data);
+//       getImages(); // Refresh the list of images
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   };
+
+//   return ( 
+//     <div>
+//       <h2>Upload Images</h2>
+//       <form onSubmit={submitImages}>
+//         <input type="file" accept="image/*" onChange={onInputChange} />
+//         {imagePreview1 && <img src={imagePreview1} alt="Preview 1" height={100} width={100} />}
+        
+//         <input type="file" accept="image/*" onChange={onInputChange2} />
+//         {imagePreview2 && <img src={imagePreview2} alt="Preview 2" height={100} width={100} />}
+        
+//         <button type="submit">Submit</button>
+//       </form>
+
+//       <h2>Uploaded Images</h2>
+  
+
+
+
+///////////////////////////////////////////////////
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import NameArea from "../Components/Inputs/NameAreaInputs";
 
 function App() {
-  const [images, setImages] = useState([]);
-  const [image1, setImage1] = useState(null);
-  const [image2, setImage2] = useState(null);
-  const [imagePreview1, setImagePreview1] = useState(null);
-  const [imagePreview2, setImagePreview2] = useState(null);
+  const [personalInfo, setPersonalInfo] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    about: '',
+    surname: "",
+    placeOfBirth: "",
+    passportNo: "", // Not required
+    nationality: "",
+    maritalStatus: "",
+    numberOfChildren: "",
+    religion: "",
+    weight: "",
+    height: "",
+    educationAttainment: "",
+    postAppliedFor: "",
+    contractPeriod: "",
+    arabicDegree: "",
+    englishDegree: "",
+    ownPhoneNumber: "",
+    contactPhoneNumber: "",
+    monthlysalarySaudi: "",
+    monthlysalaryJordan: ""
+  });
 
-  const getImages = async () => {
-    try {
-      const result = await axios.get("http://localhost:4000/get-images");
-      setImages(result.data.data);
-    } catch (error) {
-      console.error(error);
+  const updateText = (e) => {
+    let targetStateArea = e.target.id.split('-')[0];
+    let targetStateField = e.target.id.split('-')[1];
+
+    const currState = { ...personalInfo };
+    if (Array.isArray(currState[targetStateField])) {
+      let arrIndex = e.target.id.split('-')[2];
+      currState[targetStateField][arrIndex][e.target.id.split('-')[3]] = e.target.value;
+    } else {
+      currState[targetStateField] = e.target.value;
     }
+
+    setPersonalInfo(currState);
   };
 
-  useEffect(() => {
-    getImages();
-  }, []);
+  const addRecord = (e) => {
+    let targetStateArea = e.target.id.split('-')[0];
+    let targetStateField = e.target.id.split('-')[1];
+    const currState = { ...personalInfo };
 
-  const onInputChange = (e) => {
-    const file = e.target.files[0];
-    setImage1(file);
-    if (file) {
-      setImagePreview1(URL.createObjectURL(file));
+    let count = currState[targetStateField];
+    let newRecord = typeof count[0] === 'object' ? { ...count[0] } : '';
+
+    for (let item in newRecord) {
+      newRecord[item] = '';
     }
+
+    count.push(newRecord);
+    currState[targetStateField] = count;
+
+    setPersonalInfo(currState);
   };
 
-  const onInputChange2 = (e) => {
-    const file = e.target.files[0];
-    setImage2(file);
-    if (file) {
-      setImagePreview2(URL.createObjectURL(file));
-    }
-  };
+  const submit = async () => {
+    const { name, phone, placeOfBirth, nationality, maritalStatus, religion } = personalInfo;
 
-  const submitImages = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    if (image1) formData.append("image", image1);
-    if (image2) formData.append("imaget", image2);
+    // Logging the current state for debugging
+    console.log("Personal Info:", personalInfo);
 
-    try {
-      const result = await axios.post("http://localhost:4000/tupload-image", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+    // Check if required fields are filled (passportNo is not required)
+    if (!name || !placeOfBirth || !nationality || !maritalStatus || !religion) {
+      toast.error("Please fill all the required fields.", {
+        position: "top-center"
       });
-      console.log(result.data);
-      getImages(); // Refresh the list of images
-    } catch (error) {
-      console.error(error);
+      return;
     }
+
+    // Proceed with form submission logic here
+    // ...
+    toast.success("Form submitted successfully!");
   };
 
   return (
     <div>
-      <h2>Upload Images</h2>
-      <form onSubmit={submitImages}>
-        <input type="file" accept="image/*" onChange={onInputChange} />
-        {imagePreview1 && <img src={imagePreview1} alt="Preview 1" height={100} width={100} />}
-        
-        <input type="file" accept="image/*" onChange={onInputChange2} />
-        {imagePreview2 && <img src={imagePreview2} alt="Preview 2" height={100} width={100} />}
-        
-        <button type="submit">Submit</button>
-      </form>
-
-      <h2>Uploaded Images</h2>
-      {/* {images.length === 0 ? (
-        <p>No images found.</p>
-      ) : (
-        images.map((data) => (
-          <div key={data._id}>
-            <img src={`http://localhost:4000/applicantimagetest/${data.image}`} height={100} width={100} alt="Uploaded" />
-            {data.image2 && (
-              <img src={`http://localhost:4000/applicantimgtwo/${data.image2}`} height={100} width={100} alt="Uploaded" />
-            )}
-          </div>
-        ))
-      )} */}
+      <NameArea callback={updateText} info={personalInfo} newField={addRecord} />
+      <button type="button" id="postBtn" onClick={submit}>Save</button>
+      <ToastContainer position="top-center" />
     </div>
   );
 }

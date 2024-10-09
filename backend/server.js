@@ -6,12 +6,12 @@ const cors = require("cors");
 const itemModel = require("./models/items.js");
 const itemtestModel = require("./models/itemstest.js");
 const pdfModel = require("./models/pdf.js");
-const multer = require("multer");
+const multer = require("multer"); 
 const Grid = require("gridfs-stream");
 
 //importing schema    
-require("./models/imageuploader.js"); 
-const Images = mongoose.model("ImageDetails");
+require("./models/imageuploader.js");  
+const Images = mongoose.model("ImageDetails"); 
 
 require("./models/passportimageuploader.js");
 const PassImages = mongoose.model("PassportImage");

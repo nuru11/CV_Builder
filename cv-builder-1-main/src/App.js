@@ -362,13 +362,16 @@ import {
     FacebookShareButton,
     TwitterShareButton,
     LinkedinShareButton,
-    FacebookIcon,
+    FacebookIcon, 
     TwitterIcon,
     LinkedinIcon,
 } from 'react-share';
 import html2pdf from 'html2pdf.js';
 import jsPDF from 'jspdf';
 import {Container, TextField, Typography, Box, Grid, Checkbox, FormControlLabel, Button } from '@mui/material';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 import NameArea from "./Components/Inputs/NameAreaInputs";
@@ -421,6 +424,9 @@ const App = () => {
     const pfileInputRef = useRef(null);
     const applicantFileInputRef = useRef(null)
     const [errorMessage, setErrorMessage] = useState('');
+
+
+    const [validationErrors, setValidationErrors] = useState({});
 
 
 
@@ -792,9 +798,32 @@ formData.append("experience", JSON.stringify(projectInfo.project))
     ///////////////////////////////// Applicant Test data 
 
 
+    const validateFields = () => {
+        const errors = {};
+        for (const key in personalInfo) {
+          if (!personalInfo[key]) {
+            errors[key] = 'This field is required';
+          }
+        }
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0; // return true if no errors
+      };
+
 
     const submitImageforapplicant = async (e) => {
         e.preventDefault();
+        const { name, phone, placeOfBirth, nationality, maritalStatus, religion } = personalInfo;
+
+        if (!name || !placeOfBirth || !nationality || !maritalStatus || !religion) {
+            toast.error("Please fill all the required fields.", {
+              position: "top-center"
+            });
+            return;
+
+            
+          }
+
+          toast.success("Form submitted successfully!");
     
         const formData = new FormData();
         // formData.append("applicantimage", applicantpassportimage);
@@ -953,8 +982,8 @@ formData.append("experience", JSON.stringify(projectInfo.project))
    const downloadMultipleCVs = async () => {
         const pdfElements = [
             
-             {  elementId: styles.styleOne ? 'cvContent1' : "", filename: 'Golden agen.pdf' },
-             { elementId: styles.styleTwo ? 'cvContent2' : "", filename: `${`${personalInfo.name} ${personalInfo.email} Bela Hodod` || 'Default_Name'}_CV_Style1.pdf` },
+             {  elementId: styles.styleOne ? 'cvContent2' : "", filename: 'Golden agen.pdf' },
+             { elementId: styles.styleTwo ? 'cvContent1' : "", filename: `${`${personalInfo.name} ${personalInfo.email} Bela Hodod` || 'Default_Name'}_CV_Style1.pdf` },
             { elementId: styles.styleThree ? 'cvContent3' : "", filename: 'Skyway.pdf' },
             { elementId: styles.styleFour ? 'cvContent4' : "", filename: 'Baraka.pdf' },
             // { elementId: styles.styleFive ? 'cvContent5' : "", filename: 'Al Wasit.pdf' },
@@ -1301,7 +1330,7 @@ formData.append("experience", JSON.stringify(projectInfo.project))
     {/* Input Sections */}
     {personalInfo.surname}
     
-    <NameArea callback={updateText} info={personalInfo} newField={addRecord} />
+    <NameArea callback={updateText} validationErrors={validationErrors} info={personalInfo} newField={addRecord} />
     <Container maxWidth="xs">
     <Grid container spacing={2} alignItems="center">
           <Grid item xs={6}>
@@ -1372,14 +1401,14 @@ formData.append("experience", JSON.stringify(projectInfo.project))
                 )}
         
     </Container>
-    {projectInfo.project.map(i => <div>{i.name}</div>)}
+   
     {/* <EducationInputs callback={updateText} info={educationInfo} newField={addRecord} /> */}
     {/* <CareerInputs callback={updateText} info={careerInfo} newField={addRecord} /> */}
     {/* {projectInfo.project[0]?.name && <div>ssss</div>}
 {projectInfo.project.map(i => <div>{i.name}</div>)}
 {projectInfo.project.map(i => <div>{i.link}</div>)}
 {projectInfo.project.map(i => <div>{i.overview}</div>)} */}
-{projectInfo.project.map(i => <div>{i.name}</div>)} <div>,,,dkfdjkf</div>dddd
+
     <ProjectInputs callback={updateText} info={projectInfo} newField={addRecord} />
     {/* <SkillsInput callback={updateText} info={skillInfo} newField={addRecord} /> */}
     {/* <ReferenceInput callback={updateText} info={referenceInfo} newField={addRecord} /> */}
@@ -1399,7 +1428,7 @@ formData.append("experience", JSON.stringify(projectInfo.project))
                 label="All"
             /> */}
 
-            <div>{expcheck.exp1 ? "ttt" : "fff"}</div>
+           
             <FormControlLabel
                 control={
                     <Checkbox
@@ -1583,7 +1612,8 @@ formData.append("experience", JSON.stringify(projectInfo.project))
         </LinkedinShareButton>
     </div>
 </div>
-       
+
+<ToastContainer position="top-center" />       
     
     {/* Hidden content for PDF generation */}
     <div style={{ display: 'none' }}>
@@ -1700,7 +1730,9 @@ src={applicantpersonalimagePreview !== null
 </div>
                         <div className="second-side">
                             <div>
-                                <img src={bodyimg} alt="Full Body" className="full-body-image" />
+                                <img src={applicantfullbodyimagePreview !== null
+    ? applicantfullbodyimagePreview
+    : imagePlaceholder} alt="Full Body" className="full-body-image" />
                             </div>
                             <div>
                                 <img src={ouragentlogo} alt="Agent Logo" className="agent-logo" />
@@ -1771,8 +1803,8 @@ src={applicantpersonalimagePreview !== null
 <img
 className="passport-image"
 alt=""
-src={applicantfullbodyimagePreview !== null
-    ? applicantfullbodyimagePreview
+src={applicantpassportimagePreview !== null
+    ? applicantpassportimagePreview
     : imagePlaceholder} 
 
 />

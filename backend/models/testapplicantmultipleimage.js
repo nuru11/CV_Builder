@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const ProjectSchema = new mongoose.Schema({
-    name: String,
-    link: String,
-    overview: String
+    country: String,
+    position: String,
+    period: String
   });
 
 const TestApplicantimgScehma = new mongoose.Schema(
