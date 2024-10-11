@@ -357,7 +357,7 @@
 // export default App;
 
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
     FacebookShareButton,
     TwitterShareButton,
@@ -368,7 +368,14 @@ import {
 } from 'react-share';
 import html2pdf from 'html2pdf.js';
 import jsPDF from 'jspdf';
-import {Container, TextField, Typography, Box, Grid, Checkbox, FormControlLabel, Button } from '@mui/material';
+import {Container, TextField, Typography, Box, Grid, Checkbox, FormControlLabel, Button,  } from '@mui/material';
+
+    import {
+        Dialog,
+        DialogTitle,
+        DialogContent,
+        DialogActions,
+      } from '@mui/material';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -402,8 +409,30 @@ import ouragentlogo from "./images/ouragentlogo.jpeg"
 // import { styled } from '@mui/system';
 // import clsx from 'clsx';
 
+// import {
+    
+    
+//   } from '@mui/material';
+
+
+import { useDropzone } from 'react-dropzone';
+import Tesseract from 'tesseract.js';
+
 
 const App = () => {
+
+
+    const [passportData, setPassportData] = useState({
+        name: '',
+        surname: '',
+        nationality: '',
+        age: '',
+        passportNumber: '',
+        placeOfBirth: '',
+        birthDate: ''
+      });
+
+
     const [personalInfo, setPersonalInfo] = useState({ name: '', email: '', phone: '', about: '', surname: "", placeOfBirth: "", passportNo: "", nationality: "", maritalStatus: "", numberOfChildren: "", religion: "", weight: "", height: "", educationAttainment: "", postAppliedFor: "", contractPeriod: "", arabicDegree: "", englishDegree: "", ownPhoneNumber: "", contactPhoneNumber: "", monthlysalarySaudi: "", monthlysalaryJordan: ""});
     const [educationInfo, setEducationInfo] = useState({ institute: [{ school: '', from: '', to: '', grade: '', areaStudy: '', overview: '' }] });
     const [careerInfo, setCareerInfo] = useState({ career: [{ title: '', company: '', from: '', to: '', overview: '' }] });
@@ -445,6 +474,8 @@ const App = () => {
   const applicantpassportimagefileInputRef = useRef(null);
 
 
+  const [showModal, setShowModal] = useState(false);
+  const [showsubmitModal, setShowsubmitModal] = useState(false);
 
 
     const [salaries, setSalaries] = useState({
@@ -583,6 +614,11 @@ useEffect(() => {
       if (calculatedAge < 18) {
         setStyles(styles.styleThree = false)
         setErrorMessage('Applicant age should be more than 18');
+      } else if (calculatedAge < 21) {
+        setStyles(styles.styleOne = false)
+        setStyles(styles.styleTwo = false)
+        setStyles(styles.styleFour = false)
+  
       } else {
         setErrorMessage(''); // Clear error message if age is valid
       }
@@ -591,12 +627,7 @@ useEffect(() => {
       setErrorMessage(''); // Clear error message if no DOB is entered
     }
 
-    if (calculateAge < 21) {
-      setStyles(styles.styleOne = false)
-      setStyles(styles.styleTwo = false)
-      setStyles(styles.styleFour = false)
-
-    }
+  
   }, [dob]);
 
     useEffect(() => {
@@ -798,6 +829,36 @@ formData.append("experience", JSON.stringify(projectInfo.project))
     ///////////////////////////////// Applicant Test data 
 
 
+  
+
+
+      const confirmSubmission = async () => {
+        const { name, placeOfBirth, nationality, maritalStatus, religion } = personalInfo;
+    
+        // Check if required fields are filled (passportNo is not required)
+        if (!name || !placeOfBirth || !nationality || !maritalStatus || !religion) {
+          toast.error("Please fill all the required fields.", {
+            position: "top-center"
+          });
+          return;
+        }
+    
+        // Proceed with form submission logic here
+        // ...
+        toast.success("Form submitted successfully!");
+        setShowModal(false); // Close the modal after submission
+      };
+    
+      const cancelSubmission = () => {
+        setShowModal(false); // Close the modal without submitting
+      };
+
+
+      const cancelSubmissionforsave = () => {
+        setShowsubmitModal(false); // Close the modal without submitting
+      };
+
+
     const validateFields = () => {
         const errors = {};
         for (const key in personalInfo) {
@@ -818,12 +879,15 @@ formData.append("experience", JSON.stringify(projectInfo.project))
             toast.error("Please fill all the required fields.", {
               position: "top-center"
             });
+
+            setShowsubmitModal(true);
+            
             return;
 
             
           }
 
-          toast.success("Form submitted successfully!");
+          
     
         const formData = new FormData();
         // formData.append("applicantimage", applicantpassportimage);
@@ -880,6 +944,77 @@ formData.append("experience", JSON.stringify(projectInfo.project))
         // setPFileName("No file chosen after");
         setImageforpersonalimage(null);
         setImageforfullbodyimage(null);
+        toast.success("Form submitted successfully!");
+        document.getElementById("nameInput").value = ""; // Reset the name input field
+    };
+
+
+
+    const submitanyway = async (e) => {
+        e.preventDefault();
+        const { name, phone, placeOfBirth, nationality, maritalStatus, religion } = personalInfo;
+
+      
+
+          
+    
+        const formData = new FormData();
+        // formData.append("applicantimage", applicantpassportimage);
+        
+        // Assuming you have a state variable for the name input
+        // const name = document.getElementById("nameInput").value; // or use a state variable if applicable
+        // formData.append("name", personalInfo.name + "kkkkk"); 
+        // formData.append("surname", personalInfo.name + "sdfdf");    
+
+        if (imageforpersonalimage) formData.append("personalimage", imageforpersonalimage);
+        if (imageforfullbodyimage) formData.append("fullbodyimage", imageforfullbodyimage);
+        if (imageforpassportimage) formData.append("passportimage", imageforpassportimage);
+formData.append("name", personalInfo.name + " kkkkk");
+formData.append("surname", personalInfo.surname + " sdfdf");
+formData.append("placeofbirth", personalInfo.placeOfBirth + " additionalInfo");
+formData.append("passportnum", personalInfo.passportNo + " moreInfo");
+formData.append("nationality", personalInfo.nationality + " extraData");
+formData.append("martialstatus", personalInfo.maritalStatus + " update");
+formData.append("numberofchildren", personalInfo.numberOfChildren + " childrenInfo");
+formData.append("religion", personalInfo.religion + " religiousInfo");
+formData.append("weight", personalInfo.weight + " kg");
+formData.append("height", personalInfo.height + " cm");
+formData.append("educationattainment", personalInfo.educationAttainment + " degree");
+formData.append("postappliedfor", personalInfo.postAppliedFor + " positionDetails");
+formData.append("contractperiod", personalInfo.contractPeriod + " duration");
+formData.append("arabicdegree", personalInfo.arabicDegree + " level");
+formData.append("englishdegree", personalInfo.englishDegree + " level");
+formData.append("ownphonenum", personalInfo.ownPhoneNumber + " own");
+formData.append("contactphonenum", personalInfo.contactPhoneNumber + " contact");
+formData.append("dateofbirth", personalInfo.dateofbirth + " dobInfo");
+formData.append("age", personalInfo.age + " years");
+formData.append("dateofissue", personalInfo.dateofissue + " issueDate");
+formData.append("expireddate", personalInfo.expireddate + " expiryInfo");
+formData.append("country", personalInfo.country + " countryDetails");
+formData.append("position", personalInfo.position + " jobTitle");
+formData.append("period", personalInfo.period + " timeFrame");
+formData.append("babysitting", expcheck.exp1 ? "true" : "false");
+formData.append("cleaning", expcheck.exp2 ? "true" : "false");
+formData.append("washing", expcheck.exp3 ? "true" : "false"); 
+formData.append("cooking", expcheck.exp4 ? "true" : "false");
+formData.append("eldercare", expcheck.exp5 ? "true" : "false");
+formData.append("monthlysalarySaudi", salaries.saudi + " SAR");
+formData.append("monthlysalaryJordan", salaries.jordan + " JOD");
+formData.append("experience", JSON.stringify(projectInfo.project))
+        const result = await axios.post(
+            "http://localhost:4000/tupload-image",
+            formData,
+            {
+                headers: { "Content-Type": "multipart/form-data" },
+            }
+        );
+        
+        // Reset file name and name input after submission
+        // setPFileName("No file chosen after");
+        setImageforpersonalimage(null);
+        setImageforfullbodyimage(null);
+        toast.success("Form submitted successfully!");
+        setShowsubmitModal(false);
         document.getElementById("nameInput").value = ""; // Reset the name input field
     };
 
@@ -903,14 +1038,165 @@ formData.append("experience", JSON.stringify(projectInfo.project))
         }
       };
 
-      const onInputChangeforpassportimage = (e) => {
+    //   const onInputChangeforpassportimage = (e) => {
+    //     const file = e.target.files[0];
+    //     console.log(e.target.files[0]);
+    //     setImageforpassportimage(e.target.files[0]);
+    //     if (file) {
+    //         setApplicantpassportimagePreview(URL.createObjectURL(file))
+    //     }
+    //   };
+
+    const onInputChangeforpassportimage = (e) => {
         const file = e.target.files[0];
-        console.log(e.target.files[0]);
         setImageforpassportimage(e.target.files[0]);
         if (file) {
-            setApplicantpassportimagePreview(URL.createObjectURL(file))
-        }
+            setApplicantpassportimagePreview(URL.createObjectURL(file));
+            recognizeMRZ(file); // Call recognizeMRZ here to process the uploaded image
+            
+    
+          }
+    };
+
+    const recognizeMRZ = (file) => {
+        Tesseract.recognize(
+            file,
+            'eng',
+            {
+                logger: (m) => console.log(m), // Log progress
+            }
+        ).then(({ data: { text } }) => {
+            console.log("Extracted Text: ", text);
+            const extractedData = extractPassportData(text);
+            setPassportData(extractedData);
+        });
       };
+
+      const onDrop = useCallback((acceptedFiles) => {
+        const file = acceptedFiles[0];
+        recognizeMRZ(file);
+      }, []);
+    
+    //   const recognizeMRZ = (file) => {
+    //     Tesseract.recognize(
+    //       file,
+    //       'eng',
+    //       {
+    //         logger: (m) => console.log(m), // Log progress
+    //       }
+    //     ).then(({ data: { text } }) => {
+    //       console.log("Extracted Text: ", text);
+    //       const extractedData = extractPassportData(text);
+    //       setPassportData(extractedData);
+    //     });
+    //   };
+    
+      const extractPassportData = (text) => {
+        
+    
+    
+    
+       
+    
+    
+    
+        const lines = text.split('\n');
+        const mrzLines = lines.filter(line => line.match(/^[A-Z0-9<]+$/));
+    
+        if (mrzLines.length < 2) return { name: '', surname: '', nationality: '', age: '', passportNumber: '', placeOfBirth: '', birthDate: '' };
+    
+        const line1 = mrzLines[0]; // e.g., P<UTOEJANE<<<JOHN<<<<<<<<<<<<<<<<<<<<<<<<<
+        const line2 = mrzLines[1]; // e.g., 1234567890UTO7408129M1204159<<<<<<<<<<<<<<<<<
+    
+        // Extracting name
+        const names = line1.substring(5, 44).replace(/</g, ' ').trim().split('<<');
+        const surname = names[0] ? names[0].trim() : ''; // Add check for surname
+        const name = names[1] ? names[1].trim() : ''; // Add check for given name
+    
+        const nationality = line2.substring(10, 13) || '';
+        const passportNumber = line2.substring(0, 9) || '';
+    
+        // Extracting birth date and gender
+        const birthDate = line2.substring(13, 19) || ''; // Birthdate in YYMMDD format
+        const gender = line2.charAt(20) || '';
+    
+        // Calculate age
+        const year = birthDate ? parseInt(birthDate.substring(0, 2), 10) : 0;
+        const month = birthDate ? parseInt(birthDate.substring(2, 4), 10) : 0;
+        const day = birthDate ? parseInt(birthDate.substring(4, 6), 10) : 0;
+        const age = new Date().getFullYear() - (year < 50 ? 2000 + year : 1900 + year); // Basic age calculation
+    
+        // Extracting place of birth
+        const placeOfBirth = line1.substring(44, 69).replace(/</g, ' ').trim() || '';
+    
+        const dateOfExpiry = line2.substring(21, 27) || '';
+
+        const formattedDateOfExpiry = dateOfExpiry ? `20${dateOfExpiry.substring(0, 2)}-${dateOfExpiry.substring(2, 4)}-${dateOfExpiry.substring(4, 6)}` : '';
+        
+    
+        // Format birth date as YYYY-MM-DD for display
+        const formattedBirthDate = birthDate ? `20${birthDate.substring(0, 2)}-${birthDate.substring(2, 4)}-${birthDate.substring(4, 6)}` : '';
+    
+    
+        const startIndex = 5; // Starting at character 5
+        const firstEndIndex = line1.indexOf('<', startIndex); // Find the first '<' after the start index
+    
+        const extractedTexts = [];
+
+
+        personalInfo.passportNo = passportNumber;
+
+    const extractNationality = line1.substring(2, 5);
+
+    personalInfo.nationality = extractNationality == "ETH" ? "ETHIOPIA" : "NON-ETHIOPIA";
+
+   console.log(`20${birthDate.substring(0, 2)}${birthDate.substring(2, 4)}${birthDate.substring(4, 6)}`, "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkddd")
+     
+   setDob(`20${birthDate.substring(0, 2)}-${birthDate.substring(2, 4)}-${birthDate.substring(4, 6)}`)
+    
+   setDateOfExpiry(formattedDateOfExpiry)
+   setDateOfIssue(`20${dateOfExpiry.substring(0, 2) - 5}-${dateOfExpiry.substring(2, 4)}-${dateOfExpiry.substring(4, 6)}`)
+
+
+
+        if (firstEndIndex !== -1) {
+          // First extraction
+          const firstResult = line1.substring(startIndex, firstEndIndex);
+          extractedTexts.push(firstResult);
+          
+          // Skip two characters after the first result
+          const secondStartIndex = firstEndIndex + 2;
+          const secondEndIndex = line1.indexOf('<', secondStartIndex); // Find the next '<'
+          
+          personalInfo.surname = firstResult;
+         
+          if (secondEndIndex !== -1) {
+            const secondResult = line1.substring(secondStartIndex, secondEndIndex);
+            extractedTexts.push(secondResult);
+            
+            // Skip one character after the second result
+            const thirdStartIndex = secondEndIndex + 1;
+            const thirdEndIndex = line1.indexOf('<', thirdStartIndex); // Find the next '<'
+             
+            
+            if (thirdEndIndex !== -1) {
+              const thirdResult = line1.substring(thirdStartIndex, thirdEndIndex);
+              extractedTexts.push(thirdResult);
+              personalInfo.name = secondResult + " " + thirdResult;
+            } else {
+              extractedTexts.push(line1.substring(thirdStartIndex)); // If no '<' is found, return the rest of the string
+            }
+          }
+        }
+    
+    
+       
+    
+        return { name, surname, nationality, age, passportNumber, placeOfBirth, birthDate: formattedBirthDate };
+      };
+    
+      const { getRootProps, getInputProps } = useDropzone({ onDrop });
+    
 
 
 
@@ -980,6 +1266,22 @@ formData.append("experience", JSON.stringify(projectInfo.project))
     
 
    const downloadMultipleCVs = async () => {
+
+    const { name, placeOfBirth, nationality, maritalStatus, religion } = personalInfo;
+
+    if (!name || !placeOfBirth || !nationality || !maritalStatus || !religion) {
+        toast.error("Please fill all the required fields.", {
+          position: "top-center"
+        });
+
+        setShowModal(true);
+        
+        return;
+
+        
+      }
+
+
         const pdfElements = [
             
              {  elementId: styles.styleOne ? 'cvContent2' : "", filename: 'Golden agen.pdf' },
@@ -1006,6 +1308,40 @@ formData.append("experience", JSON.stringify(projectInfo.project))
     
         // Wait for all downloads to complete
         await Promise.all(downloadPromises);
+    }
+
+
+
+
+    const downloadcvanyway = async () => {
+        setShowModal(false);
+        const pdfElements = [
+            
+             {  elementId: styles.styleOne ? 'cvContent2' : "", filename: 'Golden agen.pdf' },
+             { elementId: styles.styleTwo ? 'cvContent1' : "", filename: `${`${personalInfo.name} ${personalInfo.email} Bela Hodod` || 'Default_Name'}_CV_Style1.pdf` },
+            { elementId: styles.styleThree ? 'cvContent3' : "", filename: 'Skyway.pdf' },
+            { elementId: styles.styleFour ? 'cvContent4' : "", filename: 'Baraka.pdf' },
+            // { elementId: styles.styleFive ? 'cvContent5' : "", filename: 'Al Wasit.pdf' },
+            // Add more elements as needed
+        ];
+    
+        const downloadPromises = pdfElements.map(({ elementId, filename }) => {
+            const element = document.getElementById(elementId);
+            const options = {
+                margin: 0.5,
+                filename: filename,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                // jsPDF: { unit: 'in', format: [8.5, 10.99],  /*format: 'letter',*/ orientation: 'portrait' }
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+    
+            return html2pdf().from(element).set(options).save();
+        });
+    
+        // Wait for all downloads to complete
+        await Promise.all(downloadPromises);
+        
     }
 
 
@@ -1112,6 +1448,52 @@ formData.append("experience", JSON.stringify(projectInfo.project))
         <div className="">
        <div className="cv-builder-container">
     <h2 className="text-center mt-2 title">CV Builder</h2>
+    <Dialog open={showModal} onClose={cancelSubmission}>
+        <DialogTitle>Confirm Submission</DialogTitle>
+        <DialogContent>
+          <p>Are you sure you want to Download?</p>
+        </DialogContent>
+        <DialogActions>
+          <Button 
+            onClick={cancelSubmission} 
+            style={{ backgroundColor: '#f44336', color: 'white' }} // Red for "Back"
+          >
+            Back
+          </Button>
+          <Button 
+            onClick={submitanyway} 
+            style={{ backgroundColor: '#4caf50', color: 'white' }} // Green for "Proceed anyway"
+          >
+            Proceed anyway
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+     
+
+
+      <Dialog open={showsubmitModal} onClose={cancelSubmission}>
+        <DialogTitle>Confirm Submission</DialogTitle>
+        <DialogContent>
+          <p>Are you sure you want to submit the form?</p>
+        </DialogContent>
+        <DialogActions>
+          <Button 
+            onClick={cancelSubmission} 
+            style={{ backgroundColor: '#f44336', color: 'white' }} // Red for "Back"
+          >
+            Back
+          </Button>
+          <Button 
+            onClick={submitanyway} 
+            style={{ backgroundColor: '#4caf50', color: 'white' }} // Green for "Proceed anyway"
+          >
+            Proceed anyway
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+    
 
     {/* <div className="image-upload-section">
        
@@ -1277,7 +1659,7 @@ formData.append("experience", JSON.stringify(projectInfo.project))
                     ref={applicantfullbodyimagefileInputRef}
                 />
                 <label>
-                    <span>Personal Image <span style={{ color: 'red' }}>*</span></span>
+                    <span>Full Body Image <span style={{ color: 'red' }}>*</span></span>
                     {/* <button type="button" onClick={() => fileInputRef.current.click()}>Choose File</button> */}
                 </label>
                
@@ -1312,7 +1694,7 @@ formData.append("experience", JSON.stringify(projectInfo.project))
                     ref={applicantpassportimagefileInputRef}
                 />
                 <label>
-                    <span>Personal Image <span style={{ color: 'red' }}>*</span></span>
+                    <span>Passport Image <span style={{ color: 'red' }}>*</span></span>
                     {/* <button type="button" onClick={() => fileInputRef.current.click()}>Choose File</button> */}
                 </label>
                
@@ -1328,7 +1710,6 @@ formData.append("experience", JSON.stringify(projectInfo.project))
       </form> */}
 
     {/* Input Sections */}
-    {personalInfo.surname}
     
     <NameArea callback={updateText} validationErrors={validationErrors} info={personalInfo} newField={addRecord} />
     <Container maxWidth="xs">
@@ -1613,7 +1994,10 @@ formData.append("experience", JSON.stringify(projectInfo.project))
     </div>
 </div>
 
-<ToastContainer position="top-center" />       
+<ToastContainer position="top-center" />   
+
+
+
     
     {/* Hidden content for PDF generation */}
     <div style={{ display: 'none' }}>
@@ -1669,63 +2053,63 @@ src={applicantpersonalimagePreview !== null
 <div>{personalInfo.name}</div>
 <div>الاسم</div>
 <div>SURNAME</div>
-<div>{personalInfo.email}</div>
+<div>{personalInfo.surname}</div>
 <div>اسم العائلة</div>
-<div>PLACE</div>
-<div>{personalInfo.name}</div>
+<div>PLACE Of Birth</div>
+<div>{personalInfo.placeOfBirth}</div>
 <div>مكان الولادة</div>
 <div>AGE</div>
-<div></div>
+<div>{age}</div>
 <div>العمر</div>
 <div>PASSPORT NO</div>
-<div></div>
+<div>{personalInfo.passportNo}</div>
 <div>رقم جواز السفر</div>
 <div>DATE OF BIRTH</div>
-<div></div>
+<div>{dob}</div>
 <div>تاريخ الميلاد</div>
 <div>DATE OF ISSUE</div>
-<div></div>
+<div>{dateOfIssue}</div>
 
 <div>تاريخ الاصدار</div>
 <div>DATE OF EXPIRY</div>
-<div></div>
+<div>{dateOfExpiry}</div>
 <div>تاريخ الانتهاء</div>
 <div>NATIONALITY</div>
-<div>ETHIOPIAN</div>
+<div>{personalInfo.nationality}</div>
 <div>الجنسية</div>
 <div style={{height: 35}}>MARITAL STATUS</div>
-<div style={{height: 35}}></div>
+<div style={{height: 35}}>{personalInfo.maritalStatus}</div>
 <div style={{height: 35}}>الحالة الاجتماعية</div>
 <div style={{height: 35}} >NUMBER OF CHILDREN</div>
-<div style={{height: 35}}></div>
+<div style={{height: 35}}>{personalInfo.numberOfChildren}</div>
 <div style={{height: 35}}>عدد الاطفال</div>
 <div>RELIGION</div>
-<div></div>
+<div>{personalInfo.religion}</div>
 <div>الديانة</div>
 <div>WEIGHT</div>
-<div></div>
+<div>{personalInfo.weight}</div>
 <div>الوزن</div>
 <div>HEIGHT</div>
 
-<div></div>
+<div>{personalInfo.height}</div>
 <div>الطول</div>
 <div style={{height: 35}}>EDUCATIONAL ATTAINMENT</div>
-<div style={{height: 35}}>PRIMARY SCHOOL</div>
+<div style={{height: 35}}>{personalInfo.educationAttainment}</div>
 <div style={{height: 35}}>المستوى الدراسي</div>
 <div style={{height: 35}}>POST APPLIED FOR</div>
-<div style={{height: 35}}>HOUSEMAID</div>
+<div style={{height: 35}}>{personalInfo.postAppliedFor}</div>
 <div style={{height: 35}}>الوظيفة المتقدمة اليها</div>
 <div style={{height: 35}}>MONTHLY SALARY</div>
-<div style={{height: 35}}></div>
+<div style={{height: 35}}> {salaries.saudi}</div>
 <div style={{height: 35}}>الراتب الشهري</div>
 <div style={{height: 35}}>CONTRACT PERIOD</div>
-<div style={{height: 35}}>2 YEARS</div>
+<div style={{height: 35}}>{personalInfo.contractPeriod}</div>
 <div style={{height: 35}}>مدة التعاقد</div>
 <div style={{height: 35}}>ARABIC DEGREE</div>
-<div style={{height: 35}}></div>
+<div style={{height: 35}}>{personalInfo.arabicDegree}</div>
 <div style={{height: 35}}>مستوى اللغة العربية</div>
 <div style={{height: 39}}>ENGLISH DEGREE</div>
-<div style={{height: 39}}></div>
+<div style={{height: 39}}>{personalInfo.englishDegree}</div>
 <div style={{height: 39}}>مستوى اللغة الانجليزية</div>
 </div>
                         <div className="second-side">
@@ -1744,27 +2128,44 @@ src={applicantpersonalimagePreview !== null
 
                     <div className="phone-number-sec">
                         <div>OWN PHONE NUMBER</div>
-                        <div style={{background: "white"}}>(25190) 33-9999</div>
+                        <div style={{background: "white"}}>{personalInfo.ownPhoneNumber}</div>
                         <div>رقم الهاتف الشخصي</div>
                     </div>
                     <div className="cphone-number-sec">
                         <div>CONTACT PHONE NUMBER</div>
-                        <div style={{background: "white"}}></div>
+                        <div style={{background: "white"}}>{personalInfo.contactPhoneNumber}</div>
                         <div>رقم الهاتف الاقارب</div>
                     </div>
-                    <div className="experience-country-sec">
-                        <div>EXPERIANCE COUNTRY</div>
-                        <div>-</div>
-                        <div>خبرة البلد</div>
-                    </div>
 
-                    
+                    {projectInfo.project.map(i => 
+                        
+<>
+<div className="experience-country-sec">
+<div>EXPERIANCE COUNTRY</div>
+<div>{i.name}</div>
+<div>خبرة البلد</div>
+</div>
 
-                    <div className="experience-country-sec">
-                        <div>WORKING YEARS</div>
-                        <div>-</div>
-                        <div>وعدد سنوات الخبرة</div>
-                    </div>
+
+
+
+
+<div className="experience-country-sec">
+<div>WORKING YEARS</div>
+<div>{i.overview}</div>
+<div>وعدد سنوات الخبرة</div>
+</div>
+
+</>
+
+
+
+                    )}
+                   
+
+
+
+
                     <div className="specific-exp-atitle-sec">
                         <div>تربية الاطفال</div>
                         <div>النظافة</div>
@@ -1780,11 +2181,11 @@ src={applicantpersonalimagePreview !== null
                         <div>ELDER CARE</div>
                     </div>
                     <div className="exp-trueorfalse-sec">
-                        <div>YES</div>
-                        <div>YES</div>
-                        <div>NO</div>
-                        <div></div>
-                        <div>YES</div>
+                        <div>{expcheck.exp1 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp2 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp3 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp4 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp5 ? "YES" : "NO"}</div>
                     </div>
 
                     </div>

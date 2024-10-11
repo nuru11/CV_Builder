@@ -841,12 +841,32 @@
 
 
 ///////////////////////////////////////////////////
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NameArea from "../Components/Inputs/NameAreaInputs";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button
+} from '@mui/material';
+
+import imagePlaceholder from "../image_placeholder/download.png"
+import { useDropzone } from 'react-dropzone';
+import Tesseract from 'tesseract.js';
 
 function App() {
+  const [passportData, setPassportData] = useState({
+    name: '',
+    surname: '',
+    nationality: '',
+    age: '',
+    passportNumber: '',
+    placeOfBirth: '',
+    birthDate: ''
+  });
   const [personalInfo, setPersonalInfo] = useState({
     name: '',
     email: '',
@@ -871,6 +891,14 @@ function App() {
     monthlysalarySaudi: "",
     monthlysalaryJordan: ""
   });
+
+  const [applicantpassportimagePreview, setApplicantpassportimagePreview] = useState(null);
+  const applicantpassportimagefileInputRef = useRef(null);
+  const [imageforpassportimage, setImageforpassportimage] = useState(null)
+
+
+
+  const [showModal, setShowModal] = useState(false);
 
   const updateText = (e) => {
     let targetStateArea = e.target.id.split('-')[0];
@@ -905,11 +933,12 @@ function App() {
     setPersonalInfo(currState);
   };
 
-  const submit = async () => {
-    const { name, phone, placeOfBirth, nationality, maritalStatus, religion } = personalInfo;
+  const submit = () => {
+    setShowModal(true);
+  };
 
-    // Logging the current state for debugging
-    console.log("Personal Info:", personalInfo);
+  const confirmSubmission = async () => {
+    const { name, placeOfBirth, nationality, maritalStatus, religion } = personalInfo;
 
     // Check if required fields are filled (passportNo is not required)
     if (!name || !placeOfBirth || !nationality || !maritalStatus || !religion) {
@@ -922,13 +951,239 @@ function App() {
     // Proceed with form submission logic here
     // ...
     toast.success("Form submitted successfully!");
+    setShowModal(false); // Close the modal after submission
   };
+
+  const cancelSubmission = () => {
+    setShowModal(false); // Close the modal without submitting
+  };
+
+  const onInputChangeforpassportimagea = (e) => {
+    const file = e.target.files[0];
+    console.log(e.target.files[0]);
+    setImageforpassportimage(e.target.files[0]);
+    if (file) {
+        setApplicantpassportimagePreview(URL.createObjectURL(file))
+    }
+  };
+
+  const onInputChangeforpassportimage = (e) => {
+    const file = e.target.files[0];
+    setImageforpassportimage(e.target.files[0]);
+    if (file) {
+        setApplicantpassportimagePreview(URL.createObjectURL(file));
+        recognizeMRZa(file); // Call recognizeMRZ here to process the uploaded image
+        
+
+      }
+};
+
+const recognizeMRZa = (file) => {
+  Tesseract.recognize(
+      file,
+      'eng',
+      {
+          logger: (m) => console.log(m), // Log progress
+      }
+  ).then(({ data: { text } }) => {
+      console.log("Extracted Text: ", text);
+      const extractedData = extractPassportData(text);
+      setPassportData(extractedData);
+  });
+};
+
+  /////////////////////////////////////////
+
+  const onDrop = useCallback((acceptedFiles) => {
+    const file = acceptedFiles[0];
+    recognizeMRZ(file);
+  }, []);
+
+  const recognizeMRZ = (file) => {
+    Tesseract.recognize(
+      file,
+      'eng',
+      {
+        logger: (m) => console.log(m), // Log progress
+      }
+    ).then(({ data: { text } }) => {
+      console.log("Extracted Text: ", text);
+      const extractedData = extractPassportData(text);
+      setPassportData(extractedData);
+    });
+  };
+
+  const extractPassportData = (text) => {
+    
+
+
+
+   
+
+
+
+    const lines = text.split('\n');
+    const mrzLines = lines.filter(line => line.match(/^[A-Z0-9<]+$/));
+
+    if (mrzLines.length < 2) return { name: '', surname: '', nationality: '', age: '', passportNumber: '', placeOfBirth: '', birthDate: '' };
+
+    const line1 = mrzLines[0]; // e.g., P<UTOEJANE<<<JOHN<<<<<<<<<<<<<<<<<<<<<<<<<
+    const line2 = mrzLines[1]; // e.g., 1234567890UTO7408129M1204159<<<<<<<<<<<<<<<<<
+
+    // Extracting name
+    const names = line1.substring(5, 44).replace(/</g, ' ').trim().split('<<');
+    const surname = names[0] ? names[0].trim() : ''; // Add check for surname
+    const name = names[1] ? names[1].trim() : ''; // Add check for given name
+
+    const nationality = line2.substring(10, 13) || '';
+    const passportNumber = line2.substring(0, 9) || '';
+
+    // Extracting birth date and gender
+    const birthDate = line2.substring(13, 19) || ''; // Birthdate in YYMMDD format
+    const gender = line2.charAt(20) || '';
+
+    // Calculate age
+    const year = birthDate ? parseInt(birthDate.substring(0, 2), 10) : 0;
+    const month = birthDate ? parseInt(birthDate.substring(2, 4), 10) : 0;
+    const day = birthDate ? parseInt(birthDate.substring(4, 6), 10) : 0;
+    const age = new Date().getFullYear() - (year < 50 ? 2000 + year : 1900 + year); // Basic age calculation
+
+    // Extracting place of birth
+    const placeOfBirth = line1.substring(44, 69).replace(/</g, ' ').trim() || '';
+
+
+    
+
+    // Format birth date as YYYY-MM-DD for display
+    const formattedBirthDate = birthDate ? `20${birthDate.substring(0, 2)}-${birthDate.substring(2, 4)}-${birthDate.substring(4, 6)}` : '';
+
+
+    const startIndex = 5; // Starting at character 5
+    const firstEndIndex = line1.indexOf('<', startIndex); // Find the first '<' after the start index
+
+    const extractedTexts = [];
+
+    if (firstEndIndex !== -1) {
+      // First extraction
+      const firstResult = line1.substring(startIndex, firstEndIndex);
+      extractedTexts.push(firstResult);
+      
+      // Skip two characters after the first result
+      const secondStartIndex = firstEndIndex + 2;
+      const secondEndIndex = line1.indexOf('<', secondStartIndex); // Find the next '<'
+
+     
+      if (secondEndIndex !== -1) {
+        const secondResult = line1.substring(secondStartIndex, secondEndIndex);
+        extractedTexts.push(secondResult);
+        
+        // Skip one character after the second result
+        const thirdStartIndex = secondEndIndex + 1;
+        const thirdEndIndex = line1.indexOf('<', thirdStartIndex); // Find the next '<'
+         
+        
+        if (thirdEndIndex !== -1) {
+          const thirdResult = line1.substring(thirdStartIndex, thirdEndIndex);
+          extractedTexts.push(thirdResult);
+          personalInfo.name = thirdResult;
+        } else {
+          extractedTexts.push(line1.substring(thirdStartIndex)); // If no '<' is found, return the rest of the string
+        }
+      }
+    }
+
+
+   
+
+    return { name, surname, nationality, age, passportNumber, placeOfBirth, birthDate: formattedBirthDate };
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
 
   return (
     <div>
+      <div {...getRootProps()} style={{ border: '2px dashed #007bff', padding: '20px', textAlign: 'center', marginBottom: '20px' }}>
+        <input {...getInputProps()} />
+        <p>Drag 'n' drop a passport photo here, or click to select one</p>
+      </div>
+       <div className="image-upload">
+           
+           <div className="image-preview">
+               <img
+                   className="input-personal-image"
+                   alt="Personal"
+                   src={
+                       applicantpassportimagePreview !== null
+                           ? applicantpassportimagePreview
+                           : imagePlaceholder
+                   }
+                   onClick={() => applicantpassportimagefileInputRef.current.click()}
+               />
+           </div>
+           <input
+               type="file"
+               accept="image/*"
+               onChange={onInputChangeforpassportimage}
+               style={{ display: "none" }}
+               ref={applicantpassportimagefileInputRef}
+           />
+           <label>
+               <span>Passport Image <span style={{ color: 'red' }}>*</span></span>
+               {/* <button type="button" onClick={() => fileInputRef.current.click()}>Choose File</button> */}
+           </label>
+          
+       
+   </div>
+   <div className="image-preview">
+  <img
+    className={`input-personal-image ${imageforpassportimage ? 'red-filter' : ''}`} // Apply red filter if there's an image
+    alt="Personal"
+    src={
+      applicantpassportimagePreview !== null
+        ? applicantpassportimagePreview
+        : imagePlaceholder
+    }
+    onClick={() => applicantpassportimagefileInputRef.current.click()}
+  />
+</div>
+   {passportData && (
+        <div>
+          <h3>Extracted Passport Data:</h3>
+          <p><strong>Name:</strong> {passportData.name}</p>
+          <p><strong>Surname:</strong> {passportData.surname}</p>
+          <p><strong>Nationality:</strong> {passportData.nationality}</p>
+          <p><strong>Age:</strong> {passportData.age}</p>
+          <p><strong>Passport Number:</strong> {passportData.passportNumber}</p>
+          <p><strong>Place of Birth:</strong> {passportData.placeOfBirth}</p>
+          <p><strong>Birth Date:</strong> {passportData.birthDate}</p>
+        </div>
+      )}
+      
       <NameArea callback={updateText} info={personalInfo} newField={addRecord} />
-      <button type="button" id="postBtn" onClick={submit}>Save</button>
+      <Button variant="contained" color="primary" onClick={submit}>Save</Button>
       <ToastContainer position="top-center" />
+
+      <Dialog open={showModal} onClose={cancelSubmission}>
+        <DialogTitle>Confirm Submission</DialogTitle>
+        <DialogContent>
+          <p>Are you sure you want to submit the form?</p>
+        </DialogContent>
+        <DialogActions>
+          <Button 
+            onClick={cancelSubmission} 
+            style={{ backgroundColor: '#f44336', color: 'white' }} // Red for "Back"
+          >
+            Back
+          </Button>
+          <Button 
+            onClick={confirmSubmission} 
+            style={{ backgroundColor: '#4caf50', color: 'white' }} // Green for "Proceed anyway"
+          >
+            Proceed anyway
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

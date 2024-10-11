@@ -24,7 +24,7 @@ class NameArea extends Component {
                         }
                     `}
                 </style>
-                <h3>Personal Information</h3>
+                {/* <h3>Personal Information</h3> */}
                 <div className="grid-container">
                     <div className="grid-3-col">
                         <div className="input-container">
