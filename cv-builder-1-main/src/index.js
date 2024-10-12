@@ -84,6 +84,7 @@ import UploadPdf from "./screens/uploadpdf";
 import ImageUploader from './screens/imageUploader';
 import TestpdfGen from "./screens/testpdfGen";
 import InputDesigntest from "./screens/inputsDesigntest";
+import TestpdfDesign from "./screens/testPdfdesign"
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AgeCal from "./screens/ageCal"
 
@@ -128,6 +129,11 @@ const router = createBrowserRouter([
   {
     path: '/age',
     element: <AgeCal />,
+    errorElement: <div>404 Not Found</div>
+  },
+  {
+    path: '/pdf',
+    element: <TestpdfDesign />,
     errorElement: <div>404 Not Found</div>
   },
 ]);
