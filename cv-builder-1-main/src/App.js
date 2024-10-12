@@ -1461,7 +1461,7 @@ formData.append("experience", JSON.stringify(projectInfo.project))
             Back
           </Button>
           <Button 
-            onClick={submitanyway} 
+            onClick={downloadcvanyway} 
             style={{ backgroundColor: '#4caf50', color: 'white' }} // Green for "Proceed anyway"
           >
             Proceed anyway
