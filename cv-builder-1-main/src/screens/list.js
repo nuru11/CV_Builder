@@ -20,6 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Header from "../screens/header"
 
 const columns = [
   { id: 'name', label: 'Name', minWidth: 170 },
@@ -169,7 +170,12 @@ export default function StickyHeadTable() {
   
 
   return (
+    <>
+    
+            
+            
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+    <Header /> 
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -285,7 +291,7 @@ export default function StickyHeadTable() {
             margin="dense"
             name="country"
             label="Country"
-            fullWidth
+            fullWidth 
             variant="outlined"
             value={editData.country || ''}
             onChange={handleInputChange}
@@ -314,5 +320,6 @@ export default function StickyHeadTable() {
         </DialogActions>
       </Dialog>
     </Paper>
+    </>
   );
 }

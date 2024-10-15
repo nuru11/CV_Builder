@@ -366,8 +366,11 @@ import {
     TwitterIcon,
     LinkedinIcon,
 } from 'react-share';
+
 import html2pdf from 'html2pdf.js';
+
 import jsPDF from 'jspdf';
+
 import {Container, TextField, Typography, Box, Grid, Checkbox, FormControlLabel, Button,  } from '@mui/material';
 
     import {
@@ -404,6 +407,8 @@ import myImage from './images/two.png';
 import bodyimg from "./images/images.jpeg"
 import imagePlaceholder from "./image_placeholder/download.png"
 import ouragentlogo from "./images/ouragentlogo.jpeg"
+import Header from "./screens/header"
+import VidoUploaded from "./image_placeholder/videoUploaded.jpg"
 // import { FormControl, useFormControlContext } from '@mui/base/FormControl';
 // import { Input, inputClasses } from '@mui/base/Input';
 // import { styled } from '@mui/system';
@@ -457,11 +462,14 @@ const App = () => {
 
     const [validationErrors, setValidationErrors] = useState({});
 
-
+    const [video, setVideo] = useState(null)
+    const [videoPreview, setvideoPreview] = useState(null);
+    const videofileInputRef = useRef(null);
 
     const [imageforpersonalimage, setImageforpersonalimage] = useState(null);
     const [imageforfullbodyimage, setImageforfullbodyimage] = useState(null);
     const [imageforpassportimage, setImageforpassportimage] = useState(null)
+    
 
 
   const [applicantpersonalimagePreview, setApplicantpersonalimagePreview] = useState(null);
@@ -557,11 +565,37 @@ const App = () => {
   const [expiryError, setExpiryError] = useState('');
 
 
-  useEffect(() => {
-    // Automatically set Date of Expiry to 5 years after Date of Issue
+//   useEffect(() => {
+//     // Automatically set Date of Expiry to 5 years after Date of Issue
+
+//     if(dateOfExpiry.length < 2) {
+//     if (dateOfIssue) {
+//         const issueDate = new Date(dateOfIssue);
+//         const expiryDate = new Date(issueDate.setFullYear(issueDate.getFullYear() + 5));
+//         setDateOfExpiry(expiryDate.toISOString().split('T')[0]); // Format as YYYY-MM-DD
+
+//         // Check if expiry date has passed
+//         if (expiryDate < new Date()) {
+//             setExpiryError('The expiry date has passed.');
+//         } else {
+//             setExpiryError(''); // Clear error if valid
+//         }
+//     } else {
+//         setDateOfExpiry('');
+//         setExpiryError(''); // Clear error if no issue date is entered
+//     }
+// } 
+// }, [dateOfIssue]);
+
+
+useEffect(() => {
+    // Automatically set Date of Expiry to 5 years and 1 day after Date of Issue
+
     if (dateOfIssue) {
         const issueDate = new Date(dateOfIssue);
         const expiryDate = new Date(issueDate.setFullYear(issueDate.getFullYear() + 5));
+        expiryDate.setDate(expiryDate.getDate() - 1); // Reduce by 1 day
+
         setDateOfExpiry(expiryDate.toISOString().split('T')[0]); // Format as YYYY-MM-DD
 
         // Check if expiry date has passed
@@ -576,6 +610,22 @@ const App = () => {
     }
 }, [dateOfIssue]);
 
+
+useEffect(() => {
+    // Automatically set Date of Issue to 5 years and 1 day after Date of Expiry
+      if(dateOfIssue.length < 2){
+    if (dateOfExpiry) {
+        const expiryDate = new Date(dateOfExpiry);
+        const issueDate = new Date(expiryDate);
+        issueDate.setFullYear(issueDate.getFullYear() - 5); // Increase by 5 years
+        issueDate.setDate(issueDate.getDate() + 1); // Increase by 1 day
+
+        setDateOfIssue(issueDate.toISOString().split('T')[0]); // Format as YYYY-MM-DD
+    } else {
+        setDateOfIssue(''); // Clear Date of Issue if no expiry date is entered
+    }
+}
+}, [dateOfExpiry]);
 //   const calculateAge = (dob) => {
 //     const birthDate = new Date(dob);
 //     const today = new Date();
@@ -1016,41 +1066,41 @@ formData.append("experience", JSON.stringify(projectInfo.project))
         // const name = document.getElementById("nameInput").value; // or use a state variable if applicable
         // formData.append("name", personalInfo.name + "kkkkk"); 
         // formData.append("surname", personalInfo.name + "sdfdf");    
-
+        if (video) formData.append("video", video);
         if (imageforpersonalimage) formData.append("personalimage", imageforpersonalimage);
         if (imageforfullbodyimage) formData.append("fullbodyimage", imageforfullbodyimage);
         if (imageforpassportimage) formData.append("passportimage", imageforpassportimage);
-formData.append("name", personalInfo.name + " kkkkk");
-formData.append("surname", personalInfo.surname + " sdfdf");
-formData.append("placeofbirth", personalInfo.placeOfBirth + " additionalInfo");
-formData.append("passportnum", personalInfo.passportNo + " moreInfo");
-formData.append("nationality", personalInfo.nationality + " extraData");
-formData.append("martialstatus", personalInfo.maritalStatus + " update");
-formData.append("numberofchildren", personalInfo.numberOfChildren + " childrenInfo");
-formData.append("religion", personalInfo.religion + " religiousInfo");
-formData.append("weight", personalInfo.weight + " kg");
-formData.append("height", personalInfo.height + " cm");
-formData.append("educationattainment", personalInfo.educationAttainment + " degree");
-formData.append("postappliedfor", personalInfo.postAppliedFor + " positionDetails");
-formData.append("contractperiod", personalInfo.contractPeriod + " duration");
-formData.append("arabicdegree", personalInfo.arabicDegree + " level");
-formData.append("englishdegree", personalInfo.englishDegree + " level");
-formData.append("ownphonenum", personalInfo.ownPhoneNumber + " own");
-formData.append("contactphonenum", personalInfo.contactPhoneNumber + " contact");
-formData.append("dateofbirth", personalInfo.dateofbirth + " dobInfo");
-formData.append("age", personalInfo.age + " years");
-formData.append("dateofissue", personalInfo.dateofissue + " issueDate");
-formData.append("expireddate", personalInfo.expireddate + " expiryInfo");
-formData.append("country", personalInfo.country + " countryDetails");
-formData.append("position", personalInfo.position + " jobTitle");
+formData.append("name", personalInfo.name);
+formData.append("surname", personalInfo.surname );
+formData.append("placeofbirth", personalInfo.placeOfBirth);
+formData.append("passportnum", personalInfo.passportNo);
+formData.append("nationality", personalInfo.nationality);
+formData.append("martialstatus", personalInfo.maritalStatus);
+formData.append("numberofchildren", personalInfo.numberOfChildren);
+formData.append("religion", personalInfo.religion);
+formData.append("weight", personalInfo.weight);
+formData.append("height", personalInfo.height );
+formData.append("educationattainment", personalInfo.educationAttainment);
+formData.append("postappliedfor", personalInfo.postAppliedFor);
+formData.append("contractperiod", personalInfo.contractPeriod);
+formData.append("arabicdegree", personalInfo.arabicDegree);
+formData.append("englishdegree", personalInfo.englishDegree);
+formData.append("ownphonenum", personalInfo.ownPhoneNumber);
+formData.append("contactphonenum", personalInfo.contactPhoneNumber );
+formData.append("dateofbirth", personalInfo.dateofbirth );
+formData.append("age", personalInfo.age);
+formData.append("dateofissue", personalInfo.dateofissue);
+formData.append("expireddate", personalInfo.expireddate);
+formData.append("country", personalInfo.country);
+formData.append("position", personalInfo.position);
 formData.append("period", personalInfo.period + " timeFrame");
 formData.append("babysitting", expcheck.exp1 ? "true" : "false");
 formData.append("cleaning", expcheck.exp2 ? "true" : "false");
 formData.append("washing", expcheck.exp3 ? "true" : "false"); 
 formData.append("cooking", expcheck.exp4 ? "true" : "false");
 formData.append("eldercare", expcheck.exp5 ? "true" : "false");
-formData.append("monthlysalarySaudi", salaries.saudi + " SAR");
-formData.append("monthlysalaryJordan", salaries.jordan + " JOD");
+formData.append("monthlysalarySaudi", salaries.saudi);
+formData.append("monthlysalaryJordan", salaries.jordan);
 formData.append("experience", JSON.stringify(projectInfo.project))
         const result = await axios.post(
             "http://localhost:4000/tupload-image",
@@ -1085,41 +1135,41 @@ formData.append("experience", JSON.stringify(projectInfo.project))
         // const name = document.getElementById("nameInput").value; // or use a state variable if applicable
         // formData.append("name", personalInfo.name + "kkkkk"); 
         // formData.append("surname", personalInfo.name + "sdfdf");    
-
+        if (video) formData.append("video", video);
         if (imageforpersonalimage) formData.append("personalimage", imageforpersonalimage);
         if (imageforfullbodyimage) formData.append("fullbodyimage", imageforfullbodyimage);
         if (imageforpassportimage) formData.append("passportimage", imageforpassportimage);
-formData.append("name", personalInfo.name + " kkkkk");
-formData.append("surname", personalInfo.surname + " sdfdf");
-formData.append("placeofbirth", personalInfo.placeOfBirth + " additionalInfo");
-formData.append("passportnum", personalInfo.passportNo + " moreInfo");
-formData.append("nationality", personalInfo.nationality + " extraData");
-formData.append("martialstatus", personalInfo.maritalStatus + " update");
-formData.append("numberofchildren", personalInfo.numberOfChildren + " childrenInfo");
-formData.append("religion", personalInfo.religion + " religiousInfo");
+formData.append("name", personalInfo.name);
+formData.append("surname", personalInfo.surname);
+formData.append("placeofbirth", personalInfo.placeOfBirth);
+formData.append("passportnum", personalInfo.passportNo);
+formData.append("nationality", personalInfo.nationality);
+formData.append("martialstatus", personalInfo.maritalStatus );
+formData.append("numberofchildren", personalInfo.numberOfChildren);
+formData.append("religion", personalInfo.religion );
 formData.append("weight", personalInfo.weight + " kg");
 formData.append("height", personalInfo.height + " cm");
-formData.append("educationattainment", personalInfo.educationAttainment + " degree");
-formData.append("postappliedfor", personalInfo.postAppliedFor + " positionDetails");
-formData.append("contractperiod", personalInfo.contractPeriod + " duration");
-formData.append("arabicdegree", personalInfo.arabicDegree + " level");
-formData.append("englishdegree", personalInfo.englishDegree + " level");
-formData.append("ownphonenum", personalInfo.ownPhoneNumber + " own");
-formData.append("contactphonenum", personalInfo.contactPhoneNumber + " contact");
-formData.append("dateofbirth", personalInfo.dateofbirth + " dobInfo");
-formData.append("age", personalInfo.age + " years");
-formData.append("dateofissue", personalInfo.dateofissue + " issueDate");
-formData.append("expireddate", personalInfo.expireddate + " expiryInfo");
-formData.append("country", personalInfo.country + " countryDetails");
-formData.append("position", personalInfo.position + " jobTitle");
-formData.append("period", personalInfo.period + " timeFrame");
+formData.append("educationattainment", personalInfo.educationAttainment);
+formData.append("postappliedfor", personalInfo.postAppliedFor );
+formData.append("contractperiod", personalInfo.contractPeriod);
+formData.append("arabicdegree", personalInfo.arabicDegree );
+formData.append("englishdegree", personalInfo.englishDegree );
+formData.append("ownphonenum", personalInfo.ownPhoneNumber);
+formData.append("contactphonenum", personalInfo.contactPhoneNumber);
+formData.append("dateofbirth", personalInfo.dateofbirth);
+formData.append("age", personalInfo.age );
+formData.append("dateofissue", personalInfo.dateofissue);
+formData.append("expireddate", personalInfo.expireddate );
+formData.append("country", personalInfo.country );
+formData.append("position", personalInfo.position);
+formData.append("period", personalInfo.period);
 formData.append("babysitting", expcheck.exp1 ? "true" : "false");
 formData.append("cleaning", expcheck.exp2 ? "true" : "false");
 formData.append("washing", expcheck.exp3 ? "true" : "false"); 
 formData.append("cooking", expcheck.exp4 ? "true" : "false");
 formData.append("eldercare", expcheck.exp5 ? "true" : "false");
-formData.append("monthlysalarySaudi", salaries.saudi + " SAR");
-formData.append("monthlysalaryJordan", salaries.jordan + " JOD");
+formData.append("monthlysalarySaudi", salaries.saudi );
+formData.append("monthlysalaryJordan", salaries.jordan );
 formData.append("experience", JSON.stringify(projectInfo.project))
         const result = await axios.post(
             "http://localhost:4000/tupload-image",
@@ -1178,6 +1228,15 @@ formData.append("experience", JSON.stringify(projectInfo.project))
           }
     };
 
+
+    const onInputChangeforVideo = (e) => {
+        const file = e.target.files[0];
+        setVideo(e.target.files[0]);
+        if (file) {
+            setvideoPreview(URL.createObjectURL(file));
+          
+          }
+    };
     const recognizeMRZ = (file) => {
         Tesseract.recognize(
             file,
@@ -1283,7 +1342,7 @@ setDob(formattedDate);
 //    setDob( `${birthDate.substring(0, 2)} >= 24 ? 19${birthDate.substring(0, 2)}-${birthDate.substring(2, 4)}-${birthDate.substring(4, 6)} : 20${birthDate.substring(0, 2)}-${birthDate.substring(2, 4)}-${birthDate.substring(4, 6)}`)
     
 //    setDateOfExpiry(formattedDateOfExpiry)
-   setDateOfIssue(`20${dateOfExpiry.substring(0, 2) - 5}-${dateOfExpiry.substring(2, 4)}-${dateOfExpiry.substring(4, 6)}`)
+   setDateOfExpiry(`20${dateOfExpiry.substring(0, 2)}-${dateOfExpiry.substring(2, 4)}-${dateOfExpiry.substring(4, 6)}`)
 
 
 
@@ -1573,6 +1632,10 @@ setDob(formattedDate);
 
     return (
         <div onPaste={handlePaste} className="" >
+            
+            <Header /> 
+            
+             
        <div className="cv-builder-container">
     <h2 className="text-center mt-2 title">N-Tech agent</h2>
     <Dialog open={showModal} onClose={cancelSubmission}>
@@ -1821,6 +1884,36 @@ setDob(formattedDate);
                 />
                 <label>
                     <span>Passport Image <span style={{ color: 'red' }}>*</span></span>
+                    {/* <button type="button" onClick={() => fileInputRef.current.click()}>Choose File</button> */}
+                </label>
+               
+            
+        </div>
+
+
+        <div className="image-upload">
+           
+                <div className="image-preview">
+                    <img
+                        className="input-personal-image"
+                        alt="Personal"
+                        src={
+                            videoPreview !== null
+                                ? VidoUploaded
+                                : imagePlaceholder
+                        }
+                        onClick={() => videofileInputRef.current.click()}
+                    />
+                </div>
+                <input
+                    type="file"
+                    accept="video/*"
+                    onChange={onInputChangeforVideo}
+                    style={{ display: "none" }}
+                    ref={videofileInputRef}
+                />
+                <label>
+                    <span>Applicant Video (optional)<span style={{ color: 'red' }}></span></span>
                     {/* <button type="button" onClick={() => fileInputRef.current.click()}>Choose File</button> */}
                 </label>
                

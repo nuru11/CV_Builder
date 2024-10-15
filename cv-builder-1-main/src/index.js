@@ -78,13 +78,15 @@ import App from './App';
 import List from "./screens/list";
 import ListDetail from "./screens/listDetail";
 import Footer from "./screens/footer";
-import Header from "./screens/header"; // Import the Header
+// import Header from "./screens/header"; // Import the Header
 import Home from "./screens/home";
 import UploadPdf from "./screens/uploadpdf";
 import ImageUploader from './screens/imageUploader';
 import TestpdfGen from "./screens/testpdfGen";
 import InputDesigntest from "./screens/inputsDesigntest";
 import TestpdfDesign from "./screens/testPdfdesign"
+import Setting from "./screens/setting"
+import Testpage from "./screens/test"
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AgeCal from "./screens/ageCal"
 
@@ -134,6 +136,17 @@ const router = createBrowserRouter([
   {
     path: '/pdf',
     element: <TestpdfDesign />,
+    errorElement: <div>404 Not Found</div>
+  },
+
+  {
+    path: '/setting',
+    element: <Setting />,
+    errorElement: <div>404 Not Found</div>
+  },
+  {
+    path: '/test',
+    element: <Testpage />,
     errorElement: <div>404 Not Found</div>
   },
 ]);
