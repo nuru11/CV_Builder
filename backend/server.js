@@ -452,14 +452,14 @@ const TestMulstorage = multer.diskStorage({
 
 const testMulupload = multer({ storage: TestMulstorage });
 
-app.post("/tupload-image", testMulupload.fields([{ name: 'personalimage' }, { name: 'fullbodyimage' }, { name: 'passportimage' }]), async (req, res) => {
+app.post("/tupload-image", testMulupload.fields([{ name: 'personalimage' }, { name: 'fullbodyimage' }, { name: 'passportimage' }, { name: 'video' }]), async (req, res) => {
 
 
   let experience;
   if (req.body.experience) {
     experience = JSON.parse(req.body.experience);
   } else {
-    experience = [];
+    experience = []; 
   }
 
 
@@ -468,6 +468,7 @@ app.post("/tupload-image", testMulupload.fields([{ name: 'personalimage' }, { na
       personalimage: req.files['personalimage'] ? req.files['personalimage'][0].filename : null,
       fullbodyimage: req.files['fullbodyimage'] ? req.files['fullbodyimage'][0].filename : null,
       passportimage: req.files['passportimage'] ? req.files['passportimage'][0].filename : null,
+      video: req.files['video'] ? req.files['video'][0].filename : null,
       name: req.body.name,
       surname: req.body.surname,
       placeofbirth: req.body.placeofbirth,
@@ -573,3 +574,14 @@ app.get("/tget-images/:id", async (req, res) => {
     res.status(500).json({ status: "error", message: error.message });
   }
 });
+
+
+
+
+////////////////////////////////////////////
+
+
+const authRoutes = require('./Route/auth');
+app.use('/api/auth', authRoutes);
+  
+ 

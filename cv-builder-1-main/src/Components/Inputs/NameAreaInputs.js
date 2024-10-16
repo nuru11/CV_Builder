@@ -33,6 +33,7 @@ class NameArea extends Component {
                 </style>
                 {/* <h3>Personal Information</h3> */}
                 <div className="grid-container">
+                <h3 style={{marginBottom: 20}}>Personal Information</h3>
                     <div className="grid-3-col">
                         <div className="input-container">
                             
@@ -59,11 +60,11 @@ class NameArea extends Component {
                             
                         </div>
                         
-                        <div className="input-container">
+                        {/* <div className="input-container">
                         <span className="required"><span style={{color: "black", fontWeight: "normal"}}>Nationality</span>*</span>
                             <Inputs className="input-spacing" placeholder='nationality' TextVal={this.props.info.nationality} callback={this.props.callback} idVal={'personalInfo-nationality-input'} />
                             
-                        </div>
+                        </div> */}
                         
                         <div className="input-container">
                         {/* <span className="required">*</span> */}
@@ -136,11 +137,11 @@ class NameArea extends Component {
                            
                         </div>
                         
-                        <div className="input-container">
+                        {/* <div className="input-container">
                         <span className="not-required">Contract Period</span>
                             <Inputs className="input-spacing" type="number" placeholder='contract Period' TextVal={this.props.info.contractPeriod} callback={this.props.callback} idVal={'personalInfo-contractPeriod-input'} />
                             
-                        </div>
+                        </div> */}
 
                         
                         
@@ -247,12 +248,12 @@ class NameArea extends Component {
                         </div>
 
 
-                        <div className="input-container">
+                        {/* <div className="input-container"> */}
                         {/* <span className="required">*</span> */}
-                        <span className="not-required">Visa Number</span>
+                        {/* <span className="not-required">Visa Number</span>
                             <Inputs className="input-spacing" placeholder='Visa Number' TextVal={this.props.info.visaNo} callback={this.props.callback} idVal={'personalInfo-visaNo-input'} />
                             
-                        </div>
+                        </div> */}
 
                         <div className="input-container">
                         {/* <span className="required">*</span> */}

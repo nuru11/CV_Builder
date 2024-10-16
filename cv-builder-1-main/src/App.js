@@ -385,6 +385,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 import NameArea from "./Components/Inputs/NameAreaInputs";
+import SponsorInformation from "./Components/Inputs/sponsorinformation";
 import PersonalInfo from "./Components/Outputs/PersonalInfo";
 import EducationInputs from "./Components/Inputs/EducationInputs";
 import EducationInfo from "./Components/Outputs/educationInfo";
@@ -439,6 +440,7 @@ const App = () => {
 
 
     const [personalInfo, setPersonalInfo] = useState({ name: '', email: '', phone: '', about: '', surname: "", placeOfBirth: "", passportNo: "",passportIssuePlace: "", nationality: "ETHIOPIA", maritalStatus: "Marital Status", numberOfChildren: "", religion: "Religion", weight: "", height: "", educationAttainment: "", postAppliedFor: "", contractPeriod: "2", arabicDegree: "", englishDegree: "", ownPhoneNumber: "", contactPhoneNumber: "", monthlysalarySaudi: "", monthlysalaryJordan: "", idno: "", sex: "", visaNo: "", passportType: "Normal"});
+    const [sponsorInformation, setSponsorInfo] = useState({visaNo: "", sponsorId: "", sponsorAdress: "", nationalId: "", email: "", sponsorName: "", sponsorPhone: "", agent: "", sponsorArabic: '', visaType: "", fileNo: "", wakala: "", signedUp: "", biometricId: "", contract: "", stickerVisa: "", currentNationality: "", laborId: ""});
     const [educationInfo, setEducationInfo] = useState({ institute: [{ school: '', from: '', to: '', grade: '', areaStudy: '', overview: '' }] });
     const [careerInfo, setCareerInfo] = useState({ career: [{ title: '', company: '', from: '', to: '', overview: '' }] });
     const [projectInfo, setProjectInfo] = useState({ project: [{ name: '', link: '', overview: '' }] });
@@ -1565,6 +1567,9 @@ setDob(formattedDate);
         }
 
         switch (targetStateArea) {
+            case 'sponsorInformation': 
+               setSponsorInfo(currState);
+                break;
             case 'personalInfo':
                 setPersonalInfo(currState);
                 break;
@@ -1604,6 +1609,9 @@ setDob(formattedDate);
         currState[targetStateField] = count;
 
         switch (targetStateArea) {
+            case 'sponsorInformation': 
+               setSponsorInfo(currState);
+                break;
             case 'personalInfo': 
                 setPersonalInfo(currState);
                 break;
@@ -1929,8 +1937,11 @@ setDob(formattedDate);
       </form> */}
 
     {/* Input Sections */}
+
+   
     
     <NameArea callback={updateText} validationErrors={validationErrors} info={personalInfo} newField={addRecord} />
+    <SponsorInformation callback={updateText} validationErrors={validationErrors} info={sponsorInformation} newField={addRecord}   />
     <Container maxWidth="xs">
     <Grid container spacing={2} alignItems="center">
           <Grid item xs={6}>

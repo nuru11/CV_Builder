@@ -69,6 +69,116 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
+// import React from 'react';
+// import ReactDOM from 'react-dom/client';
+// import './styles/helper.css';
+// import './styles/index.css';
+// import './styles/mediaQueries.css';
+// import App from './App';
+// import List from "./screens/list";
+// import ListDetail from "./screens/listDetail";
+// import Footer from "./screens/footer";
+// // import Header from "./screens/header"; // Import the Header
+// import Home from "./screens/home";
+// import UploadPdf from "./screens/uploadpdf";
+// import ImageUploader from './screens/imageUploader';
+// import TestpdfGen from "./screens/testpdfGen";
+// import InputDesigntest from "./screens/inputsDesigntest";
+// import TestpdfDesign from "./screens/testPdfdesign"
+// import Setting from "./screens/setting"
+// import Testpage from "./screens/test"
+// import SignUp from "./screens/auth/signup"
+// import Login from "./screens/auth/login"
+// import { createBrowserRouter, RouterProvider } from "react-router-dom";
+// import AgeCal from "./screens/ageCal"
+
+// const router = createBrowserRouter([
+//   {
+//     path: '/',
+//     element: <Home />,
+//     errorElement: <div>404 Not Found</div>
+//   },
+//   {
+//     path: "/a",
+//     element: <App />,
+//     errorElement: <div>404 Not Found</div>
+//   },
+//   {
+//     path: "/list",
+//     element: <List />,
+//     errorElement: <div>404 Not Found</div>
+//   },
+//   {
+//     path: "/list/:listid",
+//     element: <ListDetail />
+//   },
+//   {
+//     path: "/uploadpdf",
+//     element: <UploadPdf />
+//   },
+//   {
+//     path: "/imageuploader",
+//     element: <ImageUploader />
+//   },
+//   {
+//     path: '/testpdfgen',
+//     element: <TestpdfGen />,
+//     errorElement: <div>404 Not Found</div>
+//   },
+//   {
+//     path: '/inputdesign',
+//     element: <InputDesigntest />,
+//     errorElement: <div>404 Not Found</div>
+//   },
+//   {
+//     path: '/age',
+//     element: <AgeCal />,
+//     errorElement: <div>404 Not Found</div>
+//   },
+//   {
+//     path: '/pdf',
+//     element: <TestpdfDesign />,
+//     errorElement: <div>404 Not Found</div>
+//   },
+
+//   {
+//     path: '/setting',
+//     element: <Setting />,
+//     errorElement: <div>404 Not Found</div>
+//   },
+//   {
+//     path: '/test',
+//     element: <Testpage />,
+//     errorElement: <div>404 Not Found</div>
+//   },
+
+//   {
+//     path: '/signup',
+//     element: <SignUp />,
+//     errorElement: <div>404 Not Found</div>
+//   },
+//   {
+//     path: '/Login',
+//     element: <Login />,
+//     errorElement: <div>404 Not Found</div>
+//   },
+// ]);
+
+// const root = ReactDOM.createRoot(document.getElementById('root'));
+// root.render(
+//   <React.StrictMode>
+//     {/* <Header />  */}
+//     <RouterProvider router={router} />
+//     <Footer /> {/* Render the Footer */}
+//   </React.StrictMode>
+// );
+
+
+
+/////////////////////////////////////////////////////////////
+
+
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/helper.css';
@@ -78,75 +188,86 @@ import App from './App';
 import List from "./screens/list";
 import ListDetail from "./screens/listDetail";
 import Footer from "./screens/footer";
-// import Header from "./screens/header"; // Import the Header
 import Home from "./screens/home";
 import UploadPdf from "./screens/uploadpdf";
 import ImageUploader from './screens/imageUploader';
 import TestpdfGen from "./screens/testpdfGen";
 import InputDesigntest from "./screens/inputsDesigntest";
-import TestpdfDesign from "./screens/testPdfdesign"
-import Setting from "./screens/setting"
-import Testpage from "./screens/test"
+import TestpdfDesign from "./screens/testPdfdesign";
+import Setting from "./screens/setting";
+import Testpage from "./screens/test";
+import SignUp from "./screens/auth/signup";
+import Login from "./screens/auth/login";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AgeCal from "./screens/ageCal"
+import AgeCal from "./screens/ageCal";
+import ProtectedRoute from './screens/auth/ProtectedRoute'; // Import the ProtectedRoute
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
+    element: <ProtectedRoute element={<Home />} />,
     errorElement: <div>404 Not Found</div>
   },
   {
     path: "/a",
-    element: <App />,
+    element: <ProtectedRoute element={<App />} />,
     errorElement: <div>404 Not Found</div>
   },
   {
     path: "/list",
-    element: <List />,
+    element: <ProtectedRoute element={<List />} />, // Protect this route
     errorElement: <div>404 Not Found</div>
   },
   {
     path: "/list/:listid",
-    element: <ListDetail />
+    element: <ListDetail />// Protect this route
   },
   {
     path: "/uploadpdf",
-    element: <UploadPdf />
+    element: <ProtectedRoute element={<UploadPdf />} /> // Protect this route
   },
   {
     path: "/imageuploader",
-    element: <ImageUploader />
+    element: <ProtectedRoute element={<ImageUploader />} /> // Protect this route
   },
   {
     path: '/testpdfgen',
-    element: <TestpdfGen />,
+    element: <ProtectedRoute element={<TestpdfGen />} />,
     errorElement: <div>404 Not Found</div>
   },
   {
     path: '/inputdesign',
-    element: <InputDesigntest />,
+    element: <ProtectedRoute element={<InputDesigntest />} />,
     errorElement: <div>404 Not Found</div>
   },
   {
     path: '/age',
-    element: <AgeCal />,
+    element: <ProtectedRoute element={<AgeCal />} />,
     errorElement: <div>404 Not Found</div>
   },
   {
     path: '/pdf',
-    element: <TestpdfDesign />,
+    element: <ProtectedRoute element={<TestpdfDesign />} />,
     errorElement: <div>404 Not Found</div>
   },
-
   {
     path: '/setting',
-    element: <Setting />,
+    element: <ProtectedRoute element={<Setting />} />,
     errorElement: <div>404 Not Found</div>
   },
   {
     path: '/test',
-    element: <Testpage />,
+    element: <ProtectedRoute element={<Testpage />} />,
+    errorElement: <div>404 Not Found</div>
+  },
+  {
+    path: '/signup',
+    element: <SignUp />,
+    errorElement: <div>404 Not Found</div>
+  },
+  {
+    path: '/login',
+    element: <Login />,
     errorElement: <div>404 Not Found</div>
   },
 ]);
@@ -154,7 +275,6 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <Header />  */}
     <RouterProvider router={router} />
     <Footer /> {/* Render the Footer */}
   </React.StrictMode>

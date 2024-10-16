@@ -11,6 +11,7 @@ const TestApplicantimgScehma = new mongoose.Schema(
    personalimage:String,
    fullbodyimage: String,
    passportimage: String,
+   video: String,
    name: String,  
     surname: String,
     placeofbirth: String,

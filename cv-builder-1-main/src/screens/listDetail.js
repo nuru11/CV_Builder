@@ -104,6 +104,249 @@
 
 /////////////////
 
+// import React, { useEffect, useState } from 'react';
+// import { useParams } from 'react-router-dom';
+// import {
+//   Container,
+//   Typography,
+//   Grid,
+//   Card,
+//   CardMedia,
+//   CardContent,
+//   CircularProgress,
+//   Alert,
+//   Button,
+// } from '@mui/material';
+// import ShareIcon from '@mui/icons-material/Share';
+// import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+// import TelegramIcon from '@mui/icons-material/Telegram';
+// import imagePlaceholder from "../image_placeholder/download.png";
+// import Header from "../screens/header";
+// import video from "../video/video.mp4";
+// import ReactPlayer from "react-player";
+// import thumbnail from "../image_placeholder/skywayimg.jpeg"
+
+// const DetailPage = () => {
+//   const id = useParams();
+//   const [data, setData] = useState(null);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         const response = await fetch(`http://localhost:4000/tget-images/${id.listid}`);
+//         const result = await response.json();
+//         if (result.status === 'ok') {
+//           setData(result.data);
+//         } else {
+//           console.error('Error fetching data:', result.message);
+//         }
+//       } catch (error) {
+//         console.error('Fetch error:', error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, [id]);
+
+//   if (loading) return <CircularProgress />;
+//   if (!data) return <Alert severity="error">No data found</Alert>;
+
+//   const handleDownload = () => {
+//     console.log("Download clicked");
+//   };
+
+//   const handleCopyLink = () => {
+//     navigator.clipboard.writeText(window.location.href);
+//     alert("Link copied to clipboard!");
+//   };
+
+//   const handleSend = () => {
+//     console.log("Send clicked");
+//   };
+
+//   const handleShareWhatsApp = () => {
+//     const url = encodeURIComponent(window.location.href);
+//     const message = encodeURIComponent(`Check out this page: ${window.location.href}`);
+//     window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
+//   };
+
+//   const handleShareTelegram = () => {
+//     const url = encodeURIComponent(window.location.href);
+//     const message = encodeURIComponent(`Check out this page: ${window.location.href}`);
+//     window.open(`https://t.me/share/url?url=${url}&text=${message}`, '_blank');
+//   };
+
+//   return (
+//     <Container maxWidth={false} style={{ padding: '0 ' }}>
+//       <Header />
+
+//       <Container>
+//         <Typography variant="h4" gutterBottom>
+//           Details for <span style={{ color: "green" }}>{data.name} {data.surname}</span>
+//         </Typography>
+
+//         {/* Centering the video and adding top margin with thumbnail */}
+//     {data.video && <Container style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
+//       <ReactPlayer
+//         controls={true}
+//         url={require(`../applicantimagetest/${data.video}`)}
+//         light={thumbnail} // Add your thumbnail image here
+//       />
+//     </Container>}
+
+//         <Typography variant="h5" gutterBottom>
+//           Images
+//         </Typography>
+//         <Grid container spacing={2}>
+//           <Grid item xs={12} sm={4}>
+//             <Card>
+//               <CardMedia
+//                 component="img"
+//                 height="200"
+//                 image={data.personalimage ? require(`../applicantimagetest/${data.personalimage}`) : imagePlaceholder}
+//                 alt="Personal"
+//               />
+//               <CardContent>
+//                 <Typography variant="body2">Personal Image</Typography>
+//               </CardContent>
+//             </Card>
+//           </Grid>
+//           <Grid item xs={12} sm={4}>
+//             <Card>
+//               <CardMedia
+//                 component="img"
+//                 height="200"
+//                 image={data.fullbodyimage ? require(`../applicantimagetest/${data.fullbodyimage}`) : imagePlaceholder}
+//                 alt="Full Body"
+//               />
+//               <CardContent>
+//                 <Typography variant="body2">Full Body Image</Typography>
+//               </CardContent>
+//             </Card>
+//           </Grid>
+//           <Grid item xs={12} sm={4}>
+//             <Card>
+//               <CardMedia
+//                 component="img"
+//                 height="200"
+//                 image={data.passportimage ? require(`../applicantimagetest/${data.passportimage}`) : imagePlaceholder}
+//                 alt="Passport"
+//               />
+//               <CardContent>
+//                 <Typography variant="body2">Passport Image</Typography>
+//               </CardContent>
+//             </Card>
+//           </Grid>
+//         </Grid>
+
+//         <Typography variant="h5" gutterBottom style={{ marginTop: '20px' }}>
+//           Personal Information
+//         </Typography>
+//         <Grid container spacing={2}>
+//           {[
+//             { label: 'Name', value: data.name, htmlFor: "EFIRSTNAME" },
+//             { label: 'Surname', value: data.surname },
+//             { label: 'Place of Birth', value: data.placeofbirth },
+//             { label: 'Passport Number', value: data.passportnum },
+//             { label: 'Nationality', value: data.nationality },
+//             { label: 'Marital Status', value: data.martialstatus },
+//             { label: 'Number of Children', value: data.numberofchildren },
+//             { label: 'Religion', value: data.religion },
+//             { label: 'Weight', value: data.weight },
+//             { label: 'Height', value: data.height },
+//             { label: 'Education Attainment', value: data.educationattainment },
+//             { label: 'Position Applied For', value: data.postappliedfor },
+//             { label: 'Contract Period', value: data.contractperiod },
+//             { label: 'Arabic Degree', value: data.arabicdegree },
+//             { label: 'English Degree', value: data.englishdegree },
+//             { label: 'Own Phone Number', value: data.ownphonenum },
+//             { label: 'Contact Phone Number', value: data.contactphonenum },
+//             { label: 'Date of Birth', value: data.dateofbirth },
+//             { label: 'Age', value: data.age },
+//             { label: 'Date of Issue', value: data.dateofissue },
+//             { label: 'Expiration Date', value: data.expireddate },
+//             { label: 'Country', value: data.country },
+//             { label: 'Position', value: data.position },
+//             { label: 'Period', value: data.period },
+//             { label: 'Babysitting', value: data.babysitting ? 'Yes' : 'No' },
+//             { label: 'Cleaning', value: data.cleaning ? 'Yes' : 'No' },
+//             { label: 'Washing', value: data.washing ? 'Yes' : 'No' },
+//             { label: 'Cooking', value: data.cooking ? 'Yes' : 'No' },
+//             { label: 'Eldercare', value: data.eldercare ? 'Yes' : 'No' },
+//             { label: 'Monthly Salary (Saudi)', value: data.monthlysalarySaudi },
+//             { label: 'Monthly Salary (Jordan)', value: data.monthlysalaryJordan },
+//           ].map((item, index) => (
+//             <Grid item xs={12} md={6} key={index}>
+//               <Typography variant="body1">
+//                 <strong>{item.label}:</strong> {item.value}
+//               </Typography>
+//             </Grid>
+//           ))}
+
+//           <Grid item xs={12}>
+//             <Typography variant="h6">Experience:</Typography>
+//             {data.experience.map(exp => (
+//               <Typography key={exp.id} variant="body2">
+//                 {exp.name} - {exp.link} - {exp.overview} Years
+//               </Typography>
+//             ))}
+//           </Grid>
+//         </Grid>
+
+//         {/* Buttons at the bottom with margin */}
+//         <Grid container spacing={2} style={{ marginTop: '20px', marginBottom: '20px' }}>
+//           <Grid item>
+//             <Button variant="contained" color="primary" onClick={handleDownload}>
+//               Download
+//             </Button>
+//           </Grid>
+//           <Grid item>
+//             <Button variant="contained" color="secondary" onClick={handleCopyLink}>
+//               Copy Link
+//             </Button>
+//           </Grid>
+//           <Grid item>
+//             <Button variant="contained" color="default" onClick={handleSend}>
+//               Send
+//             </Button>
+//           </Grid>
+//           <Grid item>
+//             <Button
+//               variant="contained"
+//               color="success"
+//               startIcon={<WhatsAppIcon />}
+//               onClick={handleShareWhatsApp}
+//             >
+//               Share on WhatsApp
+//             </Button>
+//           </Grid>
+//           <Grid item>
+//             <Button
+//               variant="contained"
+//               color="info"
+//               startIcon={<TelegramIcon />}
+//               onClick={handleShareTelegram}
+//             >
+//               Share on Telegram
+//             </Button>
+//           </Grid>
+//         </Grid>
+
+//       </Container>
+//     </Container>
+//   );
+// };
+
+// export default DetailPage;
+
+
+
+
+///////////////////////
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
@@ -122,9 +365,8 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import imagePlaceholder from "../image_placeholder/download.png";
 import Header from "../screens/header";
-import video from "../video/video.mp4";
 import ReactPlayer from "react-player";
-import thumbnail from "../image_placeholder/skywayimg.jpeg"
+import thumbnail from "../image_placeholder/skywayimg.jpeg";
 
 const DetailPage = () => {
   const id = useParams();
@@ -189,13 +431,15 @@ const DetailPage = () => {
         </Typography>
 
         {/* Centering the video and adding top margin with thumbnail */}
-    {data.video && <Container style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
-      <ReactPlayer
-        controls={true}
-        url={require(`../applicantimagetest/${data.video}`)}
-        light={thumbnail} // Add your thumbnail image here
-      />
-    </Container>}
+        {data.video && (
+          <Container style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
+            <ReactPlayer
+              controls={true}
+              url={require(`../applicantimagetest/${data.video}`)}
+              light={thumbnail} // Add your thumbnail image here
+            />
+          </Container>
+        )}
 
         <Typography variant="h5" gutterBottom>
           Images
@@ -248,41 +492,43 @@ const DetailPage = () => {
         <Grid container spacing={2}>
           {[
             { label: 'Name', value: data.name, htmlFor: "EFIRSTNAME" },
-            { label: 'Surname', value: data.surname },
-            { label: 'Place of Birth', value: data.placeofbirth },
-            { label: 'Passport Number', value: data.passportnum },
-            { label: 'Nationality', value: data.nationality },
-            { label: 'Marital Status', value: data.martialstatus },
-            { label: 'Number of Children', value: data.numberofchildren },
-            { label: 'Religion', value: data.religion },
-            { label: 'Weight', value: data.weight },
-            { label: 'Height', value: data.height },
-            { label: 'Education Attainment', value: data.educationattainment },
-            { label: 'Position Applied For', value: data.postappliedfor },
-            { label: 'Contract Period', value: data.contractperiod },
-            { label: 'Arabic Degree', value: data.arabicdegree },
-            { label: 'English Degree', value: data.englishdegree },
-            { label: 'Own Phone Number', value: data.ownphonenum },
-            { label: 'Contact Phone Number', value: data.contactphonenum },
-            { label: 'Date of Birth', value: data.dateofbirth },
-            { label: 'Age', value: data.age },
-            { label: 'Date of Issue', value: data.dateofissue },
-            { label: 'Expiration Date', value: data.expireddate },
-            { label: 'Country', value: data.country },
-            { label: 'Position', value: data.position },
-            { label: 'Period', value: data.period },
-            { label: 'Babysitting', value: data.babysitting ? 'Yes' : 'No' },
-            { label: 'Cleaning', value: data.cleaning ? 'Yes' : 'No' },
-            { label: 'Washing', value: data.washing ? 'Yes' : 'No' },
-            { label: 'Cooking', value: data.cooking ? 'Yes' : 'No' },
-            { label: 'Eldercare', value: data.eldercare ? 'Yes' : 'No' },
-            { label: 'Monthly Salary (Saudi)', value: data.monthlysalarySaudi },
-            { label: 'Monthly Salary (Jordan)', value: data.monthlysalaryJordan },
+            { label: 'Surname', value: data.surname, htmlFor: "ESURNAME" },
+            { label: 'Place of Birth', value: data.placeofbirth, htmlFor: "EPLACEOFBIRTH" },
+            { label: 'Passport Number', value: data.passportnum, htmlFor: "EPASSPORTNUM" },
+            { label: 'Nationality', value: data.nationality, htmlFor: "ENATIONALITY" },
+            { label: 'Marital Status', value: data.martialstatus, htmlFor: "EMARTIALSTATUS" },
+            { label: 'Number of Children', value: data.numberofchildren, htmlFor: "ENUMBEROFCHILDREN" },
+            { label: 'Religion', value: data.religion, htmlFor: "ERELIGION" },
+            { label: 'Weight', value: data.weight, htmlFor: "EWEIGHT" },
+            { label: 'Height', value: data.height, htmlFor: "EHEIGHT" },
+            { label: 'Education Attainment', value: data.educationattainment, htmlFor: "EEDUCATION" },
+            { label: 'Position Applied For', value: data.postappliedfor, htmlFor: "EPOSITION" },
+            { label: 'Contract Period', value: data.contractperiod, htmlFor: "ECONTRACTPERIOD" },
+            { label: 'Arabic Degree', value: data.arabicdegree, htmlFor: "EARABICDEGREE" },
+            { label: 'English Degree', value: data.englishdegree, htmlFor: "EENGLISHDEGREE" },
+            { label: 'Own Phone Number', value: data.ownphonenum, htmlFor: "EOWNPHONENUM" },
+            { label: 'Contact Phone Number', value: data.contactphonenum, htmlFor: "ECONTACTPHONENUM" },
+            { label: 'Date of Birth', value: data.dateofbirth, htmlFor: "EDATEOFBIRTH" },
+            { label: 'Age', value: data.age, htmlFor: "EAGE" },
+            { label: 'Date of Issue', value: data.dateofissue, htmlFor: "EDATEOFISSUE" },
+            { label: 'Expiration Date', value: data.expireddate, htmlFor: "EEXPIRATIONDATE" },
+            { label: 'Country', value: data.country, htmlFor: "ECOUNTRY" },
+            { label: 'Position', value: data.position, htmlFor: "EPOSITION" },
+            { label: 'Period', value: data.period, htmlFor: "EPERIOD" },
+            { label: 'Babysitting', value: data.babysitting ? 'Yes' : 'No', htmlFor: "EBABYSITTING" },
+            { label: 'Cleaning', value: data.cleaning ? 'Yes' : 'No', htmlFor: "ECLEANING" },
+            { label: 'Washing', value: data.washing ? 'Yes' : 'No', htmlFor: "EWASHING" },
+            { label: 'Cooking', value: data.cooking ? 'Yes' : 'No', htmlFor: "ECOOKING" },
+            { label: 'Eldercare', value: data.eldercare ? 'Yes' : 'No', htmlFor: "EELDERCARE" },
+            { label: 'Monthly Salary (Saudi)', value: data.monthlysalarySaudi, htmlFor: "EMONTHLYSALARYSAUDI" },
+            { label: 'Monthly Salary (Jordan)', value: data.monthlysalaryJordan, htmlFor: "EMONTHLYSALARYJORDAN" },
           ].map((item, index) => (
             <Grid item xs={12} md={6} key={index}>
-              <Typography variant="body1">
-                <strong>{item.label}:</strong> {item.value}
-              </Typography>
+              <label htmlFor={item.htmlFor}>
+                <Typography variant="body1">
+                  <strong>{item.label}:</strong> {item.value}
+                </Typography>
+              </label>
             </Grid>
           ))}
 
