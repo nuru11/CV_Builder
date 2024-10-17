@@ -372,8 +372,19 @@ const DetailPage = () => {
   const id = useParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        setIsAdmin(payload.isAdmin || false); // Set admin status
+      } catch (error) {
+        console.error("Token decoding failed:", error);
+      }
+    }
+
     const fetchData = async () => {
       try {
         const response = await fetch(`http://localhost:4000/tget-images/${id.listid}`);
@@ -384,9 +395,9 @@ const DetailPage = () => {
           console.error('Error fetching data:', result.message);
         }
       } catch (error) {
-        console.error('Fetch error:', error);
+          console.error('Fetch error:', error);
       } finally {
-        setLoading(false);
+          setLoading(false);
       }
     };
 
@@ -543,7 +554,7 @@ const DetailPage = () => {
         </Grid>
 
         {/* Buttons at the bottom with margin */}
-        <Grid container spacing={2} style={{ marginTop: '20px', marginBottom: '20px' }}>
+        {isAdmin && <Grid container spacing={2} style={{ marginTop: '20px', marginBottom: '20px' }}>
           <Grid item>
             <Button variant="contained" color="primary" onClick={handleDownload}>
               Download
@@ -579,7 +590,18 @@ const DetailPage = () => {
               Share on Telegram
             </Button>
           </Grid>
-        </Grid>
+        </Grid>}
+
+        {!isAdmin && <Grid container spacing={2} style={{ marginTop: '20px', marginBottom: '20px' }}>
+
+          
+          <Grid item>
+            <Button variant="contained" color="primary" onClick={handleDownload}>
+              Download
+            </Button>
+          </Grid>
+         
+        </Grid>}
 
       </Container>
     </Container>

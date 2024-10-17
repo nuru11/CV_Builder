@@ -5,8 +5,9 @@ const router = express.Router();
 
 // Register
 router.post('/register', async (req, res) => {
-  const { username, password } = req.body;
-  const user = new User({ username, password });
+  const { username, password, isAdmin } = req.body;
+  console.log("nnnnnnnnnnnnnnnn", username, password, isAdmin)
+  const user = new User({ username, password, isAdmin: isAdmin || false, });
 
   console.log("llllllllllllllllllllll ", username)
   await user.save();
@@ -14,6 +15,17 @@ router.post('/register', async (req, res) => {
 });
 
 // Login 
+// router.post('/login', async (req, res) => {
+//   const { username, password } = req.body;
+//   const user = await User.findOne({ username });
+//   if (!user || !(await user.comparePassword(password))) {
+//     return res.status(401).send('Invalid credentials');
+//   }
+  
+//   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+//   res.json({ token });
+// });
+
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findOne({ username });
@@ -21,7 +33,16 @@ router.post('/login', async (req, res) => {
     return res.status(401).send('Invalid credentials');
   }
   
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  // Include isAdmin in the token payload
+  const token = jwt.sign(
+    { 
+      id: user._id, 
+      isAdmin: user.isAdmin // Add isAdmin here
+    }, 
+    process.env.JWT_SECRET, 
+    { expiresIn: '1h' }
+  );
+  
   res.json({ token });
 });
 

@@ -15,10 +15,11 @@ body {
  /* border: black 1px solid;  */
     width: 730px;
     height: 1.53in;
-    background-color: white;
+    /* background-color: rgb(224, 24, 24); */
     display: grid;
     grid-template-columns: 18% 82%;
     align-items: center; /* Center contents vertically */
+    padding: 0;
     /* background-color: green; */
 }
 
@@ -27,7 +28,8 @@ body {
     max-width: 5.95in;
     min-height: 1.59in; /* Maintain aspect ratio */
     max-height: 1.59in; /* Limit height to fit header */
-    
+    /* background-color: green; */
+    padding: 0
 }
 
 .personal-image {
@@ -39,13 +41,25 @@ body {
     /* background-color: blue; */
 }
 
+.wider-image-parent {
+    border: black 1px solid;
+    /* height: 1.53in; */
+    max-width: 100%;
+    max-width: 100%;
+    min-height: 1.59in; /* Maintain aspect ratio */
+    max-height: 1.59in; /* Limit height to fit header */
+    /* background-color: red; */
+}
+
 
 .wider-image {
     /* border: black 1px solid; */
+    border: black 1px solid;
     max-width: 100%; /* Take full width of the column */
     min-width: 100%;
-    min-height: 100%; /* Maintain aspect ratio */
-    max-height: 100%; /* Limit height to fit header */
+    min-height: 1.53in; 
+    max-height: 1.53in; 
+    /* background-color: black; */
 }
 
 .table-main-parent {

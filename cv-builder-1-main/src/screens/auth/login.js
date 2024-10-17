@@ -8,7 +8,7 @@ import {
   Alert,
   Box,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -18,11 +18,14 @@ const Login = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  
   const navigate = useNavigate(); // Initialize useNavigate
+  const location = useLocation(); // Get the current location
 
   useEffect(() => {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     setGeneratedCode(code);
+    console.log(`Generated code for testing: ${code}`);
   }, []);
 
   const handleSubmit = async (e) => {
@@ -30,6 +33,7 @@ const Login = () => {
     setError('');
     setSuccess('');
 
+    // Check if the verification code matches
     if (verificationCode !== generatedCode) {
       setError('Verification code is incorrect.');
       setOpenSnackbar(true);
@@ -47,16 +51,34 @@ const Login = () => {
         const data = await response.json();
         const token = data.token;
         localStorage.setItem('token', token);
+        console.log("Token:", token);
 
         // Set expiration time for 20 minutes
-        const expirationTime = new Date().getTime() + 20 * 60 * 1000; // 20 minutes in milliseconds
+        const expirationTime = new Date().getTime() + 20 * 60 * 1000;
         localStorage.setItem('tokenExpiration', expirationTime);
 
+        // Decode the token to check user role
+        if (token) {
+          try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const isAdmin = payload.isAdmin || false;
+            console.log("Payload:", payload.isAdmin);
+
+            // Redirect based on admin status
+            if (isAdmin) {
+              navigate('/admin-dashboard'); // Redirect to admin dashboard
+            } else {
+              // Redirect to the previous location or a default page
+              const from = location.state?.from || '/list';
+              navigate(from);
+            }
+          } catch (error) {
+            console.error("Token decoding failed:", error);
+          }
+        }
+        
         setSuccess('Login successful!');
         setOpenSnackbar(true);
-        
-        // Redirect to a protected route after successful login
-        navigate('/a'); // Change to your desired route
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'Login failed');

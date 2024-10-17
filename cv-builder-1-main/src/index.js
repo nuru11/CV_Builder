@@ -178,7 +178,6 @@
 /////////////////////////////////////////////////////////////
 
 
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/helper.css';
@@ -210,17 +209,17 @@ const router = createBrowserRouter([
   },
   {
     path: "/a",
-    element: <ProtectedRoute element={<App />} />,
+    element: <ProtectedRoute element={<App />} adminOnly={true} />,
     errorElement: <div>404 Not Found</div>
   },
   {
     path: "/list",
-    element: <ProtectedRoute element={<List />} />, // Protect this route
+    element: <ProtectedRoute element={<List />} adminOnly={true} />, // Protect this route
     errorElement: <div>404 Not Found</div>
   },
   {
     path: "/list/:listid",
-    element: <ListDetail />// Protect this route
+    element: <ProtectedRoute element={<ListDetail />} /> // Protect this route
   },
   {
     path: "/uploadpdf",
@@ -252,7 +251,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/setting',
-    element: <ProtectedRoute element={<Setting />} />,
+    element: <ProtectedRoute element={<Setting />} adminOnly={true} />,
     errorElement: <div>404 Not Found</div>
   },
   {
@@ -262,7 +261,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/signup',
-    element: <SignUp />,
+    element: <ProtectedRoute element={<SignUp />} adminOnly={true} />, // Protect signup for admin only
     errorElement: <div>404 Not Found</div>
   },
   {

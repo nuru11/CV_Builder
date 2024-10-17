@@ -2271,7 +2271,8 @@ src={applicantpersonalimagePreview !== null
 
 </div>
 
-                        <img src={hudud} alt="Wider" className="wider-image" />
+                      <div className="wider-image-parent">
+                      <img src={hudud} alt="Wider" className="wider-image" /></div>  
                     </div>
                     <div className="title-parent">
                         <div style={{display: "flex", justifyContent: "space-around", border: "none"}}><div style={{ border: "none"}}>Personal Information</div>  <div style={{ border: "none"}}> ممعلومات شخصية </div></div>
@@ -2504,7 +2505,12 @@ src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last
 ) : (
 <div>No images uploaded yet.</div> // Message if no images are uploaded
 )}
-                        <img src={goldagent} alt="Wider" className="wider-image" />
+                        <div className="wider-image-parent">
+                            <img src={goldagent} alt="Wider" className="wider-image" />  
+                        </div>
+
+
+
                     </div>
                     <div className="title-parent">
                         <div style={{display: "flex", justifyContent: "space-around", border: "none"}}><div style={{ border: "none"}}>Personal Information</div>  <div style={{ border: "none"}}> ممعلومات شخصية </div></div>
@@ -2701,7 +2707,10 @@ src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last
 ) : (
 <div>No images uploaded yet.</div> // Message if no images are uploaded
 )}
-                        <img src={skywayimg} alt="Wider" className="wider-image" />
+
+
+                        <div className="wider-image-parent"><img src={skywayimg} alt="Wider" className="wider-image" />
+                        </div>
                     </div>
                     <div className="title-parent">
                         <div style={{display: "flex", justifyContent: "space-around", border: "none"}}><div style={{ border: "none"}}>Personal Information</div>  <div style={{ border: "none"}}> ممعلومات شخصية </div></div>
@@ -2899,7 +2908,10 @@ src={require(`./images/${allImage[allImage.length - 1].image}`)} // Get the last
 ) : (
 <div>No images uploaded yet.</div> // Message if no images are uploaded
 )}
-                        <img src={barakaimg} alt="Wider" className="wider-image" />
+<div className="wider-image-parent">
+<img src={barakaimg} alt="Wider" className="wider-image" />
+</div>
+                        
                     </div>
                     <div className="title-parent">
                         <div style={{display: "flex", justifyContent: "space-around", border: "none"}}><div style={{ border: "none"}}>Personal Information</div>  <div style={{ border: "none"}}> ممعلومات شخصية </div></div>

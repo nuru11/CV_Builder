@@ -1,7 +1,9 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
-const ProtectedRoute = ({ element }) => {
+const ProtectedRoute = ({ element, adminOnly }) => {
+  const location = useLocation(); // Get the current location
+
   const checkTokenExpiration = () => {
     const expirationTime = localStorage.getItem('tokenExpiration');
     if (expirationTime && new Date().getTime() > expirationTime) {
@@ -13,9 +15,21 @@ const ProtectedRoute = ({ element }) => {
   };
 
   const isAuthenticated = checkTokenExpiration();
-  const token = localStorage.getItem('token'); // Check if the user is authenticated
+  const token = localStorage.getItem('token'); // Get the token
+  let isAdmin = false;
 
-  return isAuthenticated && token ? element : <Navigate to="/login" />; // Redirect to login if not authenticated
+  if (token) {
+    // Decode the token to check if the user is an admin
+    const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
+    isAdmin = payload.isAdmin || false; // Check if user is admin
+  }
+
+  // Check for admin access
+  if (adminOnly && !isAdmin) {
+    return <Navigate to="/login" state={{ from: location.pathname }} />; // Redirect to login with state
+  }
+
+  return isAuthenticated && token ? element : <Navigate to="/login" state={{ from: location.pathname }} />; // Redirect to login with state
 };
 
 export default ProtectedRoute;
