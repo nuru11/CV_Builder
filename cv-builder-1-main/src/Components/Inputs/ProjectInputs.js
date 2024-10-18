@@ -20,10 +20,10 @@ class ProjectInputs extends Component {
                                         className="project-form-control"
                                     >
                                         <option value=""> Country</option>
-                                        <option value="KSA ">KSA</option>
-                                        <option value="jordan ">Jordan</option>
-                                        <option value="UAE ">UAE</option>
-                                        <option value="lebanon ">Lebanon</option>
+                                        <option value="KSA">KSA</option>
+                                        <option value="jordan">Jordan</option>
+                                        <option value="UAE">UAE</option>
+                                        <option value="lebanon">Lebanon</option>
                                         <option value="oman">Oman</option>
                                         <option value="qatar">Qatar</option>
                                         <option value="bahrain">Bahrain</option>

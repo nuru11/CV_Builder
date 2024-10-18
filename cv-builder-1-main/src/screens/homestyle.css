@@ -230,6 +230,7 @@ body {
     overflow: auto;
     height: 900px;
     /* background-color: red; */
+    /* background-color: red; */
     
 }
 
@@ -238,9 +239,11 @@ body {
     /* margin-top: 70px; */
     /* margin-left: 30px;
     margin-right: 30px; */
-  
-    overflow: auto;
-    /* background-color: blue; */
+    max-height: 600px;
+    max-width: 100%;
+
+    /* overflow: auto; */
+    background-color: blue;
 }
 
 

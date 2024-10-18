@@ -116,41 +116,41 @@ const TestpdfDesign = () => {
 
                         <div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px"}}>
                                       <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
-                                        <span style={{fontFamily: "serif",  fontSize: "15px",}}>Full Name</span>
+                                        <span style={{fontFamily: "serif",  fontSize: "12px",}}>Full Name</span>
                                         <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span>
                                         </div>
 
-                                        <div>كا </div>
+                                        <div>الاسم الكامل</div>
                         </div>
 
                         {/* 2th line */}
 
-                        <div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "7px"}}>
+                        <div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "1px", marginTop: "1px"}}>
                                       <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
-                                        <span style={{fontFamily: "serif",  fontSize: "15px",}}>Mother Name</span>
+                                        <span style={{fontFamily: "serif",  fontSize: "12px",}}>Mother Name</span>
                                         {/* <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
                                         </div>
 
-                                        <div>كا </div>
+                                        <div>الاسلام</div>
                         </div>
 
                     {/* 3th line */}
 
 
-                        <div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "7px"}}>
+                        <div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "1px", marginTop: "1px"}}>
 
 
                                       <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "47%"}}>
 
 
                                         
-                                            <span style={{fontFamily: "serif",  fontSize: "15px",}}>Date of Birth:</span>
-                                            <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}>02/11/1997</span>
+                                            <span style={{fontFamily: "serif",  fontSize: "12px",}}>Date of Birth:</span>
+                                            <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>02/11/1997</span>
                                            
 
 
                                             
-                                            <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>تاريخ الميلاد</span>
+                                            <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>تاريخ الميلاد</span>
                                       
 
 
@@ -160,14 +160,14 @@ const TestpdfDesign = () => {
 
 
            <div style={{display: "flex", justifyContent: "space-between", width: "58%",}}>                         
-<span style={{fontFamily: "serif",  fontSize: "15px"}}>Place of Birth : </span>
-<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}>CHORA</span>
+<span style={{fontFamily: "serif",  fontSize: "12px"}}>Place of Birth : </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>CHORA</span>
 </div>    
 
 
 
 
-<span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span>
+<span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>مكان الميلاد</span>
 
 
 
@@ -176,20 +176,20 @@ const TestpdfDesign = () => {
 
 {/* 4th line */}
 
-                        <div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "7px"}}>
+                        <div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "1px", marginTop: "1px"}}>
 
 
 <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "47%"}}>
 
 
   
-      <span style={{fontFamily: "serif",  fontSize: "15px",}}>Date of Birth:</span>
+      <span style={{fontFamily: "serif",  fontSize: "12px",}}>Date of Birth:</span>
      
      
 
 
       
-      <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>تاريخ الميلاد</span>
+      <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}> الجنسية السابقة      </span>
 
 
 
@@ -199,14 +199,15 @@ const TestpdfDesign = () => {
 
 
  <div  style={{display: "flex", justifyContent: "space-between", width: "58%",}}>
-<span style={{fontFamily: "serif",  fontSize: "15px",}}>Current Nationality : </span>
-<span style={{fontWeight:"bold",fontFamily: "serif",  fontSize: "15px",}}>Ethiopia</span>
+<span style={{fontFamily: "serif",  fontSize: "12px",}}>Current Nationality : </span>
+<span style={{fontWeight:"bold",fontFamily: "serif",  fontSize: "12px",}}>Ethiopia</span>
 </div>
 
 
 
 
-<span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span>
+<span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}> الجنسية الحالية
+</span>
 
 
 
@@ -216,20 +217,20 @@ const TestpdfDesign = () => {
 
 {/* 5th line */}
 
-<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "7px"}}>
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "1px", marginTop: "1px"}}>
 
 
 <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "47%"}}>
 
 
   
-      <span style={{fontFamily: "serif",  fontSize: "15px",}}>Date of Birth:</span>
-      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}>02/11/1997</span>
+      <span style={{fontFamily: "serif",  fontSize: "12px",}}>Date of Birth:</span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>02/11/1997</span>
      
 
 
       
-      <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>تاريخ الميلاد</span>
+      <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}> الجنس</span>
 
 
 
@@ -239,14 +240,15 @@ const TestpdfDesign = () => {
 
 
 <div  style={{display: "flex", justifyContent: "space-between", width: "58%",}}>                         
-<span style={{fontFamily: "serif",  fontSize: "15px", }}>Place of Birth : </span>
-<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}>CHORA</span>
+<span style={{fontFamily: "serif",  fontSize: "12px", }}>Place of Birth : </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>CHORA</span>
 </div>    
 
 
 
 
-<span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span>
+<span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}> الحالة الاجتماعية
+</span>
 
 
 
@@ -257,14 +259,14 @@ const TestpdfDesign = () => {
 {/* 6th line */}
 
 
-<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "7px"}}>
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "1px", marginTop: "1px"}}>
 
 
 <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "47%"}}>
 
 
   
-      <span style={{fontFamily: "serif",  fontSize: "15px",}}>Date of Birth:</span>
+      <span style={{fontFamily: "serif",  fontSize: "12px",}}>Date of Birth:</span>
       
 
 
@@ -274,14 +276,14 @@ const TestpdfDesign = () => {
 
 
 <div  style={{display: "flex", justifyContent: "space-between", width: "58%",}}>                         
-<span style={{fontFamily: "serif",  fontSize: "15px", marginRight: "7px"}}>Place of Birth : </span>
-<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}>CHORA</span>
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "7px"}}>Place of Birth : </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>CHORA</span>
 </div>    
 
 
 
 
-<span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span>
+<span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}> الديانة</span>
 
 
 
@@ -291,21 +293,21 @@ const TestpdfDesign = () => {
 
 {/* 7th line */}
 
-<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "7px"}}>
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "1px", marginTop: "1px"}}>
 
 
 <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "47%"}}>
 
 
   
-      <span style={{fontFamily: "serif",  fontSize: "15px",}}>Date of Birth:</span>
-      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}>02/11/1997</span>
+      <span style={{fontFamily: "serif",  fontSize: "12px",}}>Date of Birth:</span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>02/11/1997</span>
       
      
 
 
       
-      <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>تاريخ الميلاد</span>
+      <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}> المؤهل العلمي</span>
 
 
 
@@ -315,14 +317,14 @@ const TestpdfDesign = () => {
 
 
 <div style={{display: "flex", justifyContent: "space-between", width: "58%",}}>                         
-<span style={{fontFamily: "serif",  fontSize: "15px",}}>Place of Birth : </span>
-<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}>CHORA</span>
+<span style={{fontFamily: "serif",  fontSize: "12px",}}>Place of Birth : </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>CHORA</span>
 </div>    
 
 
 
 
-<span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span>
+<span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}> المهنة</span>
 
 
 
@@ -332,21 +334,21 @@ const TestpdfDesign = () => {
 {/* 8th line */}
 
 
-<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "7px"}}>
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black",paddingBottom: "1px", marginTop: "1px"}}>
                                       <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
-                                        <span style={{fontFamily: "serif",  fontSize: "15px",}}>Home address and telephone No. :</span>
+                                        <span style={{fontFamily: "serif",  fontSize: "12px",}}>Home address and telephone No. :</span>
                                         {/* <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
                                         </div>
 
-                                        <div>مكان الميلاد</div>
+                                        <div> عنوان السكن</div>
                         </div>
 
 
 {/* 9th line */}
 
-<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "7px"}}>
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "1px", marginTop: "1px"}}>
                                       <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
-                                        <span style={{fontFamily: "serif",  fontSize: "15px", fontWeight: "bold", marginLeft: "60px"}}>RIYADH</span>
+                                        <span style={{fontFamily: "serif",  fontSize: "12px", fontWeight: "bold", marginLeft: "60px"}}>RIYADH</span>
                                         {/* <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
                                         </div>
 
@@ -356,22 +358,23 @@ const TestpdfDesign = () => {
 {/* 10th line */}
 
 
-<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "7px"}}>
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "1px", marginTop: "1px"}}>
                                       <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
-                                        <span style={{fontFamily: "serif",  fontSize: "15px",}}>Home address and telephone No. :</span>
+                                        <span style={{fontFamily: "serif",  fontSize: "12px",}}>Home address and telephone No. :</span>
                                         {/* <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
                                         </div>
 
-                                        <div>مكان الميلاد</div>
+                                        <div> عنوان العمل ورقم الهاتف
+                                        </div>
                         </div>
 
 
 {/* 11th line */}
 
 
-<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "7px"}}>
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "1px"}}>
                                       <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
-                                        <span style={{fontFamily: "serif",  fontSize: "15px", fontWeight: "bold", marginLeft: "60px"}}>966500761032</span>
+                                        <span style={{fontFamily: "serif",  fontSize: "12px", fontWeight: "bold", marginLeft: "60px"}}>966500761032</span>
                                         {/* <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
                                         </div>
 
@@ -381,9 +384,9 @@ const TestpdfDesign = () => {
 {/* 12th line */}
 
 
-<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "7px"}}>
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black",paddingBottom: "5px", marginTop: "7px"}}>
                                       <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", }}>
-                                        <span style={{fontFamily: "serif",  fontSize: "15px",}}>Purpose Of Travel :</span>
+                                        <span style={{fontFamily: "serif",  fontSize: "12px",}}>Purpose Of Travel :</span>
                                         {/* <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
                                         </div>
 
@@ -408,22 +411,25 @@ const TestpdfDesign = () => {
 
 
 
-                                        <div>مكان الميلاد</div>
+                                        <div> الغرض
+                                        </div>
                         </div>
 
 
 {/* 13th line */}
 
 
-<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "2px"}}>
+<div style={{borderBottom: "2px solid black",}}>
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "2px"}}>
 
 
 <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", }}>
 
 
   
-      <span style={{fontFamily: "serif",  fontSize: "15px",}}>Date of Birth:</span>
-      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}>02/11/1997</span>
+      <span style={{fontFamily: "serif",  fontSize: "12px",marginRight: "5px"}}>Date of Birth:</span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>02/11/1997</span>
 
 
 
@@ -433,8 +439,9 @@ const TestpdfDesign = () => {
 
 
 <div style={{display: "flex", justifyContent: "space-between", }}>                         
-<span style={{fontFamily: "serif",  fontSize: "15px",}}>Place of Birth : </span>
-<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}>CHORA</span>
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>مكان الاصدار Date of issue: </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px", marginRight: "15px"}}>02/11/2023</span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px", }}>تاريخ الاصدار</span>
 </div>    
 
 
@@ -447,8 +454,8 @@ const TestpdfDesign = () => {
 
 
 <div style={{display: "flex", justifyContent: "space-between", }}>                         
-<span style={{fontFamily: "serif",  fontSize: "15px",}}>Place of Birth : </span>
-<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}>CHORA</span>
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>Passport No: </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>EP8394839</span>
 </div>    
 
 
@@ -463,8 +470,8 @@ const TestpdfDesign = () => {
 
 
 <div style={{display: "flex", justifyContent: "space-between", }}>                         
-<span style={{fontFamily: "serif",  fontSize: "15px",}}>Place of Birth : </span>
-<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}>CHORA</span>
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>رقم الجواز</span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>CHORA</span> */}
 </div>    
 
 
@@ -478,14 +485,752 @@ const TestpdfDesign = () => {
 
 </div>
 
+
+<div>
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "2px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", }}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "12px",marginRight: "5px"}}>Date of Birth:</span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>02/11/1997</span>
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}></span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}></span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "15px", marginRight: "5px"}}></span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}></span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}></span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>تاريخ الانتهاء</span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+
+</div>
+
+</div>
+
+
+</div>
 
 
 {/* 14th line */}
+
+
+
+<div style={{borderBottom: "2px solid black",}}>
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", flexDirection: "row-reverse" , borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "2px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", }}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "12px",marginRight: "5px"}}>تاريخ المغادرة      </span>
+      {/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}></span> */}
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>تاريخ الوصول</span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>CHORA</span> */}
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>مدة الإقامة بالمملكة</span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>CHORA</span> */}
+</div>    
+
+
+
+
+
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}></span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}></span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div>
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between",  borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "2px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", }}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "12px",marginRight: "5px"}}>Date of Birth:</span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>02/11/1997</span>
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>Place of Birth : </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>CHORA</span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>Place of Birth : </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>CHORA</span>
+</div>    
+
+
+
+
+
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}></span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}></span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+{/* 15th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "2px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", }}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "12px",marginRight: "5px"}}>Mode of Payment:</span>
+      {/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>02/11/1997</span> */}
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>طريقة الدفع Payment No: </span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>CHORA</span> */}
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>رقم الدفع Date: </span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>CHORA</span> */}
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+{/* <span style={{fontFamily: "serif",  fontSize: "15px", marginRight: "5px"}}>Place of Birth : </span> */}
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>تاريخ</span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+
+</div>
+
+{/* 16th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "1px", marginTop: "1px"}}>
+                                      <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "12px", fontWeight: "bold"}}>Relationship:</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div> </div>
+                        </div>
+
+
+
+
+
+
+{/* 17th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "2px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", }}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "12px",}}>Destination:</span>
+      {/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}>02/11/1997</span> */}
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", }}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "12px", }}>المكان المقصود Dealer Name: </span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>CHORA</span> */}
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+</div>
+
+
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", }}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+{/* <span style={{fontFamily: "serif",  fontSize: "15px", marginRight: "5px"}}>Place of Birth : </span> */}
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>اسم البائع</span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+
+</div>
+
+
+{/* 18th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", marginTop: "4px"}}>
+                                      <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "12px",}}>Dependents traveling in the same passport:</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div>  ايضاحات تخص أفراد العائلة المضافين على نفس جواز السفر    </div>
+                        </div>
+
+
+{/* 19th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", border: "1px solid black",  marginTop: "1px", height: "50px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", borderRight: "1px solid black", height: "100%", width: "35%"}}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "12px",marginRight: "5px"}}>صلة  </span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>Relationship</span>
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", borderRight: "1px solid black", height: "100%", width: "15%"}}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "12px",marginRight: "5px"}}>تاريخ الميلاد      </span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>Date of Birth</span>
+
+
+
+  </div>
+
+
+  <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", borderRight: "1px solid black", height: "100%", width: "30%"}}>
+
+
+  
+<span style={{fontFamily: "serif",  fontSize: "12px",marginRight: "5px"}}>الجنس</span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>Sex</span>
+
+
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "100%", width: "20%"}}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "12px",marginRight: "5px"}}>الاسم الكامل      </span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>Full Name</span>
+
+
+
+  </div>
+
+
+
+</div>
+
+
+{/* 20th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "1px solid black", marginTop: "4px"}}>
+                                      <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "12px",}}>Dependents traveling in the same passport:</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div style={{borderBottom: "1px solid black", marginBottom: "4px", width:"40%", display: "flex", justifyContent: "flex-end"}}> اسم وعنوان الشركه او اسم الشخص وعنوانه بالمملكة                                        </div>
+                        </div>
+
+
+
+{/* 21th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", marginTop: "1px", }}>
+                                      <div style={{fontFamily: "serif",  fontSize: "10px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "10px",}}>Dependents traveling in the same passport:</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div  style={{fontFamily: "serif",  fontSize: "10px",}}>       أقر انا الموقع أدناه بأن كل المعلومات التي دونتها صحيحة                                        </div>
+                        </div>
+
+
+{/* 22th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "8px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", marginTop: "-3px", }}>
+                                      <div style={{fontFamily: "serif",  fontSize: "8px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "10px",}}>Dependents traveling in the same passport:</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div  style={{fontFamily: "serif",  fontSize: "10px",}}>       وسأكون ملتزمآ يقوانين المملكة أثناء فترة وجودي بها                                        </div>
+                        </div>
+
+
+
+{/* 23th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "5px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "46%"}}>
+
+
+  <div>
+      <span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>Date of Birth:</span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>02/11/1997</span>
+      </div>
+     
+
+
+      <div style={{display: "flex", alignItems: "center"}}>
+    <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif"}}>Signature: </span>
+    <hr style={{borderBottom: "1px solid black", flexGrow: "1", marginTop: "13px",   width: "80px"}} />
+    <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif"}}>التوقيع</span>
+</div>
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "53%"}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>Name : </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>NIYASA GETANA AREDA</span>
+</div>    
+
+
+
+
+<span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}> الاسم الكامل</span>
+
+
+
+</div>
+</div>
+
+
+{/* 24th line */}
+
+
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "8px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", marginTop: "-3px", }}>
+                                      <div style={{fontFamily: "serif",  fontSize: "8px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "10px",}}>Dependents traveling in the same passport:</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div  style={{fontFamily: "serif",  fontSize: "10px",}}>     للاستخدام الرسمي فقط                                        </div>
+                        </div>
+
+
+
+
+{/* 25th line */}
+
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "5px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "46%"}}>
+
+
+  <div>
+      <span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>Date of Birth:</span>
+      {/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>02/11/1997</span> */}
+      </div>
+     
+
+
+      <div style={{display: "flex", alignItems: "center"}}>
+    <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif"}}>التاريخ    </span>
+    {/* <hr style={{borderBottom: "1px solid black", flexGrow: "1", marginTop: "13px",   width: "80px"}} />
+    <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif"}}>التوقيع</span> */}
+</div>
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "53%"}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>Name: </span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>NIYASA GETANA AREDA</span> */}
+</div>    
+
+
+
+
+<span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}> تفويض</span>
+
+
+
+</div>
+</div>
+
+
+
+{/* 26th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "8px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", marginTop: "-3px", }}>
+                                      <div style={{fontFamily: "serif",  fontSize: "8px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "10px",}}>Dependents traveling in the same passport:</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div  style={{fontFamily: "serif",  fontSize: "10px",}}>       زيادة او العمل من أجل                                        </div>
+                        </div>
+
+
+
+{/* 27th line */}
+
+
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "5px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "49.7%"}}>
+
+
+  <div>
+      <span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>Date of Birth:</span>
+      {/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>02/11/1997</span> */}
+      </div>
+     
+
+
+      <div style={{display: "flex", alignItems: "center"}}>
+    <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif"}}>نوع </span>
+    {/* <hr style={{borderBottom: "1px solid black", flexGrow: "1", marginTop: "13px",   width: "80px"}} />
+    <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif"}}>التوقيع</span> */}
+</div>
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", width: "49.7%"}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>Duration: </span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>NIYASA GETANA AREDA</span> */}
+</div>    
+
+
+
+
+<span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}> المدة الزمنية</span>
+
+
+
+</div>
+</div>
+
+
+{/* 28th line */}
+
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "8px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", marginTop: "-3px", }}>
+                                      <div style={{fontFamily: "serif",  fontSize: "8px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "10px",}}>رئيس القسم القنصلي</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div  style={{fontFamily: "serif",  fontSize: "10px",}}>      فحص بواسطة                                        </div>
+                        </div>
+
+
+
+
+{/* 29th line */}
+
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "8px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", marginTop: "-3px", }}>
+                                      <div style={{fontFamily: "serif",  fontSize: "8px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "10px",}}>Head of consular section</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "12px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div  style={{fontFamily: "serif",  fontSize: "10px",}}>     Checked by  </div>
+                        </div>
+
+
+
+{/* 30th line */}
+
+
+
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "12px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "2px",}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", }}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "12px",}}>Wednesday, October 2, 2024</span>
+      {/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}>02/11/1997</span> */}
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", }}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "12px", marginRight: "5px"}}>www.ntechagent.com | </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",  marginRight: "5px"}}> <span> </span> +251 911 454176 | <span> </span></span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>ntechagent@gmail.com</span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+</div>
+
+
+
+
+<div style={{fontFamily: "serif",  fontSize: "12px",  display: "flex", justifyContent: "space-between", }}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+{/* <span style={{fontFamily: "serif",  fontSize: "15px", marginRight: "5px"}}>Place of Birth : </span> */}
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "12px",}}>page 1 of 1</span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+
+</div>
+
+
+{/* 31th line */}
                     </div>
                 </div>
             </div>
+            
         </div>
     )
 }
+
+
 
 export default TestpdfDesign;

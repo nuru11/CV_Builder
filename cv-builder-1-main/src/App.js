@@ -2373,7 +2373,7 @@ src={applicantpersonalimagePreview !== null
 
                     <div className="experience-country-sec">
 <div>EXPERIANCE COUNTRY</div>
-<div>{projectInfo.project.map(i => i.name)} </div>
+<div>{projectInfo.project.map(i =>  <span style={{marginRight: "3px"}}>{i.name}, </span> )} </div>
 <div>خبرة البلد</div>
 </div>
 
@@ -2383,7 +2383,7 @@ src={applicantpersonalimagePreview !== null
 
 <div className="experience-country-sec">
 <div>WORKING YEARS</div>
-<div></div>
+<div>{projectInfo.project.map(i =>  <span style={{marginRight: "3px"}}>{i.overview}, </span> )}</div>
 <div>وعدد سنوات الخبرة</div>
 </div>
 
