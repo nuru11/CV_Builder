@@ -9,7 +9,7 @@ const pdfModel = require("./models/pdf.js");
 const multer = require("multer"); 
 const Grid = require("gridfs-stream");
 
-//importing schema            
+//importing schema              
 require("./models/imageuploader.js");  
 const Images = mongoose.model("ImageDetails"); 
 

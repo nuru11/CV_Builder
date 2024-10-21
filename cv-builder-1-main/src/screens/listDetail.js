@@ -385,6 +385,9 @@ const DetailPage = () => {
       }
     }
 
+
+   
+
     const fetchData = async () => {
       try {
         const response = await fetch(`http://localhost:4000/tget-images/${id.listid}`);
@@ -418,6 +421,18 @@ const DetailPage = () => {
 
   const handleSend = () => {
     console.log("Send clicked");
+  };
+
+  const handleInstall = () => {
+    const userAgent = navigator.userAgent;
+
+    if (userAgent.includes("Chrome")) {
+      window.open("https://chrome.google.com/webstore/detail/your-chrome-extension-id", "_blank");
+    } else if (userAgent.includes("Firefox")) {
+      window.open("https://addons.mozilla.org/en-US/firefox/addon/your-firefox-extension-id/", "_blank");
+    } else {
+      alert("This extension is only available for Chrome and Firefox.");
+    }
   };
 
   const handleShareWhatsApp = () => {
@@ -502,42 +517,59 @@ const DetailPage = () => {
         </Typography>
         <Grid container spacing={2}>
           {[
-            { label: 'Name', value: data.name, htmlFor: "EFIRSTNAME" },
-            { label: 'Surname', value: data.surname, htmlFor: "ESURNAME" },
-            { label: 'Place of Birth', value: data.placeofbirth, htmlFor: "EPLACEOFBIRTH" },
-            { label: 'Passport Number', value: data.passportnum, htmlFor: "EPASSPORTNUM" },
-            { label: 'Nationality', value: data.nationality, htmlFor: "ENATIONALITY" },
-            { label: 'Marital Status', value: data.martialstatus, htmlFor: "EMARTIALSTATUS" },
-            { label: 'Number of Children', value: data.numberofchildren, htmlFor: "ENUMBEROFCHILDREN" },
-            { label: 'Religion', value: data.religion, htmlFor: "ERELIGION" },
-            { label: 'Weight', value: data.weight, htmlFor: "EWEIGHT" },
-            { label: 'Height', value: data.height, htmlFor: "EHEIGHT" },
-            { label: 'Education Attainment', value: data.educationattainment, htmlFor: "EEDUCATION" },
-            { label: 'Position Applied For', value: data.postappliedfor, htmlFor: "EPOSITION" },
-            { label: 'Contract Period', value: data.contractperiod, htmlFor: "ECONTRACTPERIOD" },
-            { label: 'Arabic Degree', value: data.arabicdegree, htmlFor: "EARABICDEGREE" },
-            { label: 'English Degree', value: data.englishdegree, htmlFor: "EENGLISHDEGREE" },
-            { label: 'Own Phone Number', value: data.ownphonenum, htmlFor: "EOWNPHONENUM" },
-            { label: 'Contact Phone Number', value: data.contactphonenum, htmlFor: "ECONTACTPHONENUM" },
-            { label: 'Date of Birth', value: data.dateofbirth, htmlFor: "EDATEOFBIRTH" },
-            { label: 'Age', value: data.age, htmlFor: "EAGE" },
-            { label: 'Date of Issue', value: data.dateofissue, htmlFor: "EDATEOFISSUE" },
-            { label: 'Expiration Date', value: data.expireddate, htmlFor: "EEXPIRATIONDATE" },
-            { label: 'Country', value: data.country, htmlFor: "ECOUNTRY" },
-            { label: 'Position', value: data.position, htmlFor: "EPOSITION" },
-            { label: 'Period', value: data.period, htmlFor: "EPERIOD" },
-            { label: 'Babysitting', value: data.babysitting ? 'Yes' : 'No', htmlFor: "EBABYSITTING" },
-            { label: 'Cleaning', value: data.cleaning ? 'Yes' : 'No', htmlFor: "ECLEANING" },
-            { label: 'Washing', value: data.washing ? 'Yes' : 'No', htmlFor: "EWASHING" },
-            { label: 'Cooking', value: data.cooking ? 'Yes' : 'No', htmlFor: "ECOOKING" },
-            { label: 'Eldercare', value: data.eldercare ? 'Yes' : 'No', htmlFor: "EELDERCARE" },
-            { label: 'Monthly Salary (Saudi)', value: data.monthlysalarySaudi, htmlFor: "EMONTHLYSALARYSAUDI" },
-            { label: 'Monthly Salary (Jordan)', value: data.monthlysalaryJordan, htmlFor: "EMONTHLYSALARYJORDAN" },
+            { label: 'Name', value: data.name, htmlFor: "EFIRSTNAME", id: "EFIRSTNAME"   },
+            { label: 'Surname', value: data.surname, htmlFor: "ESURNAME", id: "EFAMILY" },
+            { label: 'Sex', value: "male", htmlFor: "Sex", id: "Sex" },
+            { label: 'Place of Birth', value: data.placeofbirth, htmlFor: "EPLACEOFBIRTH", id: "BIRTH_PLACE" },
+            { label: 'Passport Number', value: data.passportnum, htmlFor: "EPASSPORTNUM", id: "PASSPORTnumber" },
+            { label: 'Nationality', value: data.nationality, htmlFor: "ENATIONALITY", id: "NATIONALITY" },
+            { label: 'Marital Status', value: data.martialstatus, htmlFor: "EMARTIALSTATUS", id: "SOCIAL_STATUS" },
+            { label: 'Number of Children', value: data.numberofchildren, htmlFor: "ENUMBEROFCHILDREN", id: "ENUMBEROFCHILDREN" },
+            { label: 'Religion', value: /*data.religion*/ "Islam", htmlFor: "ERELIGION", id: "RELIGION" },
+            { label: 'Weight', value: data.weight, htmlFor: "EWEIGHT", id: "EWEIGHT"  },
+            { label: 'Height', value: data.height, htmlFor: "EHEIGHT", id: "EHEIGHT" },
+            { label: 'Education Attainment', value: data.educationattainment, htmlFor: "EEDUCATION", id: "DEGREE" },
+            { label: 'Position Applied For', value: data.postappliedfor, htmlFor: "EPOSITION", id: "EPOSITION" },
+            { label: 'Contract Period', value: data.contractperiod, htmlFor: "ECONTRACTPERIOD", id: "ECONTRACTPERIOD" },
+            { label: 'Arabic Degree', value: data.arabicdegree, htmlFor: "EARABICDEGREE", id: "EARABICDEGREE" },
+            { label: 'English Degree', value: data.englishdegree, htmlFor: "EENGLISHDEGREE", id: "EENGLISHDEGREE" },
+            { label: 'Own Phone Number', value: data.ownphonenum, htmlFor: "EOWNPHONENUM", id: "EOWNPHONENUM" },
+            { label: 'Contact Phone Number', value: data.contactphonenum, htmlFor: "ECONTACTPHONENUM", id: "ECONTACTPHONENUM" },
+            { label: 'Date of Birth', value: data.dateofbirth, htmlFor: "BIRTH_DATE", id: "BIRTH_DATE" },
+            { label: 'Age', value: data.age, htmlFor: "EAGE", id: "EAGE" },
+            { label: 'Date of Issue', value: data.dateofissue, htmlFor: "EDATEOFISSUE", id: "PASSPORT_ISSUE_DATE" },
+            { label: 'Expiration Date', value: data.expireddate, htmlFor: "PASSPORT_EXPIRY_DATe", id: "PASSPORT_EXPIRY_DATe" },
+            { label: 'Country', value: data.country, htmlFor: "ECOUNTRY", id: "ECOUNTRY" },
+            { label: 'Position', value: data.position, htmlFor: "EPOSITION", id: "EPOSITION" },
+            { label: 'Period', value: data.period, htmlFor: "EPERIOD", id: "EPERIOD" },
+            { label: 'Babysitting', value: data.babysitting ? 'Yes' : 'No', htmlFor: "EBABYSITTING", id: "EBABYSITTING" },
+            { label: 'Cleaning', value: data.cleaning ? 'Yes' : 'No', htmlFor: "ECLEANING", id: "ECLEANING" },
+            { label: 'Washing', value: data.washing ? 'Yes' : 'No', htmlFor: "EWASHING", id: "EWASHING" },
+            { label: 'Cooking', value: data.cooking ? 'Yes' : 'No', htmlFor: "ECOOKING", id: "ECOOKING" },
+            { label: 'Eldercare', value: data.eldercare ? 'Yes' : 'No', htmlFor: "EELDERCARE", id: "EELDERCARE" },
+            { label: 'Monthly Salary (Saudi)', value: data.monthlysalarySaudi, htmlFor: "EMONTHLYSALARYSAUDI", id: "EMONTHLYSALARYSAUDI" },
+            { label: 'Monthly Salary (Jordan)', value: data.monthlysalaryJordan, htmlFor: "EMONTHLYSALARYJORDAN", id: "EMONTHLYSALARYJORDAN" },
+            { label: 'visa Type', value: "Work", id: "VisaKind" },
+            { label: 'Address', value: "4086,32273 الدمام, طيبة انس بن سالم", id: "ADDRESS_HOME" },
+            { label: 'Sponsor Address', value: "4086,32273 الدمام, طيبة انس بن سالم", id: "SPONSER_ADDRESS" },
+            { label: 'Sponsor Address', value: "MATAR ALZHRANI", id: "SPONSER_NAME" },
+            { label: 'Passport Type', value: "Normal", id: "PASSPORType" },
+            { label: 'Isussing Country', value: "Ethiopia", id: "PASSPORT_ISSUE_PLACE" },
+            { label: 'Email', value: "skywayagencyoffice@gmail.com", id: "Personal_Email" },
+            { label: 'Email', value: "By Air", id: "COMING_THROUGH" },   
+            { label: 'Email', value: "2006-11-14", id: "emailLabel" },    
+            { label: 'Sponsor Id NO', value: "72836281826", id: "SPONSER_NUMBER" },  
+            { label: 'Sponsor Phone', value: "09726384937", id: "SPONSER_PHONE" },
+            { label: 'porpose', value: "WORK", id: "porpose", htmlFor: "porpose" },
+            
+            
+
+            // { label: 'toggle', value: "0", htmlFor: "EMONTHLYSALARYJORDAN" , id: "No"},
           ].map((item, index) => (
             <Grid item xs={12} md={6} key={index}>
               <label htmlFor={item.htmlFor}>
                 <Typography variant="body1">
-                  <strong>{item.label}:</strong> {item.value}
+                  <strong>{item.label}:</strong> <label id={item.id}>{item.value}</label>
                 </Typography>
               </label>
             </Grid>
@@ -566,7 +598,7 @@ const DetailPage = () => {
             </Button>
           </Grid>
           <Grid item>
-            <Button variant="contained" color="default" onClick={handleSend}>
+            <Button variant="contained" color="default" onClick={handleInstall}>
               Send
             </Button>
           </Grid>

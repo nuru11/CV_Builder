@@ -365,32 +365,8 @@ useEffect(() => {
       /*   small image uploder   */
        
 
-      const submitImage = async (e) => {
-        e.preventDefault();
-    
-        const formData = new FormData();
-        formData.append("image", image);
-    
-        const result = await axios.post(
-          "http://localhost:4000/upload-image",
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        );
-        // Reset file name after submission
-        // await getImage();
-        setFileName("No file chosen yetzzzzzzzzz");
-        setImage(null);
-      };
-    
-      const onInputChange = (e) => {
-        const selectedFile = e.target.files[0];
-        console.log(selectedFile);
-        setImage(selectedFile);
-        setFileName(selectedFile ? selectedFile.name : "No file chosen yet"); // Update filename
-      };
-    
+     
+     
       const getImage = async () => {
         const result = await axios.get("http://localhost:4000/get-image");
         console.log(result);
@@ -399,30 +375,7 @@ useEffect(() => {
 
     
 
-    const passsubmitImage = async (e) => {
-        e.preventDefault();
     
-        const formData = new FormData();
-        formData.append("pimage", passportimage);
-    
-        const result = await axios.post(
-          "http://localhost:4000/passupload-image",
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        );
-        // Reset file name after submission
-        setPFileName("No file chosen after");
-        setPassportimage(null);
-      };
-    
-      const passonInputChange = (e) => {
-        const selectedFile = e.target.files[0];
-        console.log(selectedFile);
-        setPassportimage(selectedFile);
-        setPFileName(selectedFile ? selectedFile.name : "No file chosen yettt"); // Update filename
-      };
     
       const passgetImage = async () => {
         const result = await axios.get("http://localhost:4000/passget-image");
@@ -432,20 +385,7 @@ useEffect(() => {
 
       // delete passport image 
 
-     const passdeleteImages = async () => {
-        try {
-          const response = await axios.delete("http://localhost:4000/passdelete-images");
-          if (response.data.status === "ok") {
-          
-            setPassportallimage(null);
-            alert(response.data.message); // Show success message
-          }
-        } catch (error) {
-          console.error("Error deleting images:", error);
-          alert("Failed to delete images. Please try again.");
-        }
-      };
-
+   
 
       /////////////////////////////// on paste functionality 
 
@@ -566,70 +506,7 @@ useEffect(() => {
       /////////////////////////////  applicant data
      
 
-      const applicantssubmitImage = async (e) => {
-        e.preventDefault();
     
-        const formData = new FormData();
-        // formData.append("applicantimage", applicantpassportimage);
-        
-        // Assuming you have a state variable for the name input
-        // const name = document.getElementById("nameInput").value; // or use a state variable if applicable
-        // formData.append("name", personalInfo.name + "kkkkk"); 
-        // formData.append("surname", personalInfo.name + "sdfdf");    
-
-formData.append("applicantimage", applicantpassportimage); // Assuming imageName is defined elsewhere
-formData.append("name", personalInfo.name + " kkkkk");
-formData.append("surname", personalInfo.surname + " sdfdf");
-formData.append("placeofbirth", personalInfo.placeOfBirth + " additionalInfo");
-formData.append("passportnum", personalInfo.passportNo + " moreInfo");
-formData.append("nationality", personalInfo.nationality + " extraData");
-formData.append("martialstatus", personalInfo.maritalStatus + " update");
-formData.append("numberofchildren", personalInfo.numberOfChildren + " childrenInfo");
-formData.append("religion", personalInfo.religion + " religiousInfo");
-formData.append("weight", personalInfo.weight + " kg");
-formData.append("height", personalInfo.height + " cm");
-formData.append("educationattainment", personalInfo.educationAttainment + " degree");
-formData.append("postappliedfor", personalInfo.postAppliedFor + " positionDetails");
-formData.append("contractperiod", personalInfo.contractPeriod + " duration");
-formData.append("arabicdegree", personalInfo.arabicDegree + " level");
-formData.append("englishdegree", personalInfo.englishDegree + " level");
-formData.append("ownphonenum", personalInfo.ownPhoneNumber + " own");
-formData.append("contactphonenum", personalInfo.contactPhoneNumber + " contact");
-formData.append("dateofbirth", personalInfo.dateofbirth + " dobInfo");
-formData.append("age", personalInfo.age + " years");
-formData.append("dateofissue", personalInfo.dateofissue + " issueDate");
-formData.append("expireddate", personalInfo.expireddate + " expiryInfo");
-formData.append("country", personalInfo.country + " countryDetails");
-formData.append("position", personalInfo.position + " jobTitle");
-formData.append("period", personalInfo.period + " timeFrame");
-formData.append("babysitting", expcheck.exp1 ? "yes" : "no");
-formData.append("cleaning", expcheck.exp2 ? "yes" : "no");
-formData.append("washing", expcheck.exp3 ? "yes" : "no");
-formData.append("cooking", expcheck.exp4 ? "yes" : "no");
-formData.append("eldercare", expcheck.exp5 ? "yes" : "no");
-formData.append("monthlysalarySaudi", "SAR " + personalInfo.monthlysalarySaudi);
-formData.append("monthlysalaryJordan",  "$" + personalInfo.monthlysalaryJordan);
-formData.append("experience", JSON.stringify(projectInfo.project))
-        const result = await axios.post(
-            "http://localhost:4000/applicantupload-image",
-            formData,
-            {
-                headers: { "Content-Type": "multipart/form-data" },
-            }
-        );
-        
-        // Reset file name and name input after submission
-        // setPFileName("No file chosen after");
-        setApplicantPassportimage(null);
-        document.getElementById("nameInput").value = ""; // Reset the name input field
-    };
-
-    const applicantonInputChange = (e) => {
-        const selectedFile = e.target.files[0];
-        console.log(selectedFile);
-        setApplicantPassportimage(selectedFile);
-        setApplicantPassportFileName(selectedFile ? selectedFile.name : "No file chosen yettt"); // Update filename
-      };
     
       const applicantgetImage = async () => {
         const result = await axios.get("http://localhost:4000/applicantget-image");
@@ -734,10 +611,10 @@ formData.append("arabicdegree", personalInfo.arabicDegree);
 formData.append("englishdegree", personalInfo.englishDegree);
 formData.append("ownphonenum", personalInfo.ownPhoneNumber);
 formData.append("contactphonenum", personalInfo.contactPhoneNumber );
-formData.append("dateofbirth", personalInfo.dateofbirth );
-formData.append("age", personalInfo.age);
-formData.append("dateofissue", personalInfo.dateofissue);
-formData.append("expireddate", personalInfo.expireddate);
+formData.append("dateofbirth", dob );
+formData.append("age", age);
+formData.append("dateofissue", dateOfIssue);
+formData.append("expireddate",dateOfExpiry);
 formData.append("country", personalInfo.country);
 formData.append("position", personalInfo.position);
 formData.append("period", personalInfo.period + " timeFrame");
@@ -803,10 +680,10 @@ formData.append("arabicdegree", personalInfo.arabicDegree );
 formData.append("englishdegree", personalInfo.englishDegree );
 formData.append("ownphonenum", personalInfo.ownPhoneNumber);
 formData.append("contactphonenum", personalInfo.contactPhoneNumber);
-formData.append("dateofbirth", personalInfo.dateofbirth);
-formData.append("age", personalInfo.age );
-formData.append("dateofissue", personalInfo.dateofissue);
-formData.append("expireddate", personalInfo.expireddate );
+formData.append("dateofbirth", dob );
+formData.append("age", age);
+formData.append("dateofissue", dateOfIssue);
+formData.append("expireddate",dateOfExpiry);
 formData.append("country", personalInfo.country );
 formData.append("position", personalInfo.position);
 formData.append("period", personalInfo.period);
@@ -1537,6 +1414,7 @@ setDob(formattedDate);
                 />
                 <label>
                     <span>Passport Image <span style={{ color: 'red' }}>*</span></span>
+                    {applicantpassportimagePreview && <div style={{color: "red"}}>check the name</div>}
                     {/* <button type="button" onClick={() => fileInputRef.current.click()}>Choose File</button> */}
                 </label>
                
@@ -1590,6 +1468,7 @@ setDob(formattedDate);
     <Container maxWidth="xs">
     <Grid container spacing={2} alignItems="center">
           <Grid item xs={6}>
+            
             <TextField
               label="Date of Birth"
               type="date"
@@ -1601,8 +1480,10 @@ setDob(formattedDate);
               }}
               required
             />
+            {/* <div style={{color: "red"}}>this field is required</div> */}
           </Grid>
           <Grid item xs={6}>
+            {/* <div>{age}</div> */}
             <TextField
               label="Age"
               type="number"

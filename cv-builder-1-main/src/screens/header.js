@@ -81,7 +81,7 @@ const Header = () => {
             </div>
             <nav className="nav">
                 <ul>
-                    {isAdmin() && <li><a href="/a">Home</a></li>}
+                    {isAdmin() && <li><a href="/">Home</a></li>}
                     {isAdmin() && <li><a href="/list">Applicants</a></li>}
                     {isAdmin() && <li><a href="/signup">Signup</a></li>}
                     {!isLoggedIn() && <li><a href="/login">Login</a></li>} {/* Only show Login if not logged in */}
