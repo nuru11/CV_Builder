@@ -522,9 +522,10 @@ export default function StickyHeadTable() {
             value={editData.sponsorId || ''}
             onChange={handleInputChange}
           />
+
           <TextField
             margin="dense"
-            name="sponsorAdress"
+            name="sponsorAddress"
             label="Sponsor Address"
             fullWidth
             variant="outlined"

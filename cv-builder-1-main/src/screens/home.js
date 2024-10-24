@@ -44,11 +44,12 @@ import DocumentStyle from "../Components/DocumentStyle";
 import axios from "axios";
 import goldagent from "../images/goldagent.jpeg" 
 import hudud from "../image_placeholder/hudud.jpeg"
-import skywayimg from "../image_placeholder/skywayimg.jpeg"
+import skywaylogo from "../image_placeholder/skywaylogo.jpeg"
 import barakaimg from "../image_placeholder/barakaimg.jpeg"
 import wasitimg from "../image_placeholder/wasitimg.jpeg"
 import myImage from '../images/two.png'; 
 import bodyimg from "../images/images.jpeg"
+import assawsan from "../image_placeholder/assawsan.jpeg"
 import imagePlaceholder from "../image_placeholder/download.png"
 import ouragentlogo from "../images/ouragentlogo.jpeg"
 import Header from "../screens/header"
@@ -63,6 +64,10 @@ import './homestyle.css';
     
     
 //   } from '@mui/material';
+
+import Barcode from 'react-barcode';
+import smallapplicantimage from "../image_placeholder/smallapplicantimage.jpeg"
+import saudiforeignaffairslogo from "../image_placeholder/saudiforeignaffairslogo.png"
 
 
 import { useDropzone } from 'react-dropzone';
@@ -82,7 +87,7 @@ const Home = () => {
         birthDate: ''
       });
 
-      const initialPersonalInfo = { name: '', middleName: "", email: '', phone: '', about: '', surname: "", placeOfBirth: "", passportNo: "",passportIssuePlace: "", nationality: "ETHIOPIA", maritalStatus: "Marital Status", numberOfChildren: "", religion: "Religion", weight: "", height: "", educationAttainment: "", postAppliedFor: "", contractPeriod: "2", arabicDegree: "", englishDegree: "", ownPhoneNumber: "", contactPhoneNumber: "", monthlysalarySaudi: "", monthlysalaryJordan: "", idno: "", sex: "", visaNo: "", passportType: "", placeOfIssue: "", emptyfield: false, dateOfBirth: "", age:""}
+      const initialPersonalInfo = { name: '', middleName: "", email: '', phone: '', about: '', surname: "", placeOfBirth: "", passportNo: "",passportIssuePlace: "", nationality: "ETHIOPIA", maritalStatus: "", numberOfChildren: "", religion: "", weight: "", height: "", educationAttainment: "", postAppliedFor: "", contractPeriod: "2", arabicDegree: "", englishDegree: "", ownPhoneNumber: "", contactPhoneNumber: "", monthlysalarySaudi: "", monthlysalaryJordan: "", idno: "", sex: "", visaNo: "", passportType: "", placeOfIssue: "", emptyfield: false, dateOfBirth: "", age:"", country: "", position: "", period: ""}
       const initialSponsorInfo = {visaNo: "", sponsorId: "", sponsorAdress: "", nationalId: "", email: "", sponsorName: "", sponsorPhone: "", agent: "", sponsorArabic: '', visaType: "", fileNo: "", wakala: "", signedUp: "", biometricId: "", contract: "", stickerVisa: "", currentNationality: "", laborId: "", sponsorInformationEmptyfield: false}
     const [personalInfo, setPersonalInfo] = useState(initialPersonalInfo);
     const [sponsorInformation, setSponsorInfo] = useState(initialSponsorInfo);
@@ -487,13 +492,41 @@ useEffect(() => {
         lines.forEach(line => {
           
             personalInfo.surname = lines[2];
+
+
+            if(line.includes("Location")) {
+                if(lines[lines.indexOf("Location") - 2]){
+                    sponsorInformation.sponsorName = lines[lines.indexOf("Location") - 2]
+                }  else {
+                    sponsorInformation.sponsorName = lines[0]
+                }
+                
+              }
+
+
+              if(line.includes("Location")) {
+                if(lines[lines.indexOf("Location") + 2]){
+                    sponsorInformation.sponsorAdress = lines[lines.indexOf("Location") + 2]
+                }  
+                
+              }
+
+
+
           if(line.includes("Surname")) {
             newPersonalInfo.surname = lines[lines.indexOf("Surname") + 1]
           }
           if (line.includes('Given Names')) {
-            newPersonalInfo.name = lines[lines.indexOf("Given Names") + 1]
-          
-          }
+            const nextLine = lines[lines.indexOf("Given Names") + 1];
+            const firstName = nextLine.split(' ')[0]; // Get the first part
+            newPersonalInfo.name = firstName; // Assign the first name
+        }
+
+          if (line.includes('Given Names')) {
+            const nextLine = lines[lines.indexOf("Given Names") + 1];
+            const middleNameParts = nextLine.split(' '); // Split the line by space
+            newPersonalInfo.middleName = middleNameParts[1]; // Get the second part
+        }
           if (line.includes('Marital Status')) {
             // newPersonalInfo.maritalStatus = line.split('Marital Status')[1].trim();
             newPersonalInfo.maritalStatus = lines[lines.indexOf("Marital Status") + 1]
@@ -543,9 +576,9 @@ useEffect(() => {
 
           if (line.includes('Visa Number')) {
             if(lines[lines.indexOf("Visa Number") + 1] === ""){
-                newPersonalInfo.visaNo = lines[lines.indexOf("Visa Number") + 2]
+                sponsorInformation.visaNo = lines[lines.indexOf("Visa Number") + 2]
             } else {
-                newPersonalInfo.visaNo = lines[lines.indexOf("Visa Number") + 1]
+                sponsorInformation.visaNo = lines[lines.indexOf("Visa Number") + 1]
             }
             // newPersonalInfo.visaNo = lines[lines.lastIindexOf("Visa Number") + 1]
           } 
@@ -564,7 +597,11 @@ useEffect(() => {
           }
           if (line.includes("Date of Birth")) {
            setDob(lines[lines.indexOf("Date of Birth") + 1])
+           newPersonalInfo.dateOfBirth = lines[lines.indexOf("Date of Birth") + 1]
+           
           }
+
+          
         });
     
         // Update the state with the new values
@@ -1159,6 +1196,23 @@ personalInfo.dateOfBirth = formattedDate;
     }
 
 
+
+
+    const downloadEmbassyCV = () => {
+        const element = document.getElementById("cvContent");
+        const options = {
+            margin: 0.2,
+            filename: 'embassy.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+    
+        html2pdf()
+            .from(element)
+            .set(options)
+            .save();
+    }
 
 
     const downloadcvanyway = async () => {
@@ -1833,7 +1887,7 @@ personalInfo.dateOfBirth = formattedDate;
                         checked={styles.styleOne}
                         onChange={handleStyleChange}
                         name="styleOne"
-                        disabled={age < 21}
+                        disabled={personalInfo.age < 21}
                     />
                 }
                 label="Golden agent"
@@ -1844,7 +1898,7 @@ personalInfo.dateOfBirth = formattedDate;
                         checked={styles.styleTwo}
                         onChange={handleStyleChange}
                         name="styleTwo"
-                        disabled={age < 21}
+                        disabled={personalInfo.age < 21}
                     />
                 }
                 label="Bela Hodod"
@@ -1855,7 +1909,7 @@ personalInfo.dateOfBirth = formattedDate;
                         checked={styles.styleThree}
                         onChange={handleStyleChange}
                         name="styleThree"
-                        disabled={age < 18} // Disable if age is less than 18
+                        disabled={personalInfo.age < 18} // Disable if age is less than 18
                     />
                 }
                 label="Assawsanah"
@@ -1866,7 +1920,7 @@ personalInfo.dateOfBirth = formattedDate;
                         checked={styles.styleFour}
                         onChange={handleStyleChange}
                         name="styleFour"
-                        disabled={age < 21}
+                        disabled={personalInfo.age < 21}
                     />
                 }
                 label="Baraka"
@@ -1891,6 +1945,7 @@ personalInfo.dateOfBirth = formattedDate;
         {/* <button type="button" id="postBtn" onClick={applicantssubmitImage}>applicantssubmitImage</button> */}
         {/* <button type="button" id="shareBtn" onClick={shareCV}>Share CV on WhatsApp</button> */}
         <button type="button" id="clearallBtn" onClick={handleClearAll}>Clear All</button>
+        <button type="button" id="downloadEmbassyBtn" onClick={downloadEmbassyCV}>Download CV for Embassy</button>
         <button type="button" onClick={downloadMultipleCVs}>Download Multiple CVs</button>
     </div>
 
@@ -2002,11 +2057,11 @@ src={applicantpersonalimagePreview !== null
 <div>{personalInfo.religion}</div>
 <div>الديانة</div>
 <div>WEIGHT</div>
-<div>{personalInfo.weight} km</div>
+<div>{personalInfo.weight}{personalInfo.weight ? " km" : ""}</div>
 <div>الوزن</div>
 <div>HEIGHT</div>
 
-<div>{personalInfo.height} cm</div>
+<div>{personalInfo.height}{personalInfo.height ? " cm" : ""}</div>
 <div>الطول</div>
 <div style={{height: 35}}>EDUCATIONAL ATTAINMENT</div>
 <div style={{height: 35}}>{personalInfo.educationAttainment}</div>
@@ -2015,7 +2070,7 @@ src={applicantpersonalimagePreview !== null
 <div style={{height: 35}}>{personalInfo.postAppliedFor}</div>
 <div style={{height: 35}}>الوظيفة المتقدمة اليها</div>
 <div style={{height: 35}}>MONTHLY SALARY</div>
-<div style={{height: 35}}> {salaries.saudi} SAR</div>
+<div style={{height: 35}}> {salaries.saudi}{salaries.saudi ? " SAR" : ""}</div>
 <div style={{height: 35}}>الراتب الشهري</div>
 <div style={{height: 35}}>CONTRACT PERIOD</div>
 <div style={{height: 35}}>{personalInfo.contractPeriod}</div>
@@ -2056,7 +2111,7 @@ src={applicantpersonalimagePreview !== null
 
                     <div className="experience-country-sec">
 <div>EXPERIANCE COUNTRY</div>
-<div>{projectInfo.project.map(i =>  <span style={{marginRight: "3px"}}>{i.name}, </span> )} </div>
+<div>{projectInfo.project.map(i =>  <span style={{marginRight: "3px"}}>{i.name}{i.name ? "," : ""} </span> )} </div>
 <div>خبرة البلد</div>
 </div>
 
@@ -2066,7 +2121,7 @@ src={applicantpersonalimagePreview !== null
 
 <div className="experience-country-sec">
 <div>WORKING YEARS</div>
-<div>{projectInfo.project.map(i =>  <span style={{marginRight: "3px"}}>{i.overview}, </span> )}</div>
+<div>{projectInfo.project.map(i =>  <span style={{marginRight: "3px"}}>{i.overview}{i.overview ? "," : ""} </span> )}</div>
 <div>وعدد سنوات الخبرة</div>
 </div>
 
@@ -2149,8 +2204,11 @@ src={applicantpassportimagePreview !== null
         </div>
 
         
-        <div id="cvContent2" style={{ display: 'block',  }}> {/* Change display to block */}
-            <div className="container">
+       {/*  next content 2 */}
+
+
+       <div id="cvContent2">
+        <div className="container">
                 {/* Page 1 */}
                 {/* <div>
 <form onSubmit={this.submitImage}>
@@ -2175,25 +2233,21 @@ src={applicantpassportimagePreview !== null
 </div> */}
                 <div style={{ pageBreakAfter: 'always' }}> 
                     <div className="header">
-                    {allImage && allImage.length > 0 ? (
+                    
 <div className="personal-image-parent">
 <img
 className="personal-image"
 alt=""
-src={require(`../images/${allImage[allImage.length - 1].image}`)} // Get the last image
+src={applicantpersonalimagePreview !== null
+    ? applicantpersonalimagePreview
+    : imagePlaceholder} // Get the last image
 
 />
 
 </div>
-) : (
-<div>No images uploaded yet.</div> // Message if no images are uploaded
-)}
-                        <div className="wider-image-parent">
-                            <img src={goldagent} alt="Wider" className="wider-image" />  
-                        </div>
 
-
-
+                      <div className="wider-image-parent">
+                      <img src={goldagent} alt="Wider" className="wider-image" /></div>  
                     </div>
                     <div className="title-parent">
                         <div style={{display: "flex", justifyContent: "space-around", border: "none"}}><div style={{ border: "none"}}>Personal Information</div>  <div style={{ border: "none"}}> ممعلومات شخصية </div></div>
@@ -2203,71 +2257,73 @@ src={require(`../images/${allImage[allImage.length - 1].image}`)} // Get the las
                     <div className="table-main-parent">
                     <div class="table-parent">
 <div>NAME</div>
-<div>{personalInfo.name}</div>
+<div>{personalInfo.name} {personalInfo.middleName}</div>
 <div>الاسم</div>
 <div>SURNAME</div>
-<div>{personalInfo.email}</div>
+<div>{personalInfo.surname}</div>
 <div>اسم العائلة</div>
-<div>PLACE</div>
-<div>{personalInfo.name}</div>
+<div>PLACE Of Birth</div>
+<div>{personalInfo.placeOfBirth}</div>
 <div>مكان الولادة</div>
 <div>AGE</div>
-<div></div>
+<div>{age}</div>
 <div>العمر</div>
 <div>PASSPORT NO</div>
-<div></div>
+<div>{personalInfo.passportNo}</div>
 <div>رقم جواز السفر</div>
 <div>DATE OF BIRTH</div>
-<div></div>
+<div>{dob}</div>
 <div>تاريخ الميلاد</div>
 <div>DATE OF ISSUE</div>
-<div></div>
+<div>{dateOfIssue}</div>
 
 <div>تاريخ الاصدار</div>
 <div>DATE OF EXPIRY</div>
-<div></div>
+<div>{dateOfExpiry}</div>
 <div>تاريخ الانتهاء</div>
 <div>NATIONALITY</div>
-<div>ETHIOPIAN</div>
+<div>{personalInfo.nationality}</div>
 <div>الجنسية</div>
 <div style={{height: 35}}>MARITAL STATUS</div>
-<div style={{height: 35}}></div>
+<div style={{height: 35}}>{personalInfo.maritalStatus}</div>
 <div style={{height: 35}}>الحالة الاجتماعية</div>
 <div style={{height: 35}} >NUMBER OF CHILDREN</div>
-<div style={{height: 35}}></div>
+<div style={{height: 35}}>{personalInfo.numberOfChildren}</div>
 <div style={{height: 35}}>عدد الاطفال</div>
 <div>RELIGION</div>
-<div></div>
+<div>{personalInfo.religion}</div>
 <div>الديانة</div>
 <div>WEIGHT</div>
-<div></div>
+<div>{personalInfo.weight}{personalInfo.weight ? " km" : ""}</div>
 <div>الوزن</div>
 <div>HEIGHT</div>
 
-<div></div>
+<div>{personalInfo.height}{personalInfo.height ? " cm" : ""}</div>
 <div>الطول</div>
 <div style={{height: 35}}>EDUCATIONAL ATTAINMENT</div>
-<div style={{height: 35}}>PRIMARY SCHOOL</div>
+<div style={{height: 35}}>{personalInfo.educationAttainment}</div>
 <div style={{height: 35}}>المستوى الدراسي</div>
 <div style={{height: 35}}>POST APPLIED FOR</div>
-<div style={{height: 35}}>HOUSEMAID</div>
+<div style={{height: 35}}>{personalInfo.postAppliedFor}</div>
 <div style={{height: 35}}>الوظيفة المتقدمة اليها</div>
 <div style={{height: 35}}>MONTHLY SALARY</div>
-<div style={{height: 35}}></div>
+<div style={{height: 35}}> {salaries.saudi}{salaries.saudi ? " SAR" : ""}</div>
 <div style={{height: 35}}>الراتب الشهري</div>
 <div style={{height: 35}}>CONTRACT PERIOD</div>
-<div style={{height: 35}}>2 YEARS</div>
+<div style={{height: 35}}>{personalInfo.contractPeriod}</div>
 <div style={{height: 35}}>مدة التعاقد</div>
 <div style={{height: 35}}>ARABIC DEGREE</div>
-<div style={{height: 35}}></div>
+<div style={{height: 35}}>{personalInfo.arabicDegree}</div>
 <div style={{height: 35}}>مستوى اللغة العربية</div>
 <div style={{height: 39}}>ENGLISH DEGREE</div>
-<div style={{height: 39}}></div>
+<div style={{height: 39}}>{personalInfo.englishDegree}</div>
 <div style={{height: 39}}>مستوى اللغة الانجليزية</div>
 </div>
                         <div className="second-side">
                             <div>
-                                <img src={bodyimg} alt="Full Body" className="full-body-image" />
+                                <img src={applicantfullbodyimagePreview !== null
+    ? applicantfullbodyimagePreview
+    : imagePlaceholder} alt="Full Body" className="full-body-image" />
                             </div>
                             <div>
                                 <img src={ouragentlogo} alt="Agent Logo" className="agent-logo" />
@@ -2279,428 +2335,62 @@ src={require(`../images/${allImage[allImage.length - 1].image}`)} // Get the las
 
                     <div className="phone-number-sec">
                         <div>OWN PHONE NUMBER</div>
-                        <div style={{background: "white"}}>(25190) 33-9999</div>
+                        <div style={{background: "white"}}>{personalInfo.ownPhoneNumber}</div>
                         <div>رقم الهاتف الشخصي</div>
                     </div>
                     <div className="cphone-number-sec">
                         <div>CONTACT PHONE NUMBER</div>
-                        <div style={{background: "white"}}></div>
+                        <div style={{background: "white"}}>{personalInfo.contactPhoneNumber}</div>
                         <div>رقم الهاتف الاقارب</div>
                     </div>
-                    <div className="experience-country-sec">
-                        <div>EXPERIANCE COUNTRY</div>
-                        <div>-</div>
-                        <div>خبرة البلد</div>
-                    </div>
 
-                    
+
 
                     <div className="experience-country-sec">
-                        <div>WORKING YEARS</div>
-                        <div>-</div>
-                        <div>وعدد سنوات الخبرة</div>
-                    </div>
-                    <div className="specific-exp-atitle-sec">
-                        <div>تربية الاطفال</div>
-                        <div>النظافة</div>
-                        <div>الغسيل</div>
-                        <div>الطبخ</div>
-                        <div>العناية بالمسنين</div>
-                    </div>
-                    <div className="specific-exp-etitle-sec">
-                        <div>BABY SITTING</div>
-                        <div>CLEANING</div>
-                        <div>WASHING</div>
-                        <div>COOKING</div>
-                        <div>ELDER CARE</div>
-                    </div>
-                    <div className="exp-trueorfalse-sec">
-                        <div>YES</div>
-                        <div>YES</div>
-                        <div>NO</div>
-                        <div></div>
-                        <div>YES</div>
-                    </div>
-
-                    </div>
-
-                    
-
-                </div>
-
-                
-                {/* Page 2 */}
-                <div style={{display: "flex", justifyContent: "center", fontSize: 20, marginBottom: 30}}>Passport</div>
-
-                <div className="passport-image-parent">
-                {passportallimage && passportallimage.length > 0 ? (
-<div>
-<img
-className="passport-image"
-alt=""
-src={require(`../passport_image/${passportallimage[passportallimage.length - 1].image}`)} 
-
-/>
-
+<div>EXPERIANCE COUNTRY</div>
+<div>{projectInfo.project.map(i =>  <span style={{marginRight: "3px"}}>{i.name}{i.name ? "," : ""} </span> )} </div>
+<div>خبرة البلد</div>
 </div>
-) : (
-<div>No images uploaded yet.</div> 
-)}
+
+
+
+
+
+<div className="experience-country-sec">
+<div>WORKING YEARS</div>
+<div>{projectInfo.project.map(i =>  <span style={{marginRight: "3px"}}>{i.overview}{i.overview ? "," : ""} </span> )}</div>
+<div>وعدد سنوات الخبرة</div>
 </div>
-            </div>
-        </div>
 
-
-        <div id="cvContent3" style={{ display: 'block' }}> {/* Change display to block */}
-            <div className="container">
-                {/* Page 1 */}
-                {/* <div>
-<form onSubmit={this.submitImage}>
-  <input
-    type="file"
-    accept="image/*"
-    onChange={this.onInputChange}
-  />
-  <button type="submit">Submit</button>
-</form>
-{this.state.allImage == null
-  ? ""
-  : this.state.allImage.map((data, index) => (
-      <img
-        key={index}
-        alt=""
-        src={require(`.../images/${data.image}`)}
-        height={100}
-        width={100}
-      />
-    ))}
-</div> */}
-                <div style={{ pageBreakAfter: 'always' }}> 
-                    <div className="header">
-                    {allImage && allImage.length > 0 ? (
-<div className="personal-image-parent">
-<img
-className="personal-image"
-alt=""
-src={require(`../images/${allImage[allImage.length - 1].image}`)} // Get the last image
-
-/>
-
-</div>
-) : (
-<div>No images uploaded yet.</div> // Message if no images are uploaded
-)}
-
-
-                        <div className="wider-image-parent"><img src={skywayimg} alt="Wider" className="wider-image" />
-                        </div>
-                    </div>
-                    <div className="title-parent">
-                        <div style={{display: "flex", justifyContent: "space-around", border: "none"}}><div style={{ border: "none"}}>Personal Information</div>  <div style={{ border: "none"}}> ممعلومات شخصية </div></div>
-                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>CODE NO</div>
-                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>J100</div>
-                    </div>
-                    <div className="table-main-parent">
-                    <div class="table-parent">
-<div>NAME</div>
-<div>{personalInfo.name}</div>
-<div>الاسم</div>
-<div>SURNAME</div>
-<div>{personalInfo.email}</div>
-<div>اسم العائلة</div>
-<div>PLACE</div>
-<div>{personalInfo.name}</div>
-<div>مكان الولادة</div>
-<div>AGE</div>
-<div></div>
-<div>العمر</div>
-<div>PASSPORT NO</div>
-<div></div>
-<div>رقم جواز السفر</div>
-<div>DATE OF BIRTH</div>
-<div></div>
-<div>تاريخ الميلاد</div>
-<div>DATE OF ISSUE</div>
-<div></div>
-
-<div>تاريخ الاصدار</div>
-<div>DATE OF EXPIRY</div>
-<div></div>
-<div>تاريخ الانتهاء</div>
-<div>NATIONALITY</div>
-<div>ETHIOPIAN</div>
-<div>الجنسية</div>
-<div style={{height: 35}}>MARITAL STATUS</div>
-<div style={{height: 35}}></div>
-<div style={{height: 35}}>الحالة الاجتماعية</div>
-<div style={{height: 35}} >NUMBER OF CHILDREN</div>
-<div style={{height: 35}}></div>
-<div style={{height: 35}}>عدد الاطفال</div>
-<div>RELIGION</div>
-<div></div>
-<div>الديانة</div>
-<div>WEIGHT</div>
-<div></div>
-<div>الوزن</div>
-<div>HEIGHT</div>
-
-<div></div>
-<div>الطول</div>
-<div style={{height: 35}}>EDUCATIONAL ATTAINMENT</div>
-<div style={{height: 35}}>PRIMARY SCHOOL</div>
-<div style={{height: 35}}>المستوى الدراسي</div>
-<div style={{height: 35}}>POST APPLIED FOR</div>
-<div style={{height: 35}}>HOUSEMAID</div>
-<div style={{height: 35}}>الوظيفة المتقدمة اليها</div>
-<div style={{height: 35}}>MONTHLY SALARY</div>
-<div style={{height: 35}}></div>
-<div style={{height: 35}}>الراتب الشهري</div>
-<div style={{height: 35}}>CONTRACT PERIOD</div>
-<div style={{height: 35}}>2 YEARS</div>
-<div style={{height: 35}}>مدة التعاقد</div>
-<div style={{height: 35}}>ARABIC DEGREE</div>
-<div style={{height: 35}}></div>
-<div style={{height: 35}}>مستوى اللغة العربية</div>
-<div style={{height: 39}}>ENGLISH DEGREE</div>
-<div style={{height: 39}}></div>
-<div style={{height: 39}}>مستوى اللغة الانجليزية</div>
-</div>
-                        <div className="second-side">
-                            <div>
-                                <img src={bodyimg} alt="Full Body" className="full-body-image" />
-                            </div>
-                            <div>
-                                <img src={ouragentlogo} alt="Agent Logo" className="agent-logo" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="second-section-parent">
-
-                    <div className="phone-number-sec">
-                        <div>OWN PHONE NUMBER</div>
-                        <div style={{background: "white"}}>(25190) 33-9999</div>
-                        <div>رقم الهاتف الشخصي</div>
-                    </div>
-                    <div className="cphone-number-sec">
-                        <div>CONTACT PHONE NUMBER</div>
-                        <div style={{background: "white"}}></div>
-                        <div>رقم الهاتف الاقارب</div>
-                    </div>
-                    <div className="experience-country-sec">
-                        <div>EXPERIANCE COUNTRY</div>
-                        <div>-</div>
-                        <div>خبرة البلد</div>
-                    </div>
-
-                    
-
-                    <div className="experience-country-sec">
-                        <div>WORKING YEARS</div>
-                        <div>-</div>
-                        <div>وعدد سنوات الخبرة</div>
-                    </div>
-                    <div className="specific-exp-atitle-sec">
-                        <div>تربية الاطفال</div>
-                        <div>النظافة</div>
-                        <div>الغسيل</div>
-                        <div>الطبخ</div>
-                        <div>العناية بالمسنين</div>
-                    </div>
-                    <div className="specific-exp-etitle-sec">
-                        <div>BABY SITTING</div>
-                        <div>CLEANING</div>
-                        <div>WASHING</div>
-                        <div>COOKING</div>
-                        <div>ELDER CARE</div>
-                    </div>
-                    <div className="exp-trueorfalse-sec">
-                        <div>YES</div>
-                        <div>YES</div>
-                        <div>NO</div>
-                        <div></div>
-                        <div>YES</div>
-                    </div>
-
-                    </div>
-
-                    
-
-                </div>
-
-                
-                {/* Page 2 */}
-                <div style={{display: "flex", justifyContent: "center", fontSize: 20, marginBottom: 30}}>Passport</div>
-
-                <div className="passport-image-parent">
-                {passportallimage && passportallimage.length > 0 ? (
-<div>
-<img
-className="passport-image"
-alt=""
-src={require(`../passport_image/${passportallimage[passportallimage.length - 1].image}`)} 
-
-/>
-
-</div>
-) : (
-<div>No images uploaded yet.</div> 
-)}
-</div>
-            </div>
-        </div>
-
-
-
-        <div id="cvContent4" style={{ display: 'block' }}> {/* Change display to block */}
-            <div className="container">
-                {/* Page 1 */}
-                {/* <div>
-<form onSubmit={this.submitImage}>
-  <input
-    type="file"
-    accept="image/*"
-    onChange={this.onInputChange}
-  />
-  <button type="submit">Submit</button>
-</form>
-{this.state.allImage == null
-  ? ""
-  : this.state.allImage.map((data, index) => (
-      <img
-        key={index}
-        alt=""
-        src={require(`.../images/${data.image}`)}
-        height={100}
-        width={100}
-      />
-    ))}
-</div> */}
-                <div style={{ pageBreakAfter: 'always' }}> 
-                    <div className="header">
-                    {allImage && allImage.length > 0 ? (
-<div className="personal-image-parent">
-<img
-className="personal-image"
-alt=""
-src={require(`../images/${allImage[allImage.length - 1].image}`)} // Get the last image
-
-/>
-
-</div>
-) : (
-<div>No images uploaded yet.</div> // Message if no images are uploaded
-)}
-<div className="wider-image-parent">
-<img src={barakaimg} alt="Wider" className="wider-image" />
-</div>
+                    {/* {projectInfo.project.map(i => 
                         
-                    </div>
-                    <div className="title-parent">
-                        <div style={{display: "flex", justifyContent: "space-around", border: "none"}}><div style={{ border: "none"}}>Personal Information</div>  <div style={{ border: "none"}}> ممعلومات شخصية </div></div>
-                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>CODE NO</div>
-                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>J100</div>
-                    </div>
-                    <div className="table-main-parent">
-                    <div class="table-parent">
-<div>NAME</div>
-<div>{personalInfo.name}</div>
-<div>الاسم</div>
-<div>SURNAME</div>
-<div>{personalInfo.email}</div>
-<div>اسم العائلة</div>
-<div>PLACE</div>
-<div>{personalInfo.name}</div>
-<div>مكان الولادة</div>
-<div>AGE</div>
-<div></div>
-<div>العمر</div>
-<div>PASSPORT NO</div>
-<div></div>
-<div>رقم جواز السفر</div>
-<div>DATE OF BIRTH</div>
-<div></div>
-<div>تاريخ الميلاد</div>
-<div>DATE OF ISSUE</div>
-<div></div>
-
-<div>تاريخ الاصدار</div>
-<div>DATE OF EXPIRY</div>
-<div></div>
-<div>تاريخ الانتهاء</div>
-<div>NATIONALITY</div>
-<div>ETHIOPIAN</div>
-<div>الجنسية</div>
-<div style={{height: 35}}>MARITAL STATUS</div>
-<div style={{height: 35}}></div>
-<div style={{height: 35}}>الحالة الاجتماعية</div>
-<div style={{height: 35}} >NUMBER OF CHILDREN</div>
-<div style={{height: 35}}></div>
-<div style={{height: 35}}>عدد الاطفال</div>
-<div>RELIGION</div>
-<div></div>
-<div>الديانة</div>
-<div>WEIGHT</div>
-<div></div>
-<div>الوزن</div>
-<div>HEIGHT</div>
-
-<div></div>
-<div>الطول</div>
-<div style={{height: 35}}>EDUCATIONAL ATTAINMENT</div>
-<div style={{height: 35}}>PRIMARY SCHOOL</div>
-<div style={{height: 35}}>المستوى الدراسي</div>
-<div style={{height: 35}}>POST APPLIED FOR</div>
-<div style={{height: 35}}>HOUSEMAID</div>
-<div style={{height: 35}}>الوظيفة المتقدمة اليها</div>
-<div style={{height: 35}}>MONTHLY SALARY</div>
-<div style={{height: 35}}></div>
-<div style={{height: 35}}>الراتب الشهري</div>
-<div style={{height: 35}}>CONTRACT PERIOD</div>
-<div style={{height: 35}}>2 YEARS</div>
-<div style={{height: 35}}>مدة التعاقد</div>
-<div style={{height: 35}}>ARABIC DEGREE</div>
-<div style={{height: 35}}></div>
-<div style={{height: 35}}>مستوى اللغة العربية</div>
-<div style={{height: 39}}>ENGLISH DEGREE</div>
-<div style={{height: 39}}></div>
-<div style={{height: 39}}>مستوى اللغة الانجليزية</div>
+<>
+<div className="experience-country-sec">
+<div>EXPERIANCE COUNTRY</div>
+<div>{i.name}</div>
+<div>خبرة البلد</div>
 </div>
-                        <div className="second-side">
-                            <div>
-                                <img src={bodyimg} alt="Full Body" className="full-body-image" />
-                            </div>
-                            <div>
-                                <img src={ouragentlogo} alt="Agent Logo" className="agent-logo" />
-                            </div>
-                        </div>
-                    </div>
 
-                    <div className="second-section-parent">
 
-                    <div className="phone-number-sec">
-                        <div>OWN PHONE NUMBER</div>
-                        <div style={{background: "white"}}>(25190) 33-9999</div>
-                        <div>رقم الهاتف الشخصي</div>
-                    </div>
-                    <div className="cphone-number-sec">
-                        <div>CONTACT PHONE NUMBER</div>
-                        <div style={{background: "white"}}></div>
-                        <div>رقم الهاتف الاقارب</div>
-                    </div>
-                    <div className="experience-country-sec">
-                        <div>EXPERIANCE COUNTRY</div>
-                        <div>-</div>
-                        <div>خبرة البلد</div>
-                    </div>
 
-                    
 
-                    <div className="experience-country-sec">
-                        <div>WORKING YEARS</div>
-                        <div>-</div>
-                        <div>وعدد سنوات الخبرة</div>
-                    </div>
+
+<div className="experience-country-sec">
+<div>WORKING YEARS</div>
+<div>{i.overview}</div>
+<div>وعدد سنوات الخبرة</div>
+</div>
+
+</>
+
+
+
+                    )} */}
+                   
+
+
+
+
                     <div className="specific-exp-atitle-sec">
                         <div>تربية الاطفال</div>
                         <div>النظافة</div>
@@ -2716,11 +2406,11 @@ src={require(`../images/${allImage[allImage.length - 1].image}`)} // Get the las
                         <div>ELDER CARE</div>
                     </div>
                     <div className="exp-trueorfalse-sec">
-                        <div>YES</div>
-                        <div>YES</div>
-                        <div>NO</div>
-                        <div></div>
-                        <div>YES</div>
+                        <div>{expcheck.exp1 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp2 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp3 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp4 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp5 ? "YES" : "NO"}</div>
                     </div>
 
                     </div>
@@ -2734,27 +2424,1719 @@ src={require(`../images/${allImage[allImage.length - 1].image}`)} // Get the las
                 <div style={{display: "flex", justifyContent: "center", fontSize: 20, marginBottom: 30}}>Passport</div>
 
                 <div className="passport-image-parent">
-                {passportallimage && passportallimage.length > 0 ? (
+                
 <div>
 <img
 className="passport-image"
 alt=""
-src={require(`../passport_image/${passportallimage[passportallimage.length - 1].image}`)} 
+src={applicantpassportimagePreview !== null
+    ? applicantpassportimagePreview
+    : imagePlaceholder} 
 
 />
 
 </div>
-) : (
-<div>No images uploaded yet.</div> 
-)}
 </div>
             </div>
         </div>
+
+
+        {/* next content 3 */}
+
+
+        <div id="cvContent3">
+        <div className="container">
+                {/* Page 1 */}
+                {/* <div>
+<form onSubmit={this.submitImage}>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={this.onInputChange}
+  />
+  <button type="submit">Submit</button>
+</form>
+{this.state.allImage == null
+  ? ""
+  : this.state.allImage.map((data, index) => (
+      <img
+        key={index}
+        alt=""
+        src={require(`.../images/${data.image}`)}
+        height={100}
+        width={100}
+      />
+    ))}
+</div> */}
+                <div style={{ pageBreakAfter: 'always' }}> 
+                    <div className="header">
+                    
+<div className="personal-image-parent">
+<img
+className="personal-image"
+alt=""
+src={applicantpersonalimagePreview !== null
+    ? applicantpersonalimagePreview
+    : imagePlaceholder} // Get the last image
+
+/>
+
+</div>
+
+                      <div className="wider-image-parent">
+                      <img src={skywaylogo} alt="Wider" className="wider-image" /></div>  
+                    </div>
+                    <div className="title-parent">
+                        <div style={{display: "flex", justifyContent: "space-around", border: "none"}}><div style={{ border: "none"}}>Personal Information</div>  <div style={{ border: "none"}}> ممعلومات شخصية </div></div>
+                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>CODE NO</div>
+                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>J100</div>
+                    </div>
+                    <div className="table-main-parent">
+                    <div class="table-parent">
+<div>NAME</div>
+<div>{personalInfo.name} {personalInfo.middleName}</div>
+<div>الاسم</div>
+<div>SURNAME</div>
+<div>{personalInfo.surname}</div>
+<div>اسم العائلة</div>
+<div>PLACE Of Birth</div>
+<div>{personalInfo.placeOfBirth}</div>
+<div>مكان الولادة</div>
+<div>AGE</div>
+<div>{age}</div>
+<div>العمر</div>
+<div>PASSPORT NO</div>
+<div>{personalInfo.passportNo}</div>
+<div>رقم جواز السفر</div>
+<div>DATE OF BIRTH</div>
+<div>{dob}</div>
+<div>تاريخ الميلاد</div>
+<div>DATE OF ISSUE</div>
+<div>{dateOfIssue}</div>
+
+<div>تاريخ الاصدار</div>
+<div>DATE OF EXPIRY</div>
+<div>{dateOfExpiry}</div>
+<div>تاريخ الانتهاء</div>
+<div>NATIONALITY</div>
+<div>{personalInfo.nationality}</div>
+<div>الجنسية</div>
+<div style={{height: 35}}>MARITAL STATUS</div>
+<div style={{height: 35}}>{personalInfo.maritalStatus}</div>
+<div style={{height: 35}}>الحالة الاجتماعية</div>
+<div style={{height: 35}} >NUMBER OF CHILDREN</div>
+<div style={{height: 35}}>{personalInfo.numberOfChildren}</div>
+<div style={{height: 35}}>عدد الاطفال</div>
+<div>RELIGION</div>
+<div>{personalInfo.religion}</div>
+<div>الديانة</div>
+<div>WEIGHT</div>
+<div>{personalInfo.weight}{personalInfo.weight ? " km" : ""}</div>
+<div>الوزن</div>
+<div>HEIGHT</div>
+
+<div>{personalInfo.height}{personalInfo.height ? " cm" : ""}</div>
+<div>الطول</div>
+<div style={{height: 35}}>EDUCATIONAL ATTAINMENT</div>
+<div style={{height: 35}}>{personalInfo.educationAttainment}</div>
+<div style={{height: 35}}>المستوى الدراسي</div>
+<div style={{height: 35}}>POST APPLIED FOR</div>
+<div style={{height: 35}}>{personalInfo.postAppliedFor}</div>
+<div style={{height: 35}}>الوظيفة المتقدمة اليها</div>
+<div style={{height: 35}}>MONTHLY SALARY</div>
+<div style={{height: 35}}> {salaries.jordan}{salaries.jordan ? "$" : ""}</div>
+<div style={{height: 35}}>الراتب الشهري</div>
+<div style={{height: 35}}>CONTRACT PERIOD</div>
+<div style={{height: 35}}>{personalInfo.contractPeriod}</div>
+<div style={{height: 35}}>مدة التعاقد</div>
+<div style={{height: 35}}>ARABIC DEGREE</div>
+<div style={{height: 35}}>{personalInfo.arabicDegree}</div>
+<div style={{height: 35}}>مستوى اللغة العربية</div>
+<div style={{height: 39}}>ENGLISH DEGREE</div>
+<div style={{height: 39}}>{personalInfo.englishDegree}</div>
+<div style={{height: 39}}>مستوى اللغة الانجليزية</div>
+</div>
+                        <div className="second-side">
+                            <div>
+                                <img src={applicantfullbodyimagePreview !== null
+    ? applicantfullbodyimagePreview
+    : imagePlaceholder} alt="Full Body" className="full-body-image" />
+                            </div>
+                            <div>
+                                <img src={assawsan} alt="Agent Logo" className="agent-logo" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="second-section-parent">
+
+                    <div className="phone-number-sec">
+                        <div>OWN PHONE NUMBER</div>
+                        <div style={{background: "white"}}>{personalInfo.ownPhoneNumber}</div>
+                        <div>رقم الهاتف الشخصي</div>
+                    </div>
+                    <div className="cphone-number-sec">
+                        <div>CONTACT PHONE NUMBER</div>
+                        <div style={{background: "white"}}>{personalInfo.contactPhoneNumber}</div>
+                        <div>رقم الهاتف الاقارب</div>
+                    </div>
+
+
+
+                    <div className="experience-country-sec">
+<div>EXPERIANCE COUNTRY</div>
+<div>{projectInfo.project.map(i =>  <span style={{marginRight: "3px"}}>{i.name}{i.name ? "," : ""} </span> )} </div>
+<div>خبرة البلد</div>
+</div>
+
+
+
+
+
+<div className="experience-country-sec">
+<div>WORKING YEARS</div>
+<div>{projectInfo.project.map(i =>  <span style={{marginRight: "3px"}}>{i.overview}{i.overview ? "," : ""} </span> )}</div>
+<div>وعدد سنوات الخبرة</div>
+</div>
+
+                    {/* {projectInfo.project.map(i => 
+                        
+<>
+<div className="experience-country-sec">
+<div>EXPERIANCE COUNTRY</div>
+<div>{i.name}</div>
+<div>خبرة البلد</div>
+</div>
+
+
+
+
+
+<div className="experience-country-sec">
+<div>WORKING YEARS</div>
+<div>{i.overview}</div>
+<div>وعدد سنوات الخبرة</div>
+</div>
+
+</>
+
+
+
+                    )} */}
+                   
+
+
+
+
+                    <div className="specific-exp-atitle-sec">
+                        <div>تربية الاطفال</div>
+                        <div>النظافة</div>
+                        <div>الغسيل</div>
+                        <div>الطبخ</div>
+                        <div>العناية بالمسنين</div>
+                    </div>
+                    <div className="specific-exp-etitle-sec">
+                        <div>BABY SITTING</div>
+                        <div>CLEANING</div>
+                        <div>WASHING</div>
+                        <div>COOKING</div>
+                        <div>ELDER CARE</div>
+                    </div>
+                    <div className="exp-trueorfalse-sec">
+                        <div>{expcheck.exp1 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp2 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp3 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp4 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp5 ? "YES" : "NO"}</div>
+                    </div>
+
+                    </div>
+
+                    
+
+                </div>
+
+                
+                {/* Page 2 */}
+                <div style={{display: "flex", justifyContent: "center", fontSize: 20, marginBottom: 30}}>Passport</div>
+
+                <div className="passport-image-parent">
+                
+<div>
+<img
+className="passport-image"
+alt=""
+src={applicantpassportimagePreview !== null
+    ? applicantpassportimagePreview
+    : imagePlaceholder} 
+
+/>
+
+</div>
+</div>
+            </div>
+        </div>
+
+
+
+        {/* next content 4 */}
+
+
+        <div id="cvContent4">
+        <div className="container">
+                {/* Page 1 */}
+                {/* <div>
+<form onSubmit={this.submitImage}>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={this.onInputChange}
+  />
+  <button type="submit">Submit</button>
+</form>
+{this.state.allImage == null
+  ? ""
+  : this.state.allImage.map((data, index) => (
+      <img
+        key={index}
+        alt=""
+        src={require(`.../images/${data.image}`)}
+        height={100}
+        width={100}
+      />
+    ))}
+</div> */}
+                <div style={{ pageBreakAfter: 'always' }}> 
+                    <div className="header">
+                    
+<div className="personal-image-parent">
+<img
+className="personal-image"
+alt=""
+src={applicantpersonalimagePreview !== null
+    ? applicantpersonalimagePreview
+    : imagePlaceholder} // Get the last image
+
+/>
+
+</div>
+
+                      <div className="wider-image-parent">
+                      <img src={barakaimg} alt="Wider" className="wider-image" /></div>  
+                    </div>
+                    <div className="title-parent">
+                        <div style={{display: "flex", justifyContent: "space-around", border: "none"}}><div style={{ border: "none"}}>Personal Information</div>  <div style={{ border: "none"}}> ممعلومات شخصية </div></div>
+                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>CODE NO</div>
+                        <div style={{display: "flex", justifyContent: "center", alignItems: "center",}}>J100</div>
+                    </div>
+                    <div className="table-main-parent">
+                    <div class="table-parent">
+<div>NAME</div>
+<div>{personalInfo.name} {personalInfo.middleName}</div>
+<div>الاسم</div>
+<div>SURNAME</div>
+<div>{personalInfo.surname}</div>
+<div>اسم العائلة</div>
+<div>PLACE Of Birth</div>
+<div>{personalInfo.placeOfBirth}</div>
+<div>مكان الولادة</div>
+<div>AGE</div>
+<div>{age}</div>
+<div>العمر</div>
+<div>PASSPORT NO</div>
+<div>{personalInfo.passportNo}</div>
+<div>رقم جواز السفر</div>
+<div>DATE OF BIRTH</div>
+<div>{dob}</div>
+<div>تاريخ الميلاد</div>
+<div>DATE OF ISSUE</div>
+<div>{dateOfIssue}</div>
+
+<div>تاريخ الاصدار</div>
+<div>DATE OF EXPIRY</div>
+<div>{dateOfExpiry}</div>
+<div>تاريخ الانتهاء</div>
+<div>NATIONALITY</div>
+<div>{personalInfo.nationality}</div>
+<div>الجنسية</div>
+<div style={{height: 35}}>MARITAL STATUS</div>
+<div style={{height: 35}}>{personalInfo.maritalStatus}</div>
+<div style={{height: 35}}>الحالة الاجتماعية</div>
+<div style={{height: 35}} >NUMBER OF CHILDREN</div>
+<div style={{height: 35}}>{personalInfo.numberOfChildren}</div>
+<div style={{height: 35}}>عدد الاطفال</div>
+<div>RELIGION</div>
+<div>{personalInfo.religion}</div>
+<div>الديانة</div>
+<div>WEIGHT</div>
+<div>{personalInfo.weight}{personalInfo.weight ? " km" : ""}</div>
+<div>الوزن</div>
+<div>HEIGHT</div>
+
+<div>{personalInfo.height}{personalInfo.height ? " cm" : ""}</div>
+<div>الطول</div>
+<div style={{height: 35}}>EDUCATIONAL ATTAINMENT</div>
+<div style={{height: 35}}>{personalInfo.educationAttainment}</div>
+<div style={{height: 35}}>المستوى الدراسي</div>
+<div style={{height: 35}}>POST APPLIED FOR</div>
+<div style={{height: 35}}>{personalInfo.postAppliedFor}</div>
+<div style={{height: 35}}>الوظيفة المتقدمة اليها</div>
+<div style={{height: 35}}>MONTHLY SALARY</div>
+<div style={{height: 35}}> {salaries.saudi}{salaries.saudi ? " SAR" : ""}</div>
+<div style={{height: 35}}>الراتب الشهري</div>
+<div style={{height: 35}}>CONTRACT PERIOD</div>
+<div style={{height: 35}}>{personalInfo.contractPeriod}</div>
+<div style={{height: 35}}>مدة التعاقد</div>
+<div style={{height: 35}}>ARABIC DEGREE</div>
+<div style={{height: 35}}>{personalInfo.arabicDegree}</div>
+<div style={{height: 35}}>مستوى اللغة العربية</div>
+<div style={{height: 39}}>ENGLISH DEGREE</div>
+<div style={{height: 39}}>{personalInfo.englishDegree}</div>
+<div style={{height: 39}}>مستوى اللغة الانجليزية</div>
+</div>
+                        <div className="second-side">
+                            <div>
+                                <img src={applicantfullbodyimagePreview !== null
+    ? applicantfullbodyimagePreview
+    : imagePlaceholder} alt="Full Body" className="full-body-image" />
+                            </div>
+                            <div>
+                                <img src={ouragentlogo} alt="Agent Logo" className="agent-logo" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="second-section-parent">
+
+                    <div className="phone-number-sec">
+                        <div>OWN PHONE NUMBER</div>
+                        <div style={{background: "white"}}>{personalInfo.ownPhoneNumber}</div>
+                        <div>رقم الهاتف الشخصي</div>
+                    </div>
+                    <div className="cphone-number-sec">
+                        <div>CONTACT PHONE NUMBER</div>
+                        <div style={{background: "white"}}>{personalInfo.contactPhoneNumber}</div>
+                        <div>رقم الهاتف الاقارب</div>
+                    </div>
+
+
+
+                    <div className="experience-country-sec">
+<div>EXPERIANCE COUNTRY</div>
+<div>{projectInfo.project.map(i =>  <span style={{marginRight: "3px"}}>{i.name}{i.name ? "," : ""} </span> )} </div>
+<div>خبرة البلد</div>
+</div>
+
+
+
+
+
+<div className="experience-country-sec">
+<div>WORKING YEARS</div>
+<div>{projectInfo.project.map(i =>  <span style={{marginRight: "3px"}}>{i.overview}{i.overview ? "," : ""} </span> )}</div>
+<div>وعدد سنوات الخبرة</div>
+</div>
+
+                    {/* {projectInfo.project.map(i => 
+                        
+<>
+<div className="experience-country-sec">
+<div>EXPERIANCE COUNTRY</div>
+<div>{i.name}</div>
+<div>خبرة البلد</div>
+</div>
+
+
+
+
+
+<div className="experience-country-sec">
+<div>WORKING YEARS</div>
+<div>{i.overview}</div>
+<div>وعدد سنوات الخبرة</div>
+</div>
+
+</>
+
+
+
+                    )} */}
+                   
+
+
+
+
+                    <div className="specific-exp-atitle-sec">
+                        <div>تربية الاطفال</div>
+                        <div>النظافة</div>
+                        <div>الغسيل</div>
+                        <div>الطبخ</div>
+                        <div>العناية بالمسنين</div>
+                    </div>
+                    <div className="specific-exp-etitle-sec">
+                        <div>BABY SITTING</div>
+                        <div>CLEANING</div>
+                        <div>WASHING</div>
+                        <div>COOKING</div>
+                        <div>ELDER CARE</div>
+                    </div>
+                    <div className="exp-trueorfalse-sec">
+                        <div>{expcheck.exp1 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp2 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp3 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp4 ? "YES" : "NO"}</div>
+                        <div>{expcheck.exp5 ? "YES" : "NO"}</div>
+                    </div>
+
+                    </div>
+
+                    
+
+                </div>
+
+                
+                {/* Page 2 */}
+                <div style={{display: "flex", justifyContent: "center", fontSize: 20, marginBottom: 30}}>Passport</div>
+
+                <div className="passport-image-parent">
+                
+<div>
+<img
+className="passport-image"
+alt=""
+src={applicantpassportimagePreview !== null
+    ? applicantpassportimagePreview
+    : imagePlaceholder} 
+
+/>
+
+</div>
+</div>
+            </div>
+        </div>
+
+
+
+
+        {/* end content */}
+
+
+       
 
 
       
         
 </div>
+
+
+
+
+
+{/* embassy cv content */}
+
+
+
+<div style={{ display: 'none' }}>
+                <div className="embassy-cv-main-parent" id="cvContent">
+                    <div className='embassy-header'>
+                        <div className='embassy-header-first-child' style={{ display: 'flex', flexDirection: 'column', }}>
+                            <div style={{ display: 'flex', flexDirection: 'column',  }}>
+                                <Barcode
+                                       displayValue={false}
+                                                value={"E776062468"} height={23} width={1.7} marginBottom={2} />
+
+                                                
+                                <span style={{ display: "flex", justifyContent: "space-between", marginLeft: '10px',  }}><span style={{ fontFamily: "serif", fontSize: "8px",  }}>VISA No:</span> <span style={{marginRight: "10px", fontSize: "13px", fontWeight: "bold"}}>{"E776062468"}</span></span>
+
+                                <span style={{ display: "flex", justifyContent: "space-between", marginLeft: '10px',  }}><span style={{ fontFamily: "serif", fontSize: "13px",  }}>sponsor:</span> <span style={{marginRight: "10px", fontSize: "13px"}}>MONIRAH ALHARTHI</span></span>
+                            </div>
+                            
+                            <div className="embassy-header-first-child-img-div" style={{marginLeft: "7px"}}>
+                            <img
+                            style={{marginTop: "10px", width: "150px", height: "150px"}}
+                        className="embassy-header-first-child-img"
+                        alt="Personal"
+                        src={smallapplicantimage}
+                       
+                    />
+                            </div>
+                        </div>
+
+                        {/* <div className='embassy-header-second-child' style={{display: "flex", flexDirection: "column", justifyContent: "space-between",  }}>
+                            <div></div>
+                            <div style={{margin: 0, padding: 0, marginLeft: "50px"}}>
+                            <img
+                            style={{width: "150px", height: "150px",}}
+                        className="embassy-header-first-child-img"
+                        alt="Personal"
+                        src={saudiforeignaffairslogo}
+                       
+                    />
+                            </div>
+                        </div> */}
+                          <div style={{display: "flex", flexDirection: "row", }}>
+                          <div className='embassy-header-second-child' style={{display: "flex", flexDirection: "column", justifyContent: "space-between",  }}>
+                            <div></div>
+                            <div style={{margin: 0, padding: 0, marginLeft: "60px"}}>
+                            <img
+                            style={{width: "150px", height: "150px",}}
+                        className="embassy-header-first-child-img"
+                        alt="Personal"
+                        src={saudiforeignaffairslogo}
+                       
+                    />
+                            </div>
+                        </div>
+                        <div className='embassy-header-third-child' style={{fontFamily: "serif",  background: 'none', display: 'flex', flexDirection: "column", paddingLeft: "100px", flexBasis: "70%"  }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <Barcode value={"E776062468"} fontWeight={"bold"} height={23} width={1.7} marginBottom={2} />
+                                
+                            </div>
+                            <div style={{ marginTop: "5px", fontFamily: "serif", fontSize: "13px", display: "flex", flexDirection: "column", justifyContent: "flex-end", alignItems: "center", background: "none"  }}>
+    <div style={{fontFamily: "serif", textAlign: "center" }}>
+        EMBASSY OF SAUDI ARABIA
+    </div>
+    <div style={{fontFamily: "serif", textAlign: "center" }}>
+        CONSULAR SECTION
+    </div>
+
+    <div style={{ fontFamily: "serif", textAlign: "center", fontSize: "18px", marginTop: "5px", fontWeight: "bold" }}>
+        سفارة المملكة العربية السعودية القسم القنصلي
+    </div>
+</div>
+
+<div style={{fontFamily: "serif",  fontSize: "12px", background: "none", marginTop: "20px", marginLeft: "-18px" }} >SKY WAY FOREIGN EMPLOYMENT AGENT</div>
+<div style={{fontFamily: "serif", marginTop: "10px", fontWeight: "bold", marginLeft: "-10px"}}>skywayagencyoffice@gmail.com</div>
+</div>
+ 
+    
+
+                           
+                        </div>
+                    </div>
+
+                    <div className="content-parent">
+
+                        {/* 1th line */}
+
+                        <div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px"}}>
+                                      <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px",}}>Full Name</span>
+                                        <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span>
+                                        </div>
+
+                                        <div>الاسم الكامل</div>
+                        </div>
+
+                        {/* 2th line */}
+
+                        <div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "1px"}}>
+                                      <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px",}}>Mother Name</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div>الاسلام</div>
+                        </div>
+
+                    {/* 3th line */}
+
+
+                        <div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "1px"}}>
+
+
+                                      <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "47%"}}>
+
+
+                                        
+                                            <span style={{fontFamily: "serif",  fontSize: "13px",}}>Date of Birth:</span>
+                                            <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>02/11/1997</span>
+                                           
+
+
+                                            
+                                            <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>تاريخ الميلاد</span>
+                                      
+
+
+                                        </div>
+
+                                        <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "47%"}}>
+
+
+           <div style={{display: "flex", justifyContent: "space-between", width: "58%",}}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px"}}>Place of Birth : </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>CHORA</span>
+</div>    
+
+
+
+
+<span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>مكان الميلاد</span>
+
+
+
+</div>
+                        </div>
+
+{/* 4th line */}
+
+                        <div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "1px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "47%"}}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "13px",}}>Past Nationality:</span>
+     
+     
+
+
+      
+      <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}> الجنسية السابقة      </span>
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "47%"}}>
+
+
+ <div  style={{display: "flex", justifyContent: "space-between", width: "58%",}}>
+<span style={{fontFamily: "serif",  fontSize: "13px",}}>Current Nationality : </span>
+<span style={{fontWeight:"bold",fontFamily: "serif",  fontSize: "13px",}}>Ethiopia</span>
+</div>
+
+
+
+
+<span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}> الجنسية الحالية
+</span>
+
+
+
+</div>
+
+</div>
+
+{/* 5th line */}
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "1px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "47%"}}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "13px",}}>Sex:</span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>FEMALE</span>
+     
+
+
+      
+      <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}> الجنس</span>
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "47%"}}>
+
+
+<div  style={{display: "flex", justifyContent: "space-between", width: "58%",}}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", }}>Marital Status: </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>SINGLE</span>
+</div>    
+
+
+
+
+<span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}> الحالة الاجتماعية
+</span>
+
+
+
+</div>
+</div>
+
+
+{/* 6th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "1px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "47%"}}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "13px",}}>Sect:</span>
+      
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "47%"}}>
+
+
+<div  style={{display: "flex", justifyContent: "space-between", width: "58%",}}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "7px"}}>Religion: </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>Islam</span>
+</div>    
+
+
+
+
+<span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}> الديانة</span>
+
+
+
+</div>
+</div>
+
+
+{/* 7th line */}
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "1px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "47%"}}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "13px",}}>Qualification:</span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>PRIMARY SCHOOL</span>
+      
+     
+
+
+      
+      <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}> المؤهل العلمي</span>
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "47%"}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", width: "58%",}}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px",}}>Profession: </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>HOUSE MAID</span>
+</div>    
+
+
+
+
+<span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}> المهنة</span>
+
+
+
+</div>
+</div>
+
+{/* 8th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black",paddingBottom: "5px", marginTop: "1px"}}>
+                                      <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px",}}>Home address and telephone No. :</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div> عنوان السكن</div>
+                        </div>
+
+
+{/* 9th line */}
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "1px"}}>
+                                      <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px", fontWeight: "bold", marginLeft: "60px"}}>RIYADH</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div> </div>
+                        </div>
+
+{/* 10th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "1px"}}>
+                                      <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px",}}>Business address and telephone No. :</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div> عنوان العمل ورقم الهاتف
+                                        </div>
+                        </div>
+
+
+{/* 11th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "1px"}}>
+                                      <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px", fontWeight: "bold", marginLeft: "60px"}}>966500761032</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div> </div>
+                        </div>
+
+{/* 12th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black",paddingBottom: "5px", marginTop: "7px"}}>
+                                      <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", }}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px",}}>Purpose Of Travel :</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+
+
+                                        <div style={{display: "flex", justifyContent: "space-between",  width: "75%",}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "15px", background: "#88898a", marginTop: "-7px", marginBottom: "-5px", paddingTop: "7px", width: "50px", paddingLeft: "7px"}}>Work</span>
+                                        <span style={{fontFamily: "serif",  fontSize: "15px", background: "#88898a", marginTop: "-7px", marginBottom: "-5px", paddingTop: "7px", width: "55px", paddingLeft: "7px"}}>Transit</span>
+
+                                        <span style={{fontFamily: "serif",  fontSize: "15px", background: "#88898a", marginTop: "-7px", marginBottom: "-5px", paddingTop: "7px", width: "50px", paddingLeft: "7px"}}>Visit</span>
+                                        <span style={{fontFamily: "serif",  fontSize: "15px", background: "#88898a", marginTop: "-7px", marginBottom: "-5px", paddingTop: "7px", width: "55px", paddingLeft: "7px"}}>Umrah</span>
+
+                                        <span style={{fontFamily: "serif",  fontSize: "15px", background: "#88898a", marginTop: "-7px", marginBottom: "-5px", paddingTop: "7px", width: "73px", paddingLeft: "7px"}}>Residence</span>
+                                        <span style={{fontFamily: "serif",  fontSize: "15px", background: "#88898a", marginTop: "-7px", marginBottom: "-5px", paddingTop: "7px", width: "45px", paddingLeft: "7px"}}>Hajj</span>
+
+                                        <span style={{fontFamily: "serif",  fontSize: "15px", background: "#88898a", marginTop: "-7px", marginBottom: "-5px", paddingTop: "7px", width: "80px", paddingLeft: "7px"}}>Diplomacy</span>
+                                        <span style={{fontFamily: "serif",  fontSize: "15px", background: "#88898a", marginTop: "-7px", marginBottom: "-5px", paddingTop: "7px", width: "50px", paddingLeft: "7px"}}>Other</span>
+
+                                        </div>
+
+
+
+
+
+                                        <div> الغرض
+                                        </div>
+                        </div>
+
+
+{/* 13th line */}
+
+
+<div style={{borderBottom: "2px solid black",}}>
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "2px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", }}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "13px",marginRight: "5px"}}>Place of Issue :</span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>ADDIS ABABA</span>
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}>مكان الاصدار Date of issue: </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px", marginRight: "15px"}}>02/11/2023</span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px", }}>تاريخ الاصدار</span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}>Passport No: </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>EP8394839</span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}>رقم الجواز</span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>CHORA</span> */}
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+
+</div>
+
+
+<div>
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "2px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", }}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "13px",marginRight: "5px"}}>Date of Expiry :</span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>02/11/1997</span>
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}></span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}></span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "15px", marginRight: "5px"}}></span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}></span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}></span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>تاريخ الانتهاء</span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+
+</div>
+
+</div>
+
+
+</div>
+
+
+{/* 14th line */}
+
+
+
+<div style={{borderBottom: "2px solid black",}}>
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", flexDirection: "row-reverse" , borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "2px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", }}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "13px",marginRight: "5px"}}>تاريخ المغادرة      </span>
+      {/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}></span> */}
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}>تاريخ الوصول</span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>CHORA</span> */}
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}>مدة الإقامة بالمملكة</span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>CHORA</span> */}
+</div>    
+
+
+
+
+
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}></span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}></span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div>
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between",  borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "2px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", }}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "13px",marginRight: "5px"}}>Duration of stay in the Kingdom :</span>
+      {/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>Date of arrival :</span> */}
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}>Date of arrival :</span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>CHORA</span> */}
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}>Date of departuer :</span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>CHORA</span> */}
+</div>    
+
+
+
+
+
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}></span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}></span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+{/* 15th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "2px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", }}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "13px",marginRight: "5px"}}>Mode of Payment:</span>
+      {/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>02/11/1997</span> */}
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}>طريقة الدفع Payment No: </span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>CHORA</span> */}
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}>رقم الدفع Date: </span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>CHORA</span> */}
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between",}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+{/* <span style={{fontFamily: "serif",  fontSize: "15px", marginRight: "5px"}}>Place of Birth : </span> */}
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>تاريخ</span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+
+</div>
+
+{/* 16th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "1px", marginTop: "1px"}}>
+                                      <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px", fontWeight: "bold"}}>Relationship :</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div> </div>
+                        </div>
+
+
+
+
+
+
+{/* 17th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid black", paddingBottom: "5px", marginTop: "2px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", }}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "13px",}}>Destination:</span>
+      {/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}>02/11/1997</span> */}
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", }}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", }}>المكان المقصود Dealer Name: </span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>CHORA</span> */}
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+</div>
+
+
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", }}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+{/* <span style={{fontFamily: "serif",  fontSize: "15px", marginRight: "5px"}}>Place of Birth : </span> */}
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>اسم البائع</span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+
+</div>
+
+
+{/* 18th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", marginTop: "4px"}}>
+                                      <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px",}}>Dependents traveling in the same passport:</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div>  ايضاحات تخص أفراد العائلة المضافين على نفس جواز السفر    </div>
+                        </div>
+
+
+{/* 19th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", border: "1px solid black",  marginTop: "1px", height: "50px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", borderRight: "1px solid black", height: "100%", width: "35%"}}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "13px",marginRight: "5px"}}>صلة  </span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>Relationship</span>
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", borderRight: "1px solid black", height: "100%", width: "15%"}}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "13px",marginRight: "5px"}}>تاريخ الميلاد      </span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>Date of Birth</span>
+
+
+
+  </div>
+
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", borderRight: "1px solid black", height: "100%", width: "30%"}}>
+
+
+  
+<span style={{fontFamily: "serif",  fontSize: "13px",marginRight: "5px"}}>الجنس</span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>Sex</span>
+
+
+
+</div>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "100%", width: "20%"}}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "13px",marginRight: "5px"}}>الاسم الكامل      </span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>Full Name</span>
+
+
+
+  </div>
+
+
+
+</div>
+
+
+{/* 20th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "1px solid black", marginTop: "4px"}}>
+                                      <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "50%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px",}}>Name and address of company or individual in the Kingdom:</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div style={{borderBottom: "1px solid black", marginBottom: "4px", width:"40%", display: "flex", justifyContent: "flex-end"}}> اسم وعنوان الشركه او اسم الشخص وعنوانه بالمملكة                                        </div>
+                        </div>
+
+
+
+{/* 21th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", marginTop: "1px", }}>
+                                      <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "60%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px",}}>The undersigned hereby certify that all the information I have provided are correct</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div  style={{fontFamily: "serif",  fontSize: "13px",}}>       أقر انا الموقع أدناه بأن كل المعلومات التي دونتها صحيحة                                        </div>
+                        </div>
+
+
+{/* 22th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "8px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", marginTop: "-3px", }}>
+                                      <div style={{fontFamily: "serif",  fontSize: "8px",  display: "flex", justifyContent: "space-between", width: "60%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px",}}>I will abide by the lows of the Kingdom during the period of my residence in it. </span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div  style={{fontFamily: "serif",  fontSize: "13px",}}>       وسأكون ملتزمآ يقوانين المملكة أثناء فترة وجودي بها                                        </div>
+                        </div>
+
+
+
+{/* 23th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "5px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "46%"}}>
+
+
+  <div>
+      <span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}>Date:</span>
+      <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>02/11/1997</span>
+      </div>
+     
+
+
+      <div style={{display: "flex", alignItems: "center"}}>
+    <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif"}}>Signature: </span>
+    <hr style={{borderBottom: "1px solid black", flexGrow: "1", marginTop: "13px",   width: "80px"}} />
+    <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif"}}>التوقيع</span>
+</div>
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "53%"}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}>Name : </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>NIYASA GETANA AREDA</span>
+</div>    
+
+
+
+
+<span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}> الاسم الكامل</span>
+
+
+
+</div>
+</div>
+
+
+{/* 24th line */}
+
+
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "8px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", marginTop: "-3px", }}>
+                                      <div style={{fontFamily: "serif",  fontSize: "8px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px",}}>For offical use only:</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div  style={{fontFamily: "serif",  fontSize: "13px",}}>     للاستخدام الرسمي فقط                                        </div>
+                        </div>
+
+
+
+
+{/* 25th line */}
+
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "-3px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "46%"}}>
+
+
+  <div>
+      <span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}>Visit / Work For :</span>
+      {/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>02/11/1997</span> */}
+      </div>
+     
+
+
+      <div style={{display: "flex", alignItems: "center"}}>
+    <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif"}}>التاريخ    </span>
+    {/* <hr style={{borderBottom: "1px solid black", flexGrow: "1", marginTop: "13px",   width: "80px"}} />
+    <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif"}}>التوقيع</span> */}
+</div>
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "53%"}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}>Authorization: </span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>NIYASA GETANA AREDA</span> */}
+</div>    
+
+
+
+
+<span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}> تفويض</span>
+
+
+
+</div>
+</div>
+
+
+
+{/* 26th line */}
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "8px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", marginTop: "-3px", }}>
+                                      <div style={{fontFamily: "serif",  fontSize: "8px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px",}}>Type</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div  style={{fontFamily: "serif",  fontSize: "13px",}}>       زيادة او العمل من أجل                                        </div>
+                        </div>
+
+
+
+{/* 27th line */}
+
+
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "-3px"}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "49.7%"}}>
+
+
+  <div>
+      <span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}>Date of Birth:</span>
+      {/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>02/11/1997</span> */}
+      </div>
+     
+
+
+      <div style={{display: "flex", alignItems: "center"}}>
+    <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif"}}>نوع </span>
+    {/* <hr style={{borderBottom: "1px solid black", flexGrow: "1", marginTop: "13px",   width: "80px"}} />
+    <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif"}}>التوقيع</span> */}
+</div>
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", width: "49.7%"}}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", marginRight: "5px"}}>Duration: </span>
+{/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>NIYASA GETANA AREDA</span> */}
+</div>    
+
+
+
+
+<span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}> المدة الزمنية</span>
+
+
+
+</div>
+</div>
+
+
+{/* 28th line */}
+
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "8px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", marginTop: "-3px", }}>
+                                      <div style={{fontFamily: "serif",  fontSize: "8px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px",}}>رئيس القسم القنصلي</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div  style={{fontFamily: "serif",  fontSize: "13px",}}>      فحص بواسطة                                        </div>
+                        </div>
+
+
+
+
+{/* 29th line */}
+
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "8px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", marginTop: "-3px", }}>
+                                      <div style={{fontFamily: "serif",  fontSize: "8px",  display: "flex", justifyContent: "space-between", width: "35%"}}>
+                                        <span style={{fontFamily: "serif",  fontSize: "13px",}}>Head of consular section</span>
+                                        {/* <span style={{fontWeight:"bold", fontSize: "13px", fontFamily: "serif",}}>NIYASA GETANA AREDA </span> */}
+                                        </div>
+
+                                        <div  style={{fontFamily: "serif",  fontSize: "13px",}}>     Checked by  </div>
+                        </div>
+
+
+
+{/* 30th line */}
+
+
+
+
+
+<div className="first-line" style={{fontFamily: "serif",  fontSize: "13px", display: "flex", justifyContent: "space-between", borderBottom: "2px solid transparent", paddingBottom: "5px", marginTop: "25px",}}>
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", }}>
+
+
+  
+      <span style={{fontFamily: "serif",  fontSize: "13px", fontWeight: "bold"}}>Wednesday, October 2, 2024</span>
+      {/* <span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "15px",}}>02/11/1997</span> */}
+
+
+
+  </div>
+
+  <div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", }}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+<span style={{fontFamily: "serif",  fontSize: "13px", fontWeight: "bold", marginRight: "5px"}}>www.ntechagent.com | </span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",  marginRight: "5px"}}> <span> </span> +251 911 454176 | <span> </span></span>
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px", fontWeight: "bold"}}>ntechagent@gmail.com</span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+</div>
+
+
+
+
+<div style={{fontFamily: "serif",  fontSize: "13px",  display: "flex", justifyContent: "space-between", }}>
+
+
+<div style={{display: "flex", justifyContent: "space-between", }}>                         
+{/* <span style={{fontFamily: "serif",  fontSize: "15px", marginRight: "5px"}}>Place of Birth : </span> */}
+<span style={{fontWeight:"bold", fontFamily: "serif",  fontSize: "13px",}}>page 1 of 1</span>
+</div>    
+
+
+{/* <span style={{fontWeight:"bold", fontSize: "15px", fontFamily: "serif",}}>مكان الميلاد</span> */}
+
+
+
+</div>
+
+
+
+</div>
+
+
+{/* 31th line */}
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+{/* end embassy cv content */}
 
        
         

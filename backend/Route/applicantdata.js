@@ -37,7 +37,7 @@ router.get("/tget-images", async (req, res) => {
     filename: function (req, file, cb) {
       const uniqueSuffix = Date.now() + '-' + file.originalname;
       cb(null, uniqueSuffix);
-    },
+    }, 
   });
   
   const testMulupload = multer({ storage: TestMulstorage });
@@ -53,8 +53,8 @@ router.get("/tget-images", async (req, res) => {
 
 
 
+   console.log(req.body.country + " nnnnnnnnnnnnnn")
    
-  
     
     try { 
       const imageNames = {
